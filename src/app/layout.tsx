@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     "spa Arusha",
     "hair extensions Tanzania",
   ],
+  // Icons come from the app/ file convention: icon.svg + apple-icon.png
   openGraph: {
     title: "Kim Beauty — Hair, Lashes & Spa in Arusha",
     description:
@@ -41,7 +42,6 @@ export const metadata: Metadata = {
     locale: "en_TZ",
     siteName: "Kim Beauty",
   },
-  icons: { icon: "/icon.png", apple: "/icon.png" },
 };
 
 export const viewport: Viewport = {

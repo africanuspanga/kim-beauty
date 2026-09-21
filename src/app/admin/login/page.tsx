@@ -11,12 +11,26 @@ import { getSupabase } from "@/lib/supabase/client";
 const fieldCls =
   "h-12 w-full rounded-xl border border-line bg-cream pl-11 pr-4 text-[15px] text-ink outline-none transition placeholder:text-muted/70 focus:border-gold-400";
 
+const IS_DEV = process.env.NODE_ENV === "development";
+
+/** Prefilled so the owner never has to type it. Safe to ship. */
+const ADMIN_EMAIL = process.env.NEXT_PUBLIC_ADMIN_EMAIL ?? "";
+
+/**
+ * Only ever populated on a local dev machine, from a gitignored .env.local.
+ * A password baked into a production bundle would be readable by anyone, so
+ * this is deliberately blank in any deployed build.
+ */
+const DEV_PASSWORD = IS_DEV
+  ? process.env.NEXT_PUBLIC_DEV_ADMIN_PASSWORD ?? ""
+  : "";
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState(ADMIN_EMAIL);
+  const [password, setPassword] = useState(DEV_PASSWORD);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(
     searchParams.get("error") === "not-admin"
@@ -157,7 +171,7 @@ export default function AdminLoginPage() {
               width={718}
               height={490}
               priority
-              className="h-16 w-auto"
+              className="h-20 w-auto"
             />
           </div>
 

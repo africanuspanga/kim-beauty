@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Kim Beauty">
+  <defs>
+    <linearGradient id="kbGold" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0"    stop-color="#8B5E2B"/>
+      <stop offset="0.32" stop-color="#B8864B"/>
+      <stop offset="0.58" stop-color="#E2BB88"/>
+      <stop offset="0.80" stop-color="#B8864B"/>
+      <stop offset="1"    stop-color="#7C542B"/>
+    </linearGradient>
+    <linearGradient id="kbSheen" x1="0" y1="0" x2="0" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0"   stop-color="#FFFFFF" stop-opacity="0.26"/>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="64" height="64" rx="14" fill="url(#kbGold)"/>
+  <rect width="64" height="64" rx="14" fill="url(#kbSheen)"/>
+
+  <!-- K monogram -->
+  <path
+    d="M15 14 H23.5 V28.5 L37.5 14 H48 L30.5 31.5 L49 50 H38 L23.5 35.5 V50 H15 Z"
+    fill="#FDF7F0"/>
+</svg>

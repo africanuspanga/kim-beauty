@@ -40,6 +40,32 @@ npm run dev          # http://localhost:3000
 
 Environment variables live in `.env.local` (see `.env.example` for the shape).
 
+---
+
+## Deploying to Vercel
+
+Import the repo, then set these **three** environment variables (Production, Preview and Development):
+
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | `https://<project-ref>.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | the Supabase **anon / public** key |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | `255766400961` — digits only, no `+` or spaces |
+
+That is everything the app reads at runtime. Optionally add:
+
+| Variable | Why |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | `https://yourdomain.com` — makes social share previews use absolute URLs |
+| `NEXT_PUBLIC_ADMIN_EMAIL` | prefills the email box on `/admin/login` |
+
+**Never set in Vercel:** `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`, `SUPABASE_DB_URL` or
+`NEXT_PUBLIC_DEV_ADMIN_PASSWORD`. Nothing in the app uses them at runtime — they are local tooling
+only, and anything prefixed `NEXT_PUBLIC_` is readable by anyone who visits the site.
+
+No build settings need changing: Vercel detects Next.js and runs `next build` on its own.
+
+
 ```bash
 npm run build        # production build
 npm start            # serve the production build

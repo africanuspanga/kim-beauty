@@ -143,6 +143,18 @@ export function ResourceManager({
     );
   }, [rows, query, searchKeys]);
 
+  // On phones the table becomes cards: an unlabelled first column is the
+  // thumbnail, the next column is the card title, the rest become detail pairs.
+  const { leadColumn, titleColumn, detailColumns } = useMemo(() => {
+    const hasThumb = columns[0]?.label === "";
+    const body = hasThumb ? columns.slice(1) : columns;
+    return {
+      leadColumn: hasThumb ? columns[0] : null,
+      titleColumn: body[0] ?? null,
+      detailColumns: body.slice(1),
+    };
+  }, [columns]);
+
   function openCreate() {
     setEditing({});
     setForm({ ...defaults });
@@ -319,7 +331,76 @@ export function ResourceManager({
             }
           />
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            {/* ---------- phone: one card per record ---------- */}
+            <ul className="divide-y divide-line md:hidden">
+              {visible.map((row) => (
+                <li key={row.id} className="p-4">
+                  <div className="flex gap-3.5">
+                    {leadColumn ? (
+                      <div className="shrink-0">{leadColumn.render?.(row)}</div>
+                    ) : null}
+
+                    <div className="min-w-0 flex-1">
+                      {titleColumn
+                        ? titleColumn.render
+                          ? titleColumn.render(row)
+                          : String(row[titleColumn.key] ?? "—")
+                        : null}
+
+                      {detailColumns.length > 0 ? (
+                        <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2">
+                          {detailColumns.map((c) => (
+                            <div key={c.key} className="min-w-0">
+                              <dt className="text-[10px] font-bold uppercase tracking-wider text-muted">
+                                {c.label}
+                              </dt>
+                              <dd className="mt-0.5 text-[13px] text-ink-soft">
+                                {c.render ? c.render(row) : String(row[c.key] ?? "—")}
+                              </dd>
+                            </div>
+                          ))}
+                        </dl>
+                      ) : null}
+                    </div>
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-2 border-t border-line pt-3">
+                    {"is_active" in row ? (
+                      <button
+                        onClick={() => toggleActive(row)}
+                        className={cn(
+                          "rounded-lg px-3 py-2 text-[12px] font-semibold transition",
+                          row.is_active
+                            ? "bg-emerald-50 text-emerald-700"
+                            : "bg-blush-100 text-muted"
+                        )}
+                      >
+                        {row.is_active ? "Live" : "Hidden"}
+                      </button>
+                    ) : null}
+
+                    <button
+                      onClick={() => openEdit(row)}
+                      className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-[12px] font-semibold text-ink-soft transition hover:border-gold-300 hover:text-gold-700"
+                    >
+                      <Pencil className="h-3.5 w-3.5" aria-hidden="true" />
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => setDeleteTarget(row)}
+                      aria-label="Delete"
+                      className="rounded-lg border border-line p-2 text-ink-soft transition hover:border-red-300 hover:text-red-600"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* ---------- tablet and up: full table ---------- */}
+            <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[42rem] text-sm">
               <thead>
                 <tr className="border-b border-line text-left">
@@ -386,7 +467,8 @@ export function ResourceManager({
                 ))}
               </tbody>
             </table>
-          </div>
+            </div>
+          </>
         )}
       </Card>
 

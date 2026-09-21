@@ -172,7 +172,65 @@ export function InboxTable({
             description="New submissions from your website will appear on this page."
           />
         ) : (
-          <div className="overflow-x-auto">
+          <>
+            {/* ---------- phone: one card per submission ---------- */}
+            <ul className="divide-y divide-line md:hidden">
+              {visible.map((row) => (
+                <li key={row.id} className="p-4">
+                  {columns[0] ? (
+                    <div className="mb-3">
+                      {columns[0].render
+                        ? columns[0].render(row)
+                        : String(row[columns[0].key] ?? "—")}
+                    </div>
+                  ) : null}
+
+                  <dl className="space-y-2.5">
+                    {columns.slice(1).map((c) => (
+                      <div key={c.key}>
+                        <dt className="text-[10px] font-bold uppercase tracking-wider text-muted">
+                          {c.label}
+                        </dt>
+                        <dd className="mt-0.5 text-[13px] text-ink-soft">
+                          {c.render ? c.render(row) : String(row[c.key] ?? "—")}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+
+                  <div className="mt-4 flex items-center gap-2 border-t border-line pt-3">
+                    {statuses ? (
+                      <select
+                        value={row.status}
+                        onChange={(e) => updateStatus(row, e.target.value)}
+                        aria-label="Change status"
+                        className="h-10 flex-1 cursor-pointer rounded-lg border border-line bg-cream px-3 text-[13px] capitalize outline-none transition focus:border-gold-400"
+                      >
+                        {statuses.map((s) => (
+                          <option key={s} value={s}>
+                            {s}
+                          </option>
+                        ))}
+                      </select>
+                    ) : null}
+
+                    <button
+                      onClick={() => setDeleteTarget(row)}
+                      aria-label="Delete"
+                      className={cn(
+                        "rounded-lg border border-line p-2.5 text-ink-soft transition hover:border-red-300 hover:text-red-600",
+                        !statuses && "ml-auto"
+                      )}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+
+            {/* ---------- tablet and up: full table ---------- */}
+            <div className="hidden overflow-x-auto md:block">
             <table className="w-full min-w-[46rem] text-sm">
               <thead>
                 <tr className="border-b border-line text-left">
@@ -241,7 +299,8 @@ export function InboxTable({
                 ))}
               </tbody>
             </table>
-          </div>
+            </div>
+          </>
         )}
       </Card>
 
