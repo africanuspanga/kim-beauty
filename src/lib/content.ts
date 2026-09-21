@@ -44,9 +44,25 @@ export const CONTENT_DEFAULTS: Record<string, Json> = {
     hours_weekday: "Mon – Fri · 8:00 AM – 8:00 PM",
     hours_saturday: "Saturday · 8:00 AM – 9:00 PM",
     hours_sunday: "Sunday · 10:00 AM – 6:00 PM",
-    instagram: "https://instagram.com/kimbeautysalons",
-    facebook: "https://facebook.com/kimbeautysalons",
-    tiktok: "https://tiktok.com/@kimbeautysalons",
+    instagram: "https://www.instagram.com/kim_beauty_salons",
+    tiktok: "https://www.tiktok.com/@kimbeautysaloons",
+    facebook: "https://www.facebook.com/profile.php?id=61594282689600",
+    facebook_profile: "https://www.facebook.com/profile.php?id=61594686741887",
+    youtube: "https://youtube.com/@kimbeautysalons",
+    x: "https://x.com/kimbeautysalons",
+    pinterest: "https://pin.it/6Xs5oO9fN",
+    threads: "https://www.threads.com/@kim_beauty_salons",
+    likee: "",
+    linktree: "https://linktr.ee/kimbeautysalons",
+  },
+  payments: {
+    title: "Ways To Pay",
+    description:
+      "Pay for your order or leave a deposit securely online — card, mobile money and bank transfer all supported. Prefer to pay in the salon? Just send your order on WhatsApp.",
+    pesapal_url: "https://payments.pesapal.com/kim-tours",
+    dpo_url:
+      "https://shop.directpay.online/paymybills/KIMZEBRAADVENTURESANDSAFARISLIMITED",
+    paypal_url: "",
   },
   footer: {
     tagline:

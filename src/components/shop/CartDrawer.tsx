@@ -3,14 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Minus, Plus, ShieldCheck, ShoppingBag, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
 import { Button } from "@/components/ui/Button";
+import type { PaymentLink } from "@/lib/social";
 import { formatPrice } from "@/lib/utils";
 import { buildOrderMessage, waLink } from "@/lib/whatsapp";
 import { getSupabase } from "@/lib/supabase/client";
 
-export function CartDrawer() {
+export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
   const { items, total, isOpen, closeCart, setQuantity, removeItem, clear } =
     useCart();
   const [name, setName] = useState("");
@@ -230,6 +231,33 @@ export function CartDrawer() {
               <p className="text-center text-[11px] leading-relaxed text-muted">
                 Your order opens in WhatsApp — we confirm stock and delivery there.
               </p>
+
+              {payments.length > 0 ? (
+                <div className="border-t border-line pt-3">
+                  <p className="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
+                    <ShieldCheck className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
+                    Or pay online now
+                  </p>
+                  <div className="mt-2.5 grid gap-2">
+                    {payments.map((p) => (
+                      <a
+                        key={p.label}
+                        href={p.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={p.description}
+                        className="flex h-11 items-center justify-center rounded-xl border border-line bg-white text-sm font-medium text-ink transition hover:border-gold-300 hover:text-gold-700"
+                      >
+                        Pay with {p.label}
+                      </a>
+                    ))}
+                  </div>
+                  <p className="mt-2 text-center text-[11px] leading-relaxed text-muted">
+                    Paid already? Send the order on WhatsApp with your payment
+                    reference so we can match it.
+                  </p>
+                </div>
+              ) : null}
             </footer>
           </>
         )}

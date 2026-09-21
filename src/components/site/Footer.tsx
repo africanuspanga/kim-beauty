@@ -1,13 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TikTokIcon,
-} from "@/components/ui/SocialIcons";
+import { Clock, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import type { ContentMap } from "@/lib/content";
 import { pick } from "@/lib/content";
+import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 const SERVICE_LINKS = [
@@ -35,11 +31,8 @@ export function Footer({ content }: { content: ContentMap }) {
   const logoUrl = pick(content, "branding", "logo_url", "/images/logo.png");
   const year = new Date().getFullYear();
 
-  const socials = [
-    { href: pick(content, "contact", "instagram"), Icon: InstagramIcon, label: "Instagram" },
-    { href: pick(content, "contact", "facebook"), Icon: FacebookIcon, label: "Facebook" },
-    { href: pick(content, "contact", "tiktok"), Icon: TikTokIcon, label: "TikTok" },
-  ].filter((s) => s.href);
+  const socials = getSocialLinks(content);
+  const payments = getPaymentLinks(content);
 
   return (
     <footer className="relative overflow-hidden bg-ink text-cream/80">
@@ -70,7 +63,7 @@ export function Footer({ content }: { content: ContentMap }) {
             </p>
 
             {socials.length > 0 ? (
-              <div className="mt-6 flex items-center gap-2.5">
+              <div className="mt-6 flex flex-wrap items-center gap-2.5">
                 {socials.map(({ href, Icon, label }) => (
                   <a
                     key={label}
@@ -168,7 +161,29 @@ export function Footer({ content }: { content: ContentMap }) {
           </div>
         </div>
 
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 text-xs text-cream/45 sm:flex-row">
+        {payments.length > 0 ? (
+          <div className="mt-14 flex flex-col gap-4 rounded-3xl border border-cream/10 bg-cream/[0.03] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
+            <p className="flex items-center gap-2.5 text-sm text-cream/60">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-gold-400" aria-hidden="true" />
+              Secure online payments
+            </p>
+            <div className="flex flex-wrap items-center gap-2.5">
+              {payments.map((p) => (
+                <a
+                  key={p.label}
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full border border-cream/15 px-4 py-2 text-xs font-medium text-cream/70 transition hover:border-gold-400 hover:bg-gold-500 hover:text-white"
+                >
+                  Pay with {p.label}
+                </a>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 text-xs text-cream/45 sm:flex-row">
           <p>
             © {year} {pick(content, "footer", "copyright")}
           </p>
