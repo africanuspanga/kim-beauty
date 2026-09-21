@@ -1,14 +1,10 @@
 import type { Metadata } from "next";
-import { Clock, Mail, MapPin, MessageCircle, Phone } from "lucide-react";
+import { Clock, Mail, MapPin, MessageCircle, Phone, ShieldCheck } from "lucide-react";
 import { PageHero } from "@/components/site/PageHero";
 import { ContactForm } from "@/components/site/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TikTokIcon,
-} from "@/components/ui/SocialIcons";
 import { getSiteContent, pick } from "@/lib/content";
+import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
@@ -28,11 +24,8 @@ export default async function ContactPage() {
   const whatsapp = pick(content, "contact", "whatsapp");
   const mapQuery = pick(content, "contact", "map_query", address);
 
-  const socials = [
-    { href: pick(content, "contact", "instagram"), Icon: InstagramIcon, label: "Instagram" },
-    { href: pick(content, "contact", "facebook"), Icon: FacebookIcon, label: "Facebook" },
-    { href: pick(content, "contact", "tiktok"), Icon: TikTokIcon, label: "TikTok" },
-  ].filter((s) => s.href);
+  const socials = getSocialLinks(content);
+  const payments = getPaymentLinks(content);
 
   const cards = [
     {
@@ -136,7 +129,7 @@ export default async function ContactPage() {
                   <p className="mt-2 text-[14px] text-muted">
                     See our latest work on social.
                   </p>
-                  <div className="mt-5 flex gap-2.5">
+                  <div className="mt-5 flex flex-wrap gap-2.5">
                     {socials.map(({ href, Icon, label }) => (
                       <a
                         key={label}
@@ -144,12 +137,49 @@ export default async function ContactPage() {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={label}
+                        title={label}
                         className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-soft transition hover:border-transparent hover:bg-gold-gradient hover:text-white"
                       >
                         <Icon className="h-[18px] w-[18px]" />
                       </a>
                     ))}
                   </div>
+                </div>
+              ) : null}
+
+              {payments.length > 0 ? (
+                <div className="rounded-3xl border border-line bg-cream p-7">
+                  <h2 className="flex items-center gap-2.5 text-xl">
+                    <ShieldCheck className="h-5 w-5 text-gold-600" aria-hidden="true" />
+                    {pick(content, "payments", "title", "Ways To Pay")}
+                  </h2>
+                  <p className="mt-2 text-[14px] leading-relaxed text-muted">
+                    {pick(content, "payments", "description")}
+                  </p>
+                  <ul className="mt-5 space-y-2.5">
+                    {payments.map((p) => (
+                      <li key={p.label}>
+                        <a
+                          href={p.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-white px-4 py-3 transition hover:border-gold-300 hover:shadow-soft"
+                        >
+                          <span>
+                            <span className="block text-[14px] font-semibold text-ink">
+                              {p.label}
+                            </span>
+                            <span className="block text-[12px] text-muted">
+                              {p.description}
+                            </span>
+                          </span>
+                          <span className="shrink-0 text-[13px] font-semibold text-gold-600">
+                            Pay now
+                          </span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ) : null}
 

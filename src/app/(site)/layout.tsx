@@ -4,6 +4,7 @@ import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { CartProvider } from "@/components/shop/CartProvider";
 import { CartDrawer } from "@/components/shop/CartDrawer";
 import { getSiteContent, pick } from "@/lib/content";
+import { getPaymentLinks } from "@/lib/social";
 
 export const dynamic = "force-dynamic";
 
@@ -23,13 +24,14 @@ export default async function SiteLayout({
     "whatsapp_prefill",
     "I am coming from Kim Beauty website"
   );
+  const payments = getPaymentLinks(content);
 
   return (
     <CartProvider>
       <Header logoUrl={logoUrl} phone={phone} />
       <main className="min-h-screen">{children}</main>
       <Footer content={content} />
-      <CartDrawer />
+      <CartDrawer payments={payments} />
       <WhatsAppButton phone={whatsapp} message={prefill} />
     </CartProvider>
   );
