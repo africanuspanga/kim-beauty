@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { BookingForm } from "@/components/booking/BookingForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { getServices, getSiteContent, pick } from "@/lib/content";
+import { absoluteUrl } from "@/lib/seo";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +13,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Book an Appointment",
   description:
-    "Reserve your chair at Kim Beauty, Pangani Street Arusha. Pick your service, date and time — we confirm on WhatsApp.",
+    "Reserve your chair at Kim Beauty, Pangani Street Arusha. Pick your service and the exact style you want, choose a date and time — we confirm on WhatsApp.",
+  alternates: { canonical: absoluteUrl("/booking") },
+  openGraph: {
+    title: "Book an Appointment — Kim Beauty Arusha",
+    description:
+      "Pick your service and style, choose a date and time. We confirm on WhatsApp.",
+    url: absoluteUrl("/booking"),
+  },
 };
 
 const STEPS = [

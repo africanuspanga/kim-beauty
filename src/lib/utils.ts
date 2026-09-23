@@ -38,3 +38,30 @@ export function slugify(input: string) {
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-");
 }
+
+/**
+ * How a service option's price reads on the site.
+ * A ranged price becomes "TZS 35,000 – 50,000"; no price at all becomes
+ * "Price on request", so an unpriced style still books cleanly.
+ */
+export function formatPriceRange(
+  from?: number | null,
+  to?: number | null,
+  currency = "TZS"
+) {
+  if (from == null && to == null) return "Price on request";
+  if (from == null) return formatPrice(to!, currency);
+  if (to == null || to <= from) return formatPrice(from, currency);
+  return `${formatPrice(from, currency)} – ${Math.round(to).toLocaleString("en-US")}`;
+}
+
+/** The label shown on a service option card. */
+export function optionPriceLabel(option: {
+  price?: number | null;
+  price_max?: number | null;
+  price_label?: string | null;
+}) {
+  return option.price_label?.trim()
+    ? option.price_label
+    : formatPriceRange(option.price, option.price_max);
+}

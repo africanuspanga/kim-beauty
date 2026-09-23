@@ -16,6 +16,7 @@ import {
   MessageSquareQuote,
   Package,
   ShoppingCart,
+  ListTree,
   Sparkles,
   Tags,
   X,
@@ -26,7 +27,8 @@ import { cn } from "@/lib/utils";
 const NAV = [
   { href: "/admin", label: "Dashboard", Icon: LayoutDashboard, exact: true },
   { href: "/admin/content", label: "Site Content", Icon: FileText },
-  { href: "/admin/services", label: "Services", Icon: Sparkles },
+  { href: "/admin/services", label: "Services", Icon: Sparkles, exact: true },
+  { href: "/admin/service-options", label: "Service Menu", Icon: ListTree },
   { href: "/admin/products", label: "Products", Icon: Package },
   { href: "/admin/categories", label: "Categories", Icon: Tags },
   { href: "/admin/testimonials", label: "Testimonials", Icon: MessageSquareQuote },

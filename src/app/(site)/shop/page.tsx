@@ -4,6 +4,7 @@ import { CtaSection } from "@/components/home/CtaSection";
 import { ShopBrowser } from "@/components/shop/ShopBrowser";
 import { Reveal } from "@/components/ui/Reveal";
 import { getCategories, getProducts, getSiteContent, pick } from "@/lib/content";
+import { JsonLd, absoluteUrl, productSchema } from "@/lib/seo";
 import { MessageCircle, ShieldCheck, Truck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +12,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Shop",
   description:
-    "Shop Kim Beauty hair products, the Kim Collection of wigs, lashes, nail care and more. Order straight to our WhatsApp.",
+    "Shop Kim Beauty hair products, the Kim Collection of wigs, lashes, nail care and more. Delivery across Arusha, order straight to our WhatsApp.",
+  alternates: { canonical: absoluteUrl("/shop") },
+  openGraph: {
+    title: "Kim Beauty Shop — Hair, Wigs & Beauty Essentials in Arusha",
+    description:
+      "Salon-tested hair products, wigs, lashes and nail care. Delivered across Arusha.",
+    url: absoluteUrl("/shop"),
+  },
 };
 
 const PERKS = [
@@ -41,6 +49,21 @@ export default async function ShopPage() {
 
   return (
     <>
+      <JsonLd
+        data={[
+          {
+            "@context": "https://schema.org",
+            "@type": "ItemList",
+            name: "Kim Beauty Shop",
+            itemListElement: products.slice(0, 40).map((product, i) => ({
+              "@type": "ListItem",
+              position: i + 1,
+              item: productSchema(product),
+            })),
+          },
+        ]}
+      />
+
       <PageHero
         breadcrumb="Shop"
         eyebrow={pick(content, "shop_page", "eyebrow", "Kim Shop")}

@@ -38,7 +38,7 @@ export function ServicesSection({
           {services.slice(0, 6).map((service, i) => (
             <Reveal key={service.id} delay={i * 70} as="article">
               <Link
-                href={`/services#${service.slug}`}
+                href={`/services/${service.slug}`}
                 className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-cream transition-all duration-400 hover:-translate-y-1.5 hover:border-gold-200 hover:shadow-lift"
               >
                 <div className="relative aspect-[5/4] overflow-hidden">
@@ -88,11 +88,16 @@ export function ServicesSection({
                     {service.description}
                   </p>
 
-                  {service.duration ? (
-                    <p className="mt-4 border-t border-line pt-3 text-[12px] font-medium uppercase tracking-wider text-muted">
-                      {service.duration}
-                    </p>
-                  ) : null}
+                  <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3 text-[12px] font-medium uppercase tracking-wider text-muted">
+                    {service.service_options?.length ? (
+                      <span className="text-gold-700">
+                        {service.service_options.length} styles
+                      </span>
+                    ) : (
+                      <span />
+                    )}
+                    {service.duration ? <span>{service.duration}</span> : null}
+                  </div>
                 </div>
               </Link>
             </Reveal>

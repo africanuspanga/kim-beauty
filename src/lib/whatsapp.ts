@@ -15,6 +15,10 @@ export type BookingPayload = {
   phone: string;
   email?: string;
   serviceName: string;
+  /** The style picked inside the service, e.g. "Miracle Knotless". */
+  optionName?: string;
+  /** How that style is priced, e.g. "TZS 35,000 – 50,000". */
+  optionPrice?: string;
   date: string;
   time: string;
   stylist?: string;
@@ -32,6 +36,8 @@ export function buildBookingMessage(b: BookingPayload) {
     `*Phone:* ${b.phone}`,
     b.email ? `*Email:* ${b.email}` : null,
     `*Service:* ${b.serviceName}`,
+    b.optionName ? `*Style / Option:* ${b.optionName}` : null,
+    b.optionPrice ? `*Price:* ${b.optionPrice}` : null,
     `*Date:* ${b.date}`,
     `*Time:* ${b.time}`,
     b.stylist ? `*Stylist:* ${b.stylist}` : null,
@@ -79,7 +85,7 @@ export function buildOrderMessage(o: OrderPayload) {
     `*Total: ${money(o.total)}*`,
     o.note ? `\n*Note:* ${o.note}` : null,
     "",
-    "Please confirm availability and delivery. Thank you!",
+    "Please confirm availability and the next step. Thank you!",
   ].filter(Boolean);
 
   return lines.join("\n");
