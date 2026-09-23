@@ -9,12 +9,17 @@ export function PageHero({
   description,
   image,
   breadcrumb,
+  parent,
+  children,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   image?: string;
   breadcrumb: string;
+  /** Adds a middle crumb, e.g. Home › Services › Braiding Hair. */
+  parent?: { label: string; href: string };
+  children?: React.ReactNode;
 }) {
   return (
     <section className="relative overflow-hidden pt-28 pb-12 md:pt-36 md:pb-16">
@@ -38,6 +43,18 @@ export function PageHero({
             <li aria-hidden="true">
               <ChevronRight className="h-3.5 w-3.5" />
             </li>
+            {parent ? (
+              <>
+                <li>
+                  <Link href={parent.href} className="transition hover:text-gold-600">
+                    {parent.label}
+                  </Link>
+                </li>
+                <li aria-hidden="true">
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </li>
+              </>
+            ) : null}
             <li className="font-medium text-gold-700">{breadcrumb}</li>
           </ol>
         </nav>
@@ -53,6 +70,7 @@ export function PageHero({
                 {description}
               </p>
             ) : null}
+            {children}
           </div>
 
           {image ? (

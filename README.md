@@ -56,7 +56,8 @@ That is everything the app reads at runtime. Optionally add:
 
 | Variable | Why |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | `https://yourdomain.com` — makes social share previews use absolute URLs |
+| `NEXT_PUBLIC_SITE_URL` | `https://www.kimbeauty.store` — canonical URLs, `sitemap.xml`, `robots.txt` and every structured-data block are built from this. Set it in production. |
+| `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` | the token from Google Search Console → *verify by HTML tag* |
 | `NEXT_PUBLIC_ADMIN_EMAIL` | prefills the email box on `/admin/login` |
 
 **Never set in Vercel:** `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_DB_PASSWORD`, `SUPABASE_DB_URL` or
@@ -89,7 +90,8 @@ What you can manage:
 |---|---|
 | **Dashboard** | Booking / order / message counts and latest activity |
 | **Site Content** | Every headline, paragraph, button label, image and contact detail on the public site |
-| **Services** | The services page and the homepage services grid |
+| **Services** | The service *categories* — Braiding Hair, Lashes, Make Up, Kim Academy… |
+| **Service Menu** | The *styles inside* each category — Miracle Knotless, Soft Glam, Classic Lashes — each with its own photo/video, time and price |
 | **Products** | Everything in the shop and cart |
 | **Categories** | The shop's filter chips |
 | **Testimonials** | The scrolling Google-style review cards |
@@ -132,14 +134,66 @@ The WhatsApp number is editable in **Admin → Site Content → Contact Details*
 
 ---
 
+## How the service menu works
+
+A service on its own does not tell a client enough. *"Braiding Hair — TZS 40,000"* leaves
+her guessing, and leaves us answering the same questions on WhatsApp every day.
+
+So a service is a **category**, and what she actually books is a **style inside it**:
+
+```
+Braiding Hair            ← services            (Admin → Services)
+├── Extra-Small Knotless ← service_options     (Admin → Service Menu)
+├── Small Size Knotless
+├── Miracle Knotless
+└── French Curl Braids
+```
+
+Every style carries its own photo (or video), description, duration and price, and appears on
+its own service page at `/services/<service-slug>`. From there a client can:
+
+- **Book This Style** — lands on `/booking` with the service *and* the style already chosen,
+  and both are recorded on the booking and written into the WhatsApp message
+- **Add to Cart** — pays for that exact style online, alongside shop products
+
+A style with no price set shows **"Price on request"** and hides its cart button, so an
+unpriced style still books cleanly. Fill the price in at **Admin → Service Menu** and the
+button appears by itself.
+
+Use **Group Heading** when a category needs internal structure — Lashes, for example, splits
+into *Strip Lashes* and *Lash Extensions*. Styles sharing a heading are shown together under it.
+
+---
+
+## SEO
+
+| | |
+|---|---|
+| `sitemap.xml` | generated per request from the live services list |
+| `robots.txt` | allows everything except `/admin` |
+| Canonical URLs | every page, built from `NEXT_PUBLIC_SITE_URL` |
+| Structured data | `BeautySalon` (address, hours, phone, socials, service catalog), `WebSite`, `BreadcrumbList`, `Service` + `OfferCatalog` per service page, `Product` per shop item |
+| Per-service pages | `/services/braiding-hair`, `/services/lashes`, … so each service ranks on its own terms |
+
+Each service page's structured data lists every style with its real price, which is what lets
+"knotless braids Arusha price" match a page that actually answers the question.
+
+After deploying, submit `https://www.kimbeauty.store/sitemap.xml` in
+[Google Search Console](https://search.google.com/search-console) and validate a service page
+with the [Rich Results Test](https://search.google.com/test/rich-results).
+
+---
+
 ## Database
 
-Migrations are in `supabase/migrations/`, sample content in `supabase/seed.sql`.
+Migrations are in `supabase/migrations/`, sample content in `supabase/seed.sql`,
+`supabase/seed_bundles.sql` and `supabase/seed_service_options.sql`.
 
 ```
 admin_users         who may edit the site
 site_content        all editable copy, as key/value JSON
-services            service menu
+services            service categories
+service_options     the styles inside each category, with their own price
 product_categories  shop categories
 products            shop items
 testimonials        review cards
@@ -156,6 +210,12 @@ supabase link --project-ref <your-project-ref>
 supabase db push
 ```
 
+Seed files are not run by `db push` — paste them into the Supabase SQL editor, or:
+
+```bash
+psql "$SUPABASE_DB_URL" -f supabase/seed_service_options.sql
+```
+
 ### Security model
 
 Row Level Security is on for every table:
@@ -164,7 +224,7 @@ Row Level Security is on for every table:
 - **Anyone** can submit a booking, order or contact message — but cannot read any of them back.
 - **Only `admin_users`** can create, edit or delete anything.
 
-Bookings and orders are created through the `create_booking` / `create_order` Postgres functions, which return only the generated reference. `create_order` re-prices the cart from the `products` table, so a tampered client price cannot change what gets recorded.
+Bookings and orders are created through the `create_booking` / `create_order` Postgres functions, which return only the generated reference. `create_order` re-prices the cart from the `products` and `service_options` tables, so a tampered client price cannot change what gets recorded.
 
 ---
 

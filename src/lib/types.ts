@@ -7,6 +7,34 @@ export type SiteContent = {
   updated_at: string;
 };
 
+/**
+ * A style inside a service — "Miracle Knotless" inside "Braiding Hair".
+ * This is what a client actually books and pays for.
+ */
+export type ServiceOption = {
+  id: string;
+  service_id: string;
+  name: string;
+  slug: string;
+  /** Optional heading that clusters options, e.g. "Bridal Makeup". */
+  group_label: string | null;
+  description: string | null;
+  /** The "from" price — also what the cart charges. */
+  price: number | null;
+  /** Upper bound for ranged prices (35,000 – 50,000). */
+  price_max: number | null;
+  /** Overrides the generated price label when set. */
+  price_label: string | null;
+  duration: string | null;
+  image_url: string | null;
+  video_url: string | null;
+  highlights: string[];
+  is_featured: boolean;
+  is_active: boolean;
+  sort_order: number;
+  services?: { title: string; slug: string } | null;
+};
+
 export type Service = {
   id: string;
   title: string;
@@ -22,6 +50,7 @@ export type Service = {
   is_featured: boolean;
   is_active: boolean;
   sort_order: number;
+  service_options?: ServiceOption[];
 };
 
 export type ProductCategory = {
@@ -80,6 +109,8 @@ export type Booking = {
   email: string | null;
   service_id: string | null;
   service_name: string | null;
+  service_option_id: string | null;
+  service_option_name: string | null;
   preferred_date: string;
   preferred_time: string;
   stylist: string | null;

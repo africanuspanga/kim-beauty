@@ -7,6 +7,7 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getGallery, getSiteContent, getTestimonials, pick } from "@/lib/content";
+import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,13 @@ export const metadata: Metadata = {
   title: "About Us",
   description:
     "Kim Beauty is a modern beauty studio on Pangani Street, Arusha — master braiders, lash artists, makeup pros and spa therapists under one roof.",
+  alternates: { canonical: absoluteUrl("/about") },
+  openGraph: {
+    title: "About Kim Beauty — Arusha",
+    description:
+      "Master braiders, lash artists, makeup pros and spa therapists under one roof on Pangani Street, Arusha.",
+    url: absoluteUrl("/about"),
+  },
 };
 
 const VALUE_ICONS = [Sparkles, Award, Heart, Target];

@@ -95,18 +95,41 @@ export function pick(
   return content?.[section]?.[field] ?? CONTENT_DEFAULTS[section]?.[field] ?? fallback;
 }
 
+/**
+ * Services, each with the styles bookable inside it.
+ *
+ * RLS already hides inactive options from the public key, so the nested
+ * select needs no extra filter — it only needs its own sort order.
+ */
+const SERVICE_SELECT = "*, service_options(*)";
+
 export async function getServices(onlyFeatured = false): Promise<Service[]> {
   const supabase = createServerClient();
   let query = supabase
     .from("services")
-    .select("*")
+    .select(SERVICE_SELECT)
     .eq("is_active", true)
-    .order("sort_order", { ascending: true });
+    .order("sort_order", { ascending: true })
+    .order("sort_order", { referencedTable: "service_options", ascending: true });
 
   if (onlyFeatured) query = query.eq("is_featured", true);
 
   const { data } = await query;
   return (data ?? []) as Service[];
+}
+
+/** One service and its styles, for /services/[slug]. */
+export async function getServiceBySlug(slug: string): Promise<Service | null> {
+  const supabase = createServerClient();
+  const { data } = await supabase
+    .from("services")
+    .select(SERVICE_SELECT)
+    .eq("slug", slug)
+    .eq("is_active", true)
+    .order("sort_order", { referencedTable: "service_options", ascending: true })
+    .maybeSingle();
+
+  return (data as Service | null) ?? null;
 }
 
 export async function getProducts(onlyFeatured = false): Promise<Product[]> {

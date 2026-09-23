@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { getSupabase } from "@/lib/supabase/client";
 import { buildBookingMessage, waLink } from "@/lib/whatsapp";
-import type { Service } from "@/lib/types";
+import { optionPriceLabel } from "@/lib/utils";
+import type { Service, ServiceOption } from "@/lib/types";
 
 const TIME_SLOTS = [
   "08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM",
@@ -31,11 +33,13 @@ export function BookingForm({
 }) {
   const searchParams = useSearchParams();
   const preselected = searchParams.get("service") ?? "";
+  const preselectedOption = searchParams.get("option") ?? "";
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [serviceName, setServiceName] = useState(preselected);
+  const [optionName, setOptionName] = useState(preselectedOption);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [stylist, setStylist] = useState("");
@@ -43,6 +47,28 @@ export function BookingForm({
 
   const [status, setStatus] = useState<"idle" | "sending" | "done">("idle");
   const [error, setError] = useState<string | null>(null);
+
+  const selectedService = services.find((s) => s.title === serviceName);
+  const options: ServiceOption[] = selectedService?.service_options ?? [];
+  const selectedOption = options.find((o) => o.name === optionName);
+
+  // The styles inside a service, kept in their admin order but split
+  // under their headings so the dropdown reads like the services page.
+  const optionGroups = options.reduce<
+    { label: string | null; items: ServiceOption[] }[]
+  >((groups, option) => {
+    const label = option.group_label?.trim() || null;
+    const last = groups[groups.length - 1];
+    if (last && last.label === label) last.items.push(option);
+    else groups.push({ label, items: [option] });
+    return groups;
+  }, []);
+
+  function handleServiceChange(next: string) {
+    setServiceName(next);
+    // a style from the old service would be meaningless under the new one
+    setOptionName("");
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -53,9 +79,14 @@ export function BookingForm({
       return;
     }
 
+    if (options.length > 0 && !optionName) {
+      setError(`Please choose which ${serviceName.toLowerCase()} style you want.`);
+      return;
+    }
+
     setStatus("sending");
 
-    const matched = services.find((s) => s.title === serviceName);
+    const matched = selectedService;
     let reference: string | undefined;
 
     // Save the booking — never block the WhatsApp handoff if this fails.
@@ -69,6 +100,8 @@ export function BookingForm({
         p_preferred_time: time,
         p_email: email.trim() || null,
         p_service_id: matched?.id ?? null,
+        p_service_option_id: selectedOption?.id ?? null,
+        p_service_option_name: optionName || null,
         p_stylist: stylist.trim() || null,
         p_notes: notes.trim() || null,
       });
@@ -84,6 +117,8 @@ export function BookingForm({
         phone: phone.trim(),
         email: email.trim() || undefined,
         serviceName,
+        optionName: optionName || undefined,
+        optionPrice: selectedOption ? optionPriceLabel(selectedOption) : undefined,
         date,
         time,
         stylist: stylist.trim() || undefined,
@@ -116,6 +151,7 @@ export function BookingForm({
             setPhone("");
             setEmail("");
             setServiceName("");
+            setOptionName("");
             setDate("");
             setTime("");
             setStylist("");
@@ -184,7 +220,7 @@ export function BookingForm({
           <select
             id="service"
             value={serviceName}
-            onChange={(e) => setServiceName(e.target.value)}
+            onChange={(e) => handleServiceChange(e.target.value)}
             required
             className={`${fieldCls} cursor-pointer`}
           >
@@ -197,6 +233,64 @@ export function BookingForm({
             ))}
           </select>
         </div>
+
+        {/* Which style inside that service — the detail that stops us
+            having to ask "which braids?" on WhatsApp every time. */}
+        {options.length > 0 ? (
+          <div className="sm:col-span-2">
+            <label htmlFor="serviceOption" className={labelCls}>
+              Style / Option <span className="text-gold-600">*</span>
+            </label>
+            <select
+              id="serviceOption"
+              value={optionName}
+              onChange={(e) => setOptionName(e.target.value)}
+              required
+              className={`${fieldCls} cursor-pointer`}
+            >
+              <option value="">Choose a style…</option>
+              {optionGroups.map((group) =>
+                group.label ? (
+                  <optgroup key={group.label} label={group.label}>
+                    {group.items.map((o) => (
+                      <option key={o.id} value={o.name}>
+                        {o.name} — {optionPriceLabel(o)}
+                      </option>
+                    ))}
+                  </optgroup>
+                ) : (
+                  group.items.map((o) => (
+                    <option key={o.id} value={o.name}>
+                      {o.name} — {optionPriceLabel(o)}
+                    </option>
+                  ))
+                )
+              )}
+            </select>
+            <p className="mt-2 text-[12px] leading-relaxed text-muted">
+              {selectedOption ? (
+                <>
+                  <span className="font-semibold text-gold-700">
+                    {optionPriceLabel(selectedOption)}
+                  </span>
+                  {selectedOption.duration ? ` · about ${selectedOption.duration}` : ""}
+                  {selectedOption.description ? ` — ${selectedOption.description}` : ""}
+                </>
+              ) : (
+                <>
+                  Not sure which one? Pick the closest and add a note below — we
+                  will advise on WhatsApp.{" "}
+                  <Link
+                    href={`/services/${selectedService?.slug ?? ""}`}
+                    className="font-semibold text-gold-700 underline underline-offset-2"
+                  >
+                    See photos and prices
+                  </Link>
+                </>
+              )}
+            </p>
+          </div>
+        ) : null}
 
         <div>
           <label htmlFor="date" className={labelCls}>

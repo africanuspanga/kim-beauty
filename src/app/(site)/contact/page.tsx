@@ -4,6 +4,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { ContactForm } from "@/components/site/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { getSiteContent, pick } from "@/lib/content";
+import { absoluteUrl } from "@/lib/seo";
 import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
@@ -12,7 +13,14 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Call, WhatsApp, email or visit Kim Beauty on Pangani Street, Arusha, Tanzania.",
+    "Call, WhatsApp, email or visit Kim Beauty on Pangani Street, Arusha, Tanzania. Open Monday to Sunday.",
+  alternates: { canonical: absoluteUrl("/contact") },
+  openGraph: {
+    title: "Contact Kim Beauty — Pangani Street, Arusha",
+    description:
+      "Call, WhatsApp, email or visit us on Pangani Street, Arusha, Tanzania.",
+    url: absoluteUrl("/contact"),
+  },
 };
 
 export default async function ContactPage() {

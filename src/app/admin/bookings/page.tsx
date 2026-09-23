@@ -11,7 +11,7 @@ export default function AdminBookingsPage() {
       title="Bookings"
       description="Every appointment request sent from your website."
       statuses={["new", "confirmed", "completed", "cancelled"]}
-      searchKeys={["full_name", "phone", "service_name", "reference"]}
+      searchKeys={["full_name", "phone", "service_name", "service_option_name", "reference"]}
       columns={[
         {
           key: "full_name",
@@ -21,7 +21,9 @@ export default function AdminBookingsPage() {
               <p className="font-medium text-ink">{r.full_name}</p>
               <a
                 href={waLink(
-                  `Hi ${r.full_name}, this is Kim Beauty about your ${r.service_name ?? "appointment"} booking (${r.reference}).`,
+                  `Hi ${r.full_name}, this is Kim Beauty about your ${
+                    r.service_option_name || r.service_name || "appointment"
+                  } booking (${r.reference}).`,
                   r.phone
                 )}
                 target="_blank"
@@ -42,6 +44,11 @@ export default function AdminBookingsPage() {
           render: (r) => (
             <div>
               <p className="text-ink">{r.service_name || "—"}</p>
+              {r.service_option_name ? (
+                <p className="text-[12px] font-semibold text-gold-700">
+                  {r.service_option_name}
+                </p>
+              ) : null}
               <p className="text-[12px] text-muted">{r.reference}</p>
             </div>
           ),

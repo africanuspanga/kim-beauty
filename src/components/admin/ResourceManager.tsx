@@ -43,6 +43,8 @@ export type FieldDef = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Row = Record<string, any>;
 
+export type OrderBy = { column: string; ascending: boolean };
+
 export type ColumnDef = {
   key: string;
   label: string;
@@ -62,7 +64,7 @@ export function ResourceManager({
   columns,
   defaults,
   select = "*",
-  orderBy = { column: "sort_order", ascending: true },
+  orderBy = [{ column: "sort_order", ascending: true }],
   searchKeys = ["name", "title"],
 }: {
   table: string;
@@ -73,7 +75,9 @@ export function ResourceManager({
   columns: ColumnDef[];
   defaults: Row;
   select?: string;
-  orderBy?: { column: string; ascending: boolean };
+  /** One clause, or several applied in order — e.g. service, then position. */
+  orderBy?: OrderBy | OrderBy[];
+  /** Row keys to match against; dotted paths reach into joined rows. */
   searchKeys?: string[];
 }) {
   const [rows, setRows] = useState<Row[]>([]);
@@ -96,17 +100,26 @@ export function ResourceManager({
     Record<string, { value: string; label: string }[]>
   >({});
 
+  // Serialised so the callback identity only changes when the clauses do.
+  const orderKey = JSON.stringify(
+    Array.isArray(orderBy) ? orderBy : [orderBy]
+  );
+
   const load = useCallback(async () => {
     const supabase = getSupabase();
-    const { data, error } = await supabase
-      .from(table)
-      .select(select)
-      .order(orderBy.column, { ascending: orderBy.ascending });
+    const clauses: OrderBy[] = JSON.parse(orderKey);
+
+    let query = supabase.from(table).select(select);
+    for (const clause of clauses) {
+      query = query.order(clause.column, { ascending: clause.ascending });
+    }
+
+    const { data, error } = await query;
 
     if (error) setToast({ msg: error.message, tone: "error" });
     setRows((data as unknown as Row[]) ?? []);
     setLoading(false);
-  }, [table, select, orderBy.column, orderBy.ascending]);
+  }, [table, select, orderKey]);
 
   useEffect(() => {
     // load() only sets state after awaiting the network, never synchronously
@@ -138,8 +151,14 @@ export function ResourceManager({
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return rows;
+
+    const read = (row: Row, key: string) =>
+      key
+        .split(".")
+        .reduce<unknown>((value, part) => (value as Row | null)?.[part], row);
+
     return rows.filter((r) =>
-      searchKeys.some((k) => String(r[k] ?? "").toLowerCase().includes(q))
+      searchKeys.some((k) => String(read(r, k) ?? "").toLowerCase().includes(q))
     );
   }, [rows, query, searchKeys]);
 

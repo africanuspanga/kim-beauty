@@ -7,12 +7,12 @@ import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 const SERVICE_LINKS = [
-  { href: "/services#extensions", label: "Extensions" },
-  { href: "/services#braiding-hair", label: "Braiding Hair" },
-  { href: "/services#lashes", label: "Lashes" },
-  { href: "/services#make-up", label: "Make Up" },
-  { href: "/services#spa-packages", label: "Spa Packages" },
-  { href: "/services#manicure-pedicure", label: "Manicure & Pedicure" },
+  { href: "/services/extensions", label: "Extensions" },
+  { href: "/services/braiding-hair", label: "Braiding Hair" },
+  { href: "/services/lashes", label: "Lashes" },
+  { href: "/services/make-up", label: "Make Up" },
+  { href: "/services/spa-packages", label: "Spa Packages" },
+  { href: "/services/manicure-pedicure", label: "Manicure & Pedicure" },
 ];
 
 const QUICK_LINKS = [

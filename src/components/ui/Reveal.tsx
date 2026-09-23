@@ -8,6 +8,8 @@ type Props = {
   className?: string;
   delay?: number;
   as?: "div" | "section" | "li" | "article";
+  /** Anchor target, so deep links can jump straight to this block. */
+  id?: string;
 };
 
 /**
@@ -15,7 +17,7 @@ type Props = {
  * The visible class is toggled straight on the node — no state, no re-render.
  * Content stays visible if JS never runs (see `.reveal` in globals.css).
  */
-export function Reveal({ children, className, delay = 0, as = "div" }: Props) {
+export function Reveal({ children, className, delay = 0, as = "div", id }: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -48,6 +50,7 @@ export function Reveal({ children, className, delay = 0, as = "div" }: Props) {
   return (
     <Tag
       ref={ref}
+      id={id}
       className={cn("reveal", className)}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >

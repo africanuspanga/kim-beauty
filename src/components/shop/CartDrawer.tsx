@@ -111,7 +111,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
             </div>
             <p className="text-lg text-ink">Your cart is empty</p>
             <p className="text-sm text-muted">
-              Browse the shop and add the pieces you love.
+              Add a product from the shop, or a service from the services page.
             </p>
             <Link
               href="/shop"
@@ -229,7 +229,8 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                 {sending ? "Sending…" : "Send Order on WhatsApp"}
               </Button>
               <p className="text-center text-[11px] leading-relaxed text-muted">
-                Your order opens in WhatsApp — we confirm stock and delivery there.
+                Your order opens in WhatsApp — we confirm availability, timing
+                and delivery there.
               </p>
 
               {payments.length > 0 ? (
