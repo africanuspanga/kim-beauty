@@ -12,18 +12,22 @@ import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "About Us",
-  description:
-    "Kim Beauty is a modern beauty salon on Pangani Street, Arusha — master braiders, lash artists, makeup pros and spa therapists under one roof.",
-  alternates: { canonical: absoluteUrl("/about") },
-  openGraph: {
-    title: "About Kim Beauty — Arusha",
-    description:
-      "Master braiders, lash artists, makeup pros and spa therapists under one roof on Pangani Street, Arusha.",
-    url: absoluteUrl("/about"),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    title: t.meta.about.title,
+    description: t.meta.about.description,
+    alternates: { canonical: absoluteUrl("/about") },
+    // Link previews are fetched without a language cookie, so they stay English.
+    openGraph: {
+      title: "About Kim Beauty — Arusha",
+      description:
+        "Master braiders, lash artists, makeup pros and spa therapists under one roof on Sokoine Road, Arusha.",
+      url: absoluteUrl("/about"),
+    },
+  };
+}
 
 const VALUE_ICONS = [Sparkles, Award, Heart, Target];
 

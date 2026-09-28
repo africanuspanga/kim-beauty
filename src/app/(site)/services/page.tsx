@@ -17,19 +17,23 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Our Services & Prices",
-  description:
-    "Braiding, extensions, lashes, makeup, spa packages, manicure & pedicure, hair treatments and Kim Academy — every style, duration and price at Kim Beauty, Pangani Street, Arusha.",
-  alternates: { canonical: absoluteUrl("/services") },
-  openGraph: {
-    title: "Kim Beauty Services & Prices — Arusha",
-    description:
-      "Pick your service, then the exact style inside it. Every option shows its photo, duration and price.",
-    url: absoluteUrl("/services"),
-    images: [{ url: absoluteUrl("/images/hero.jpg"), width: 2000, height: 1359 }],
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    title: t.meta.services.title,
+    description: t.meta.services.description,
+    alternates: { canonical: absoluteUrl("/services") },
+    // Link previews are fetched without a language cookie, so they stay English.
+    openGraph: {
+      title: "Kim Beauty Services & Prices — Arusha",
+      description:
+        "Pick your service, then the exact style inside it. Every option shows its photo, duration and price.",
+      url: absoluteUrl("/services"),
+      images: [{ url: absoluteUrl("/images/hero.jpg"), width: 2000, height: 1359 }],
+    },
+  };
+}
 
 export default async function ServicesPage() {
   const [content, services, t] = await Promise.all([

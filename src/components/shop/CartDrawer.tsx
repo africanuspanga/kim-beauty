@@ -12,7 +12,14 @@ import { formatPrice } from "@/lib/utils";
 import { buildOrderMessage, waLink } from "@/lib/whatsapp";
 import { getSupabase } from "@/lib/supabase/client";
 
-export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
+export function CartDrawer({
+  payments = [],
+  whatsapp,
+}: {
+  payments?: PaymentLink[];
+  /** The salon's WhatsApp from admin, so orders go where bookings go. */
+  whatsapp?: string;
+}) {
   const t = useT();
   const c = t.cart;
   const { items, total, isOpen, closeCart, setQuantity, removeItem, clear } =
@@ -60,7 +67,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
       /* offline — carry on to WhatsApp */
     }
 
-    const url = waLink(buildOrderMessage({ ...payload, reference }));
+    const url = waLink(buildOrderMessage({ ...payload, reference }), whatsapp);
     window.open(url, "_blank", "noopener,noreferrer");
 
     clear();

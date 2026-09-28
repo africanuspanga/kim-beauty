@@ -34,7 +34,7 @@ export default async function SiteLayout({
         <Header logoUrl={logoUrl} phone={phone} />
         <main className="min-h-screen">{children}</main>
         <Footer content={content} />
-        <CartDrawer payments={payments} />
+        <CartDrawer payments={payments} whatsapp={whatsapp} />
         <WhatsAppButton phone={whatsapp} message={prefill} />
       </CartProvider>
     </I18nProvider>

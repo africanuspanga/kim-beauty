@@ -10,18 +10,22 @@ import { MessageCircle, ShieldCheck, Truck } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Shop",
-  description:
-    "Shop Kim Beauty hair products, the Kim Collection of wigs, lashes, nail care and more. Delivery across Arusha, order straight to our WhatsApp.",
-  alternates: { canonical: absoluteUrl("/shop") },
-  openGraph: {
-    title: "Kim Beauty Shop — Hair, Wigs & Beauty Essentials in Arusha",
-    description:
-      "Salon-tested hair products, wigs, lashes and nail care. Delivered across Arusha.",
-    url: absoluteUrl("/shop"),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    title: t.meta.shop.title,
+    description: t.meta.shop.description,
+    alternates: { canonical: absoluteUrl("/shop") },
+    // Link previews are fetched without a language cookie, so they stay English.
+    openGraph: {
+      title: "Kim Beauty Shop — Hair, Wigs & Beauty Essentials in Arusha",
+      description:
+        "Salon-tested hair products, wigs, lashes and nail care. Delivered across Arusha.",
+      url: absoluteUrl("/shop"),
+    },
+  };
+}
 
 const PERK_ICONS = [Truck, ShieldCheck, MessageCircle];
 

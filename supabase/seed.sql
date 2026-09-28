@@ -20,7 +20,7 @@ insert into public.site_content (key, label, value) values
 ('about', 'About Section', jsonb_build_object(
   'eyebrow', 'Our Story',
   'title', 'Where Arusha Comes To Glow',
-  'body', 'Kim Beauty began on Pangani Street with one simple belief — every woman deserves to leave a chair feeling like the best version of herself. Today our salon brings together master braiders, lash artists, makeup pros and spa therapists under one roof.',
+  'body', 'Kim Beauty began on Sokoine Road, Arusha with one simple belief — every woman deserves to leave a chair feeling like the best version of herself. Today our salon brings together master braiders, lash artists, makeup pros and spa therapists under one roof.',
   'body_2', 'From protective styles and precision extensions to signature spa rituals and the Kim Collection, everything we do is built on clean technique, premium product and genuine care.',
   'image_url', '/images/gallery-5.webp',
   'point_1', 'Certified, career stylists',
@@ -93,7 +93,7 @@ insert into public.site_content (key, label, value) values
   'description', 'A modern beauty salon in the heart of Arusha.',
   'hero_image', '/images/gallery-2.webp',
   'story_title', 'How It Started',
-  'story_body', 'Kim Beauty opened its doors on Pangani Street with a single braiding chair and a long list of loyal clients. Word travelled fast. What started as one stylist became a full salon — braiding, extensions, lashes, makeup, nails, spa and a product line of our own.',
+  'story_body', 'Kim Beauty opened its doors on Sokoine Road, Arusha with a single braiding chair and a long list of loyal clients. Word travelled fast. What started as one stylist became a full salon — braiding, extensions, lashes, makeup, nails, spa and a product line of our own.',
   'story_body_2', 'We train every stylist in-house through Kim Academy, so the technique you get on your first visit is the technique you get on your fiftieth.',
   'mission_title', 'Our Mission',
   'mission_body', 'To give every client a seat where she is listened to, cared for, and sent back out glowing.',
@@ -122,7 +122,7 @@ insert into public.site_content (key, label, value) values
 ('contact_page', 'Contact Page', jsonb_build_object(
   'eyebrow', 'Get In Touch',
   'title', 'We Would Love To Hear From You',
-  'description', 'Call, WhatsApp, email or stop by the salon on Pangani Street.'
+  'description', 'Call, WhatsApp, email or stop by the salon on Sokoine Road, Arusha, Tanzania.'
 )),
 ('footer', 'Footer', jsonb_build_object(
   'tagline', 'A modern beauty salon on Sokoine Road, Arusha, offering hair, lashes, nails, spa and the Kim Collection.',
@@ -206,3 +206,238 @@ insert into public.gallery_images (title, image_url, sort_order) values
 ('Knotless Braid Set', '/images/gallery-4.webp', 4),
 ('Colour & Boho Curls', '/images/gallery-5.webp', 5)
 on conflict do nothing;
+
+-- ---------------------------------------------------------------
+-- Translations + confirmed address/WhatsApp.
+-- Copied from migrations 20260928000009–11: `supabase db reset` runs
+-- migrations before this seed, so those updates found no rows to change.
+-- ---------------------------------------------------------------
+
+update public.site_content set value = jsonb_build_object(
+  'title_sw', 'Urembo Uliotengenezwa kwa Ustadi',
+  'description_sw', 'Mitindo ya kusuka, kope, kucha, spa na urembo kutoka kwa timu ya urembo inayopendwa zaidi Arusha.',
+  'stat_1_label_sw', 'Miaka ya Ustadi',
+  'stat_2_label_sw', 'Wateja Wenye Furaha',
+  'stat_3_label_sw', 'Ukadiriaji wa Google',
+  'primary_cta_label_sw', 'Weka Miadi',
+  'secondary_cta_label_sw', 'Nunua Sasa'
+) || value where key = 'hero';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Hadithi Yetu',
+  'title_sw', 'Arusha Huja Hapa Kung''aa',
+  'body_sw', 'Kim Beauty ilianzia Metropole, Arusha, Tanzania kwa imani moja rahisi — kila mwanamke anastahili kuinuka kitini akijiona katika ubora wake wa hali ya juu. Leo saluni yetu inawaleta pamoja wasusi mahiri, wataalamu wa kope, wataalamu wa make up na wa spa chini ya paa moja.',
+  'body_2_sw', 'Kuanzia mitindo ya kulinda nywele na extensions za umakini hadi huduma zetu maalum za spa na Kim Collection, kila tunachofanya kimejengwa juu ya ufundi safi, bidhaa bora na kujali kwa dhati.',
+  'point_1_sw', 'Wataalamu waliothibitishwa na wenye uzoefu',
+  'point_2_sw', 'Bidhaa bora pekee',
+  'point_3_sw', 'Saluni safi na tulivu',
+  'point_4_sw', 'Kim Beauty Academy',
+  'cta_label_sw', 'Zaidi Kuhusu Sisi'
+) || value where key = 'about';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Kuhusu Kim Beauty',
+  'title_sw', 'Urembo Wenye Makusudi',
+  'description_sw', 'Saluni ya kisasa ya urembo katikati ya Arusha.',
+  'story_title_sw', 'Tulivyoanza',
+  'story_body_sw', 'Kim Beauty ilifungua milango yake Arusha, Tanzania ikiwa na kiti kimoja cha kusuka na orodha ndefu ya wateja waaminifu. Habari zilienea haraka. Kilichoanza kama msusi mmoja kikawa saluni kamili — kusuka, extensions, kope, make up, kucha, spa na bidhaa zetu wenyewe.',
+  'story_body_2_sw', 'Tunamfundisha kila mtaalamu wetu sisi wenyewe kupitia Kim Academy, hivyo ufundi unaoupata katika ziara yako ya kwanza ndio utakaoupata katika ziara yako ya hamsini.',
+  'mission_title_sw', 'Dhamira Yetu',
+  'mission_body_sw', 'Kumpa kila mteja kiti ambapo anasikilizwa, anatunzwa, na anaondoka akiwa anang''aa.',
+  'vision_title_sw', 'Maono Yetu',
+  'vision_body_sw', 'Kuwa jina linaloaminika zaidi Afrika Mashariki katika nywele, urembo na elimu ya urembo.',
+  'value_1_title_sw', 'Ufundi Kwanza',
+  'value_1_body_sw', 'Mistari safi, msuko usiobana kupita kiasi, na matokeo yanayodumu.',
+  'value_2_title_sw', 'Bidhaa Bora',
+  'value_2_body_sw', 'Tunatumia tu kile ambacho tungeweka kwenye nywele zetu wenyewe.',
+  'value_3_title_sw', 'Kujali kwa Dhati',
+  'value_3_body_sw', 'Ushauri wa kweli kuhusu kinachokufaa — bila kukushinikiza kununua zaidi.',
+  'value_4_title_sw', 'Kujifunza Daima',
+  'value_4_body_sw', 'Kim Academy inaiweka timu yetu mbele katika kila mtindo mpya.'
+) || value where key = 'about_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Weka Miadi',
+  'title_sw', 'Hifadhi Kiti Chako',
+  'description_sw', 'Jaza maelezo yako nasi tutathibitisha nafasi yako kwa WhatsApp mara moja.'
+) || value where key = 'booking_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Wasiliana Nasi',
+  'title_sw', 'Tungependa Kusikia Kutoka Kwako',
+  'description_sw', 'Tupigie simu, WhatsApp, barua pepe au tutembelee saluni Metropole, Arusha, Tanzania.'
+) || value where key = 'contact_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Tuko Tayari Ukiwa Tayari',
+  'title_sw', 'Kiti Chako Kinakusubiri',
+  'description_sw', 'Weka miadi yako chini ya dakika moja — tutakuthibitishia kwa WhatsApp.',
+  'primary_cta_label_sw', 'Weka Miadi',
+  'secondary_cta_label_sw', 'Ongea Nasi'
+) || value where key = 'cta_section';
+
+update public.site_content set value = jsonb_build_object(
+  'tagline_sw', 'Saluni ya kisasa ya urembo Metropole, Arusha, Tanzania — nywele, kope, kucha, spa na Kim Collection.',
+  'copyright_sw', 'Kim Beauty. Haki zote zimehifadhiwa.'
+) || value where key = 'footer';
+
+update public.site_content set value = jsonb_build_object(
+  'title_sw', 'Njia za Kulipa',
+  'description_sw', 'Lipia oda yako au weka amana kwa usalama mtandaoni — kadi, pesa kwa simu na uhamisho wa benki vyote vinakubalika. Ungependa kulipa ukiwa saluni? Tuma tu oda yako kwa WhatsApp.'
+) || value where key = 'payments';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Huduma Zetu',
+  'title_sw', 'Kila Kitu cha Urembo, Chini ya Paa Moja',
+  'description_sw', 'Pitia orodha kamili ya huduma za Kim Beauty na uchague kiti kinachokufaa.'
+) || value where key = 'services_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Tunachofanya',
+  'title_sw', 'Huduma Zilizoandaliwa kwa Ajili Yako',
+  'description_sw', 'Nywele, kope, kucha, spa na bidhaa za kuvitunza vyote ukiwa nyumbani.'
+) || value where key = 'services_section';
+
+update public.site_content set value = jsonb_build_object(
+  'title_sw', 'Bidhaa za Urembo za Kiwango cha Saluni',
+  'description_sw', 'Weka unachokipenda kikapuni kisha tuma oda yako moja kwa moja WhatsApp.'
+) || value where key = 'shop_page';
+
+update public.site_content set value = jsonb_build_object(
+  'title_sw', 'Beba Saluni Nyumbani',
+  'description_sw', 'Bidhaa teule za nywele, kope na ngozi — tunaleta popote Arusha.',
+  'cta_label_sw', 'Tembelea Duka'
+) || value where key = 'shop_section';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_sw', 'Wateja Wanatupenda',
+  'title_sw', 'Maoni ya Wateja Halisi',
+  'description_sw', 'Tumekadiriwa 4.9 kwenye Google na mamia ya wateja wa Arusha.'
+) || value where key = 'testimonials_section';
+
+update public.site_content set value = jsonb_build_object(
+  'title_fr', 'La beauté, façonnée avec soin',
+  'description_fr', 'Tresses, cils, ongles, spa et glamour par l''équipe beauté la plus appréciée d''Arusha.',
+  'stat_1_label_fr', 'Années de savoir-faire',
+  'stat_2_label_fr', 'Clientes ravies',
+  'stat_3_label_fr', 'Note Google',
+  'primary_cta_label_fr', 'Prendre rendez-vous',
+  'secondary_cta_label_fr', 'Boutique'
+) || value where key = 'hero';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Notre histoire',
+  'title_fr', 'Là où Arusha vient briller',
+  'body_fr', 'Kim Beauty est née à Metropole, Arusha, en Tanzanie, d''une conviction simple — chaque femme mérite de quitter le fauteuil en se sentant la meilleure version d''elle-même. Aujourd''hui, notre salon réunit sous un même toit des maîtres tresseuses, des expertes en cils, des pros du maquillage et des thérapeutes spa.',
+  'body_2_fr', 'Des coiffures protectrices aux extensions de précision, en passant par nos rituels spa signature et la Kim Collection, tout ce que nous faisons repose sur une technique irréprochable, des produits haut de gamme et une attention sincère.',
+  'point_1_fr', 'Stylistes certifiées et expérimentées',
+  'point_2_fr', 'Uniquement des produits haut de gamme',
+  'point_3_fr', 'Salon impeccable et apaisant',
+  'point_4_fr', 'Kim Beauty Academy',
+  'cta_label_fr', 'En savoir plus'
+) || value where key = 'about';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'À propos de Kim Beauty',
+  'title_fr', 'La beauté avec intention',
+  'description_fr', 'Un salon de beauté moderne au cœur d''Arusha.',
+  'story_title_fr', 'Nos débuts',
+  'story_body_fr', 'Kim Beauty a ouvert ses portes à Arusha, en Tanzanie, avec un seul fauteuil de tressage et une longue liste de clientes fidèles. Le bouche-à-oreille a fait le reste. Ce qui a commencé avec une seule styliste est devenu un salon complet — tresses, extensions, cils, maquillage, ongles, spa et notre propre gamme de produits.',
+  'story_body_2_fr', 'Nous formons chaque styliste en interne grâce à la Kim Academy : la technique que vous découvrez à votre première visite est celle que vous retrouverez à la cinquantième.',
+  'mission_title_fr', 'Notre mission',
+  'mission_body_fr', 'Offrir à chaque cliente un fauteuil où elle est écoutée, choyée, et d''où elle repart rayonnante.',
+  'vision_title_fr', 'Notre vision',
+  'vision_body_fr', 'Devenir le nom le plus fiable d''Afrique de l''Est pour la coiffure, la beauté et la formation beauté.',
+  'value_1_title_fr', 'Le savoir-faire d''abord',
+  'value_1_body_fr', 'Des raies nettes, une tension saine et des finitions qui durent.',
+  'value_2_title_fr', 'Produits haut de gamme',
+  'value_2_body_fr', 'Nous n''utilisons que ce que nous mettrions sur nos propres cheveux.',
+  'value_3_title_fr', 'Une attention sincère',
+  'value_3_body_fr', 'Des conseils honnêtes sur ce qui vous va — jamais de vente forcée.',
+  'value_4_title_fr', 'Toujours apprendre',
+  'value_4_body_fr', 'La Kim Academy garde notre équipe en avance sur chaque tendance.'
+) || value where key = 'about_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Prendre rendez-vous',
+  'title_fr', 'Réservez votre fauteuil',
+  'description_fr', 'Indiquez vos coordonnées et nous confirmerons votre créneau sur WhatsApp immédiatement.'
+) || value where key = 'booking_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Contactez-nous',
+  'title_fr', 'Nous serions ravis de vous entendre',
+  'description_fr', 'Appelez-nous, écrivez-nous sur WhatsApp ou par e-mail, ou passez au salon à Metropole, Arusha, Tanzanie.'
+) || value where key = 'contact_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Prêtes quand vous l''êtes',
+  'title_fr', 'Votre fauteuil vous attend',
+  'description_fr', 'Réservez en moins d''une minute — nous vous confirmons sur WhatsApp.',
+  'primary_cta_label_fr', 'Prendre rendez-vous',
+  'secondary_cta_label_fr', 'Parlez-nous'
+) || value where key = 'cta_section';
+
+update public.site_content set value = jsonb_build_object(
+  'tagline_fr', 'Un salon de beauté moderne à Metropole, Arusha, Tanzanie — cheveux, cils, ongles, spa et la Kim Collection.',
+  'copyright_fr', 'Kim Beauty. Tous droits réservés.'
+) || value where key = 'footer';
+
+update public.site_content set value = jsonb_build_object(
+  'title_fr', 'Moyens de paiement',
+  'description_fr', 'Réglez votre commande ou versez un acompte en ligne en toute sécurité — carte, mobile money et virement bancaire acceptés. Vous préférez payer au salon ? Envoyez simplement votre commande sur WhatsApp.'
+) || value where key = 'payments';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Nos services',
+  'title_fr', 'Toute la beauté, sous un même toit',
+  'description_fr', 'Découvrez toute la carte Kim Beauty et réservez le fauteuil qui vous convient.'
+) || value where key = 'services_page';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Ce que nous faisons',
+  'title_fr', 'Des services pensés pour vous',
+  'description_fr', 'Cheveux, cils, ongles, spa et les produits pour tout garder parfait à la maison.'
+) || value where key = 'services_section';
+
+update public.site_content set value = jsonb_build_object(
+  'title_fr', 'L''essentiel beauté, qualité salon',
+  'description_fr', 'Ajoutez ce que vous aimez au panier et envoyez votre commande directement sur notre WhatsApp.'
+) || value where key = 'shop_page';
+
+update public.site_content set value = jsonb_build_object(
+  'title_fr', 'Le salon à la maison',
+  'description_fr', 'Une sélection de soins pour cheveux, cils et peau — livrés partout à Arusha.',
+  'cta_label_fr', 'Voir la boutique'
+) || value where key = 'shop_section';
+
+update public.site_content set value = jsonb_build_object(
+  'eyebrow_fr', 'Elles nous adorent',
+  'title_fr', 'Notées par de vraies clientes',
+  'description_fr', 'Noté 4,9 sur Google par des centaines de clientes d''Arusha.'
+) || value where key = 'testimonials_section';
+
+update public.site_content set value = value || jsonb_build_object(
+  'address', 'Sokoine Rd, Arusha 23102, Tanzania',
+  'map_query', 'KIM BEAUTY SALONS, Sokoine Rd, Arusha',
+  'map_url', 'https://www.google.com/maps/place/KIM+BEAUTY+SALONS/@-3.3734029,36.690324,17z/data=!3m1!4b1!4m6!3m5!1s0x18371df4331c2ff1:0xabb9545e5a95079d!8m2!3d-3.3734029!4d36.690324!16s%2Fg%2F11p19rfz69',
+  'whatsapp', '255766400961'
+) where key = 'contact';
+
+update public.site_content set value = value || jsonb_build_object(
+  'body', 'Kim Beauty began on Sokoine Road, Arusha with one simple belief — every woman deserves to leave a chair feeling like the best version of herself. Today our salon brings together master braiders, lash artists, makeup pros and spa therapists under one roof.',
+  'body_sw', 'Kim Beauty ilianzia Sokoine Road, Arusha kwa imani moja rahisi — kila mwanamke anastahili kuinuka kitini akijiona katika ubora wake wa hali ya juu. Leo saluni yetu inawaleta pamoja wasusi mahiri, wataalamu wa kope, wataalamu wa make up na wa spa chini ya paa moja.',
+  'body_fr', 'Kim Beauty est née sur Sokoine Road, à Arusha, d''une conviction simple — chaque femme mérite de quitter le fauteuil en se sentant la meilleure version d''elle-même. Aujourd''hui, notre salon réunit sous un même toit des maîtres tresseuses, des expertes en cils, des pros du maquillage et des thérapeutes spa.'
+) where key = 'about';
+
+update public.site_content set value = value || jsonb_build_object(
+  'description', 'Call, WhatsApp, email or stop by the salon on Sokoine Road, Arusha, Tanzania.',
+  'description_sw', 'Tupigie simu, WhatsApp, barua pepe au tutembelee saluni yetu Sokoine Road, Arusha, Tanzania.',
+  'description_fr', 'Appelez-nous, écrivez-nous sur WhatsApp ou par e-mail, ou passez au salon sur Sokoine Road, à Arusha, en Tanzanie.'
+) where key = 'contact_page';
+
+update public.site_content set value = value || jsonb_build_object(
+  'tagline', 'A modern beauty salon on Sokoine Road, Arusha, Tanzania — hair, lashes, nails, spa and the Kim Collection.',
+  'tagline_sw', 'Saluni ya kisasa ya urembo iliyopo Sokoine Road, Arusha, Tanzania — nywele, kope, kucha, spa na Kim Collection.',
+  'tagline_fr', 'Un salon de beauté moderne sur Sokoine Road, à Arusha, en Tanzanie — cheveux, cils, ongles, spa et la Kim Collection.'
+) where key = 'footer';

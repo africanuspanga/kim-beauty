@@ -23,24 +23,24 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const service = await getServiceBySlug(slug);
+  const [service, t] = await Promise.all([getServiceBySlug(slug), getT()]);
 
-  if (!service) return { title: "Service Not Found" };
+  if (!service) return { title: t.meta.service.notFound };
 
   const options = service.service_options ?? [];
   const styleNames = options.slice(0, 6).map((o) => o.name).join(", ");
 
   const description = [
     service.description ?? service.tagline ?? "",
-    styleNames ? `Options: ${styleNames}.` : "",
-    "Book at Kim Beauty, Pangani Street, Arusha.",
+    styleNames ? t.meta.service.options(styleNames) : "",
+    t.meta.service.bookAt,
   ]
     .filter(Boolean)
     .join(" ")
     .slice(0, 300);
 
   return {
-    title: `${service.title} in Arusha — Styles & Prices`,
+    title: t.meta.service.title(service.title),
     description,
     alternates: { canonical: absoluteUrl(`/services/${service.slug}`) },
     openGraph: {
