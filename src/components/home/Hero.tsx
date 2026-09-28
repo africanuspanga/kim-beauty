@@ -5,6 +5,7 @@ import { GoogleG } from "@/components/ui/GoogleG";
 import { Stars } from "@/components/ui/Stars";
 import type { ContentMap } from "@/lib/content";
 import { pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 
 /** Renders the title with its final word swept in the logo's metallic gradient. */
 function HeroTitle({ title }: { title: string }) {
@@ -20,7 +21,8 @@ function HeroTitle({ title }: { title: string }) {
   );
 }
 
-export function Hero({ content }: { content: ContentMap }) {
+export async function Hero({ content }: { content: ContentMap }) {
+  const t = await getT();
   const eyebrow = pick(content, "hero", "eyebrow");
   const title = pick(content, "hero", "title", "Beauty, Perfectly Crafted");
   const description = pick(content, "hero", "description");
@@ -157,7 +159,7 @@ export function Hero({ content }: { content: ContentMap }) {
                       <Stars rating={5} size="h-3 w-3" />
                     </div>
                     <p className="mt-1 text-[11px] font-medium text-muted">
-                      Google Reviews
+                      {t.home.googleReviews}
                     </p>
                   </div>
                 </div>
@@ -170,7 +172,7 @@ export function Hero({ content }: { content: ContentMap }) {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                   </span>
-                  Open Today
+                  {t.home.openToday}
                 </span>
               </div>
             </div>

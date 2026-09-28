@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { Eyebrow } from "@/components/ui/SectionHeading";
+import { getT } from "@/lib/i18n/server";
 
-export function PageHero({
+export async function PageHero({
   eyebrow,
   title,
   description,
@@ -21,6 +22,8 @@ export function PageHero({
   parent?: { label: string; href: string };
   children?: React.ReactNode;
 }) {
+  const t = await getT();
+
   return (
     <section className="relative overflow-hidden pt-28 pb-12 md:pt-36 md:pb-16">
       <div
@@ -37,7 +40,7 @@ export function PageHero({
           <ol className="flex items-center gap-1.5 text-[13px] text-muted">
             <li>
               <Link href="/" className="transition hover:text-gold-600">
-                Home
+                {t.common.home}
               </Link>
             </li>
             <li aria-hidden="true">

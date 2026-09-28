@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ChevronLeft, ChevronRight, Plus, ShoppingBag } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useCart } from "./CartProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 import { formatPrice } from "@/lib/utils";
 import type { Product, ProductColorOption } from "@/lib/types";
 
@@ -18,6 +19,7 @@ function ProductImageCarousel({
   activeIndex: number;
   onActiveIndexChange: (index: number) => void;
 }) {
+  const t = useT();
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,13 +43,13 @@ function ProductImageCarousel({
           if (width) onActiveIndexChange(Math.round(event.currentTarget.scrollLeft / width));
         }}
         className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth"
-        aria-label={`${name} product photos`}
+        aria-label={t.product.photos(name)}
       >
         {images.map((image, index) => (
           <div key={`${image}-${index}`} className="relative h-full min-w-full snap-center">
             <Image
               src={image}
-              alt={index === 0 ? name : `${name}, photo ${index + 1}`}
+              alt={index === 0 ? name : t.product.photoN(name, index + 1)}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
               className="object-cover"
@@ -62,7 +64,7 @@ function ProductImageCarousel({
           <button
             type="button"
             onClick={() => goTo(activeIndex - 1)}
-            aria-label="Previous product photo"
+            aria-label={t.product.previousPhoto}
             className="absolute left-2 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-cream/90 text-ink shadow-sm transition hover:bg-cream sm:flex"
           >
             <ChevronLeft className="h-4 w-4" aria-hidden="true" />
@@ -70,7 +72,7 @@ function ProductImageCarousel({
           <button
             type="button"
             onClick={() => goTo(activeIndex + 1)}
-            aria-label="Next product photo"
+            aria-label={t.product.nextPhoto}
             className="absolute right-2 top-1/2 z-10 hidden h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-cream/90 text-ink shadow-sm transition hover:bg-cream sm:flex"
           >
             <ChevronRight className="h-4 w-4" aria-hidden="true" />
@@ -81,7 +83,7 @@ function ProductImageCarousel({
                 key={index}
                 type="button"
                 onClick={() => goTo(index)}
-                aria-label={`Show photo ${index + 1}`}
+                aria-label={t.product.showPhoto(index + 1)}
                 aria-current={activeIndex === index ? "true" : undefined}
                 className={`h-1.5 rounded-full transition-all ${
                   activeIndex === index ? "w-4 bg-white" : "w-1.5 bg-white/55 hover:bg-white"
@@ -103,6 +105,7 @@ function colorOptions(product: Product): ProductColorOption[] {
 }
 
 export function ProductCard({ product }: { product: Product }) {
+  const t = useT();
   const { addItem } = useCart();
   const images = Array.from(
     new Set([product.image_url, ...(product.gallery ?? [])].filter((image): image is string => Boolean(image)))
@@ -138,7 +141,7 @@ export function ProductCard({ product }: { product: Product }) {
           ) : null}
           {product.is_featured ? (
             <span className="rounded-full bg-cream/95 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-700 backdrop-blur-sm">
-              Bestseller
+              {t.product.bestseller}
             </span>
           ) : null}
         </div>
@@ -146,7 +149,7 @@ export function ProductCard({ product }: { product: Product }) {
         {!product.in_stock ? (
           <div className="absolute inset-0 flex items-center justify-center bg-cream/75 backdrop-blur-[2px]">
             <span className="rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream">
-              Sold Out
+              {t.product.soldOut}
             </span>
           </div>
         ) : null}
@@ -169,7 +172,7 @@ export function ProductCard({ product }: { product: Product }) {
             })
           }
           disabled={!product.in_stock}
-          aria-label={`Add ${product.name} to cart`}
+          aria-label={t.product.addToCartLabel(product.name)}
           className="absolute bottom-3 right-3 hidden h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-white opacity-0 shadow-lg transition-all duration-300 hover:scale-110 group-hover:opacity-100 disabled:pointer-events-none sm:flex"
         >
           <Plus className="h-5 w-5" aria-hidden="true" />
@@ -196,7 +199,7 @@ export function ProductCard({ product }: { product: Product }) {
         {colors.length ? (
           <div className="mt-3.5">
             <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted">
-              Color or number
+              {t.product.colorOrNumber}
             </p>
             <div className="mt-2 flex flex-wrap gap-1.5">
               {colors.map((color) => (
@@ -256,7 +259,7 @@ export function ProductCard({ product }: { product: Product }) {
             className="mt-3 flex h-11 w-full items-center justify-center gap-2 rounded-full border border-gold-500/40 text-sm font-medium text-gold-700 transition hover:bg-gold-gradient hover:text-white hover:border-transparent disabled:opacity-40 disabled:pointer-events-none sm:hidden"
           >
             <ShoppingBag className="h-4 w-4" aria-hidden="true" />
-            Add to Cart
+            {t.common.addToCart}
           </button>
         </div>
       </div>

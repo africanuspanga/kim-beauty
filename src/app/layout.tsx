@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { HTML_LANG } from "@/lib/i18n/config";
+import { getLocale } from "@/lib/i18n/server";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 import "./globals.css";
 
@@ -96,11 +98,13 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const locale = await getLocale();
+
   return (
-    <html lang="en-TZ" className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={HTML_LANG[locale]} className={`${cormorant.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 /**
@@ -15,6 +16,7 @@ export function WhatsAppButton({
   phone?: string;
   message?: string;
 }) {
+  const t = useT();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export function WhatsAppButton({
       href={waLink(message, phone)}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label="Chat with Kim Beauty on WhatsApp"
+      aria-label={t.whatsappButton.label}
       className={`group fixed bottom-5 right-5 z-[80] block h-14 w-14 rounded-full transition-all duration-500 ease-out sm:bottom-6 sm:right-6 sm:h-16 sm:w-16 ${
         show ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
       } hover:scale-110 active:scale-95`}

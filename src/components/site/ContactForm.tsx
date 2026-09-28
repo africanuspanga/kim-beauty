@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { Button } from "@/components/ui/Button";
 import { getSupabase } from "@/lib/supabase/client";
 import { buildContactMessage, waLink } from "@/lib/whatsapp";
@@ -11,6 +12,8 @@ const fieldCls =
   "h-12 w-full rounded-xl border border-line bg-cream px-4 text-[15px] text-ink outline-none transition placeholder:text-muted/70 focus:border-gold-400";
 
 export function ContactForm({ whatsapp }: { whatsapp?: string }) {
+  const t = useT();
+  const f = t.contactForm;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -25,7 +28,7 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
     setError(null);
 
     if (!name.trim() || !message.trim()) {
-      setError("Please tell us your name and your message.");
+      setError(f.error);
       return;
     }
 
@@ -65,10 +68,9 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
           <CheckCircle2 className="h-8 w-8 text-emerald-600" aria-hidden="true" />
         </span>
-        <h2 className="mt-6 text-2xl">Message Sent</h2>
+        <h2 className="mt-6 text-2xl">{f.sentTitle}</h2>
         <p className="mx-auto mt-3 max-w-sm text-[15px] leading-relaxed text-muted">
-          Thanks for reaching out — we have your message and opened WhatsApp so
-          you can reach us instantly too.
+          {f.sentBody}
         </p>
         <Button
           variant="outline"
@@ -82,7 +84,7 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
             setMessage("");
           }}
         >
-          Send Another Message
+          {f.sendAnother}
         </Button>
       </div>
     );
@@ -96,13 +98,13 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="c-name" className={labelCls}>
-            Your Name <span className="text-gold-600">*</span>
+            {f.name} <span className="text-gold-600">*</span>
           </label>
           <input
             id="c-name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="e.g. Grace Mollel"
+            placeholder={f.namePlaceholder}
             required
             className={fieldCls}
           />
@@ -110,13 +112,13 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
 
         <div>
           <label htmlFor="c-phone" className={labelCls}>
-            Phone <span className="font-normal text-muted">(optional)</span>
+            {f.phone} <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <input
             id="c-phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="e.g. 0766 400 961"
+            placeholder={f.phonePlaceholder}
             inputMode="tel"
             className={fieldCls}
           />
@@ -124,7 +126,7 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
 
         <div>
           <label htmlFor="c-email" className={labelCls}>
-            Email <span className="font-normal text-muted">(optional)</span>
+            {f.email} <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <input
             id="c-email"
@@ -138,27 +140,27 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
 
         <div>
           <label htmlFor="c-subject" className={labelCls}>
-            Subject <span className="font-normal text-muted">(optional)</span>
+            {f.subject} <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <input
             id="c-subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            placeholder="What is this about?"
+            placeholder={f.subjectPlaceholder}
             className={fieldCls}
           />
         </div>
 
         <div className="sm:col-span-2">
           <label htmlFor="c-message" className={labelCls}>
-            Message <span className="text-gold-600">*</span>
+            {f.message} <span className="text-gold-600">*</span>
           </label>
           <textarea
             id="c-message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             rows={5}
-            placeholder="Tell us how we can help…"
+            placeholder={f.messagePlaceholder}
             required
             className="w-full resize-y rounded-xl border border-line bg-cream px-4 py-3 text-[15px] text-ink outline-none transition placeholder:text-muted/70 focus:border-gold-400"
           />
@@ -184,12 +186,12 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
         {status === "sending" ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            Sending…
+            {t.common.sending}
           </>
         ) : (
           <>
             <Send className="h-4 w-4" aria-hidden="true" />
-            Send Message
+            {f.submit}
           </>
         )}
       </Button>

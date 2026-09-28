@@ -9,6 +9,7 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { getServiceBySlug, getServices, getSiteContent } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import {
   absoluteUrl,
   breadcrumbSchema,
@@ -57,10 +58,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ServiceDetailPage({ params }: Props) {
   const { slug } = await params;
 
-  const [content, service, allServices] = await Promise.all([
+  const [content, service, allServices, t] = await Promise.all([
     getSiteContent(),
     getServiceBySlug(slug),
     getServices(),
+    getT(),
   ]);
 
   if (!service) notFound();
@@ -83,7 +85,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
       <PageHero
         breadcrumb={service.title}
-        parent={{ label: "Services", href: "/services" }}
+        parent={{ label: t.services.breadcrumb, href: "/services" }}
         eyebrow={service.tagline ?? "Kim Beauty"}
         title={service.title}
         description={service.description ?? undefined}
@@ -106,7 +108,7 @@ export default async function ServiceDetailPage({ params }: Props) {
           ) : null}
           {options.length > 0 ? (
             <span className="rounded-full border border-line px-3.5 py-1.5 text-[12px] font-medium text-muted">
-              {options.length} {options.length === 1 ? "option" : "options"} to choose from
+              {t.serviceDetail.optionsToChoose(options.length)}
             </span>
           ) : null}
         </div>
@@ -126,11 +128,11 @@ export default async function ServiceDetailPage({ params }: Props) {
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <ButtonLink href={bookingHref(service.title)} size="md">
-            Book {service.title}
+            {t.serviceDetail.book(service.title)}
           </ButtonLink>
           <ButtonLink href="/contact" variant="outline" size="md">
             <MessageCircle className="h-4 w-4" aria-hidden="true" />
-            Ask A Question
+            {t.serviceDetail.askQuestion}
           </ButtonLink>
         </div>
       </PageHero>
@@ -142,11 +144,12 @@ export default async function ServiceDetailPage({ params }: Props) {
             <>
               <Reveal className="mb-9 max-w-2xl">
                 <h2 className="text-[clamp(1.6rem,3.4vw,2.4rem)] leading-tight">
-                  Choose Your {service.title === "Kim Academy" ? "Course" : "Style"}
+                  {service.title === "Kim Academy"
+                    ? t.serviceDetail.chooseCourse
+                    : t.serviceDetail.chooseStyle}
                 </h2>
                 <p className="mt-3 text-[15px] leading-relaxed text-muted">
-                  Every option below has its own photo, time and price. Pick the
-                  one you want and book it — or add it to your cart to pay online.
+                  {t.serviceDetail.chooseIntro}
                 </p>
               </Reveal>
 
@@ -155,16 +158,14 @@ export default async function ServiceDetailPage({ params }: Props) {
           ) : (
             <Reveal className="rounded-3xl border border-line bg-blush-50/70 p-9 text-center">
               <p className="text-[15px] leading-relaxed text-ink-soft">
-                We are still photographing and pricing the individual{" "}
-                {service.title.toLowerCase()} options. Message us on WhatsApp and
-                we will talk you through everything available.
+                {t.serviceDetail.noOptions(service.title)}
               </p>
               <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
                 <ButtonLink href={bookingHref(service.title)} size="md">
-                  Book {service.title}
+                  {t.serviceDetail.book(service.title)}
                 </ButtonLink>
                 <ButtonLink href="/contact" variant="outline" size="md">
-                  Talk To Us
+                  {t.common.talkToUs}
                 </ButtonLink>
               </div>
             </Reveal>
@@ -178,13 +179,13 @@ export default async function ServiceDetailPage({ params }: Props) {
           <div className="container-kb">
             <Reveal className="rounded-3xl border border-line bg-blush-50/60 p-6 sm:p-8">
               <div className="flex flex-wrap items-center justify-between gap-3">
-                <h2 className="text-xl">Other Kim Beauty Services</h2>
+                <h2 className="text-xl">{t.serviceDetail.otherServices}</h2>
                 <Link
                   href="/services"
                   className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-gold-700 hover:text-gold-600"
                 >
                   <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
-                  All services
+                  {t.serviceDetail.allServices}
                 </Link>
               </div>
               <ul className="mt-5 flex flex-wrap gap-2.5">

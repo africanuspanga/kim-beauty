@@ -5,6 +5,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { BookingForm } from "@/components/booking/BookingForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { getServices, getSiteContent, pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import { absoluteUrl } from "@/lib/seo";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
@@ -23,12 +24,6 @@ export const metadata: Metadata = {
   },
 };
 
-const STEPS = [
-  { n: "1", title: "Pick your service", body: "Choose from the full Kim Beauty menu." },
-  { n: "2", title: "Choose date & time", body: "Tell us when suits you best." },
-  { n: "3", title: "Confirm on WhatsApp", body: "We reply to lock your slot in." },
-];
-
 function FormFallback() {
   return (
     <div className="h-[36rem] animate-pulse rounded-3xl border border-line bg-blush-50/60" />
@@ -36,7 +31,11 @@ function FormFallback() {
 }
 
 export default async function BookingPage() {
-  const [content, services] = await Promise.all([getSiteContent(), getServices()]);
+  const [content, services, t] = await Promise.all([
+    getSiteContent(),
+    getServices(),
+    getT(),
+  ]);
 
   const phone = pick(content, "contact", "phone");
   const whatsapp = pick(content, "contact", "whatsapp");
@@ -45,7 +44,7 @@ export default async function BookingPage() {
   return (
     <>
       <PageHero
-        breadcrumb="Book Appointment"
+        breadcrumb={t.booking.breadcrumb}
         eyebrow={pick(content, "booking_page", "eyebrow", "Book An Appointment")}
         title={pick(content, "booking_page", "title", "Reserve Your Chair")}
         description={pick(content, "booking_page", "description")}
@@ -67,13 +66,13 @@ export default async function BookingPage() {
               <div className="rounded-3xl border border-line bg-blush-50/70 p-7">
                 <h2 className="flex items-center gap-2.5 text-xl">
                   <CalendarCheck className="h-5 w-5 text-gold-600" aria-hidden="true" />
-                  How It Works
+                  {t.booking.howItWorks}
                 </h2>
                 <ol className="mt-6 space-y-5">
-                  {STEPS.map((s) => (
-                    <li key={s.n} className="flex gap-4">
+                  {t.booking.steps.map((s, i) => (
+                    <li key={s.title} className="flex gap-4">
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gold-gradient text-[13px] font-bold text-white">
-                        {s.n}
+                        {i + 1}
                       </span>
                       <div>
                         <p className="text-sm font-semibold text-ink">{s.title}</p>
@@ -90,7 +89,7 @@ export default async function BookingPage() {
               <div className="rounded-3xl border border-line bg-cream p-7">
                 <h2 className="flex items-center gap-2.5 text-xl">
                   <Clock className="h-5 w-5 text-gold-600" aria-hidden="true" />
-                  Opening Hours
+                  {t.common.openingHours}
                 </h2>
                 <ul className="mt-5 space-y-2.5 text-[14px] text-ink-soft">
                   <li>{pick(content, "contact", "hours_weekday")}</li>
@@ -101,9 +100,9 @@ export default async function BookingPage() {
 
               {/* direct contact */}
               <div className="rounded-3xl border border-line bg-ink p-7 text-cream">
-                <h2 className="text-xl text-cream">Prefer To Talk?</h2>
+                <h2 className="text-xl text-cream">{t.booking.preferToTalk}</h2>
                 <p className="mt-2.5 text-[14px] leading-relaxed text-cream/60">
-                  Call us or start a WhatsApp chat and we will book you in.
+                  {t.booking.preferToTalkBody}
                 </p>
 
                 <div className="mt-6 space-y-3">
@@ -121,7 +120,7 @@ export default async function BookingPage() {
                     className="flex items-center gap-3 rounded-xl border border-cream/15 px-4 py-3 text-sm transition hover:border-gold-400 hover:bg-cream/5"
                   >
                     <MessageCircle className="h-4 w-4 text-gold-400" aria-hidden="true" />
-                    Chat on WhatsApp
+                    {t.common.chatOnWhatsApp}
                   </a>
                   <p className="flex items-start gap-3 px-4 py-2 text-[13px] text-cream/55">
                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" aria-hidden="true" />

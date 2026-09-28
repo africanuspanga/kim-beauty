@@ -7,6 +7,7 @@ import { CtaSection } from "@/components/home/CtaSection";
 import { Reveal } from "@/components/ui/Reveal";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import { getServices, getSiteContent, pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import {
   absoluteUrl,
   breadcrumbSchema,
@@ -31,7 +32,11 @@ export const metadata: Metadata = {
 };
 
 export default async function ServicesPage() {
-  const [content, services] = await Promise.all([getSiteContent(), getServices()]);
+  const [content, services, t] = await Promise.all([
+    getSiteContent(),
+    getServices(),
+    getT(),
+  ]);
 
   return (
     <>
@@ -57,7 +62,7 @@ export default async function ServicesPage() {
       />
 
       <PageHero
-        breadcrumb="Services"
+        breadcrumb={t.services.breadcrumb}
         eyebrow={pick(content, "services_page", "eyebrow", "Our Services")}
         title={pick(content, "services_page", "title", "Everything Beauty, Under One Roof")}
         description={pick(
@@ -154,7 +159,7 @@ export default async function ServicesPage() {
                           ))}
                           {options.length > preview.length ? (
                             <li className="rounded-full bg-gold-100 px-2.5 py-1 text-[11px] font-semibold text-gold-700">
-                              +{options.length - preview.length} more
+                              {t.services.more(options.length - preview.length)}
                             </li>
                           ) : null}
                         </ul>
@@ -163,8 +168,8 @@ export default async function ServicesPage() {
                       <div className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-3.5">
                         <span className="text-[12px] font-semibold uppercase tracking-wider text-gold-700">
                           {options.length > 0
-                            ? `View ${options.length} ${options.length === 1 ? "option" : "options"}`
-                            : "View service"}
+                            ? t.services.viewOptions(options.length)
+                            : t.services.viewService}
                         </span>
                         {service.duration ? (
                           <span className="inline-flex items-center gap-1.5 text-[12px] text-muted">
@@ -182,7 +187,7 @@ export default async function ServicesPage() {
 
           {services.length === 0 ? (
             <p className="py-16 text-center text-muted">
-              Services are being updated. Please check back shortly.
+              {t.services.empty}
             </p>
           ) : null}
         </div>

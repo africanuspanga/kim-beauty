@@ -2,12 +2,12 @@
 
 import { Quote } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { GoogleG } from "@/components/ui/GoogleG";
 import { Stars } from "@/components/ui/Stars";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import type { ContentMap } from "@/lib/content";
-import { pick } from "@/lib/content";
+import { pick, type ContentMap } from "@/lib/content-map";
 import type { Testimonial } from "@/lib/types";
 
 function initials(name: string) {
@@ -74,6 +74,7 @@ function MarqueeRow({
 }
 
 function MobileReviewCarousel({ items }: { items: Testimonial[] }) {
+  const t = useT();
   const trackRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
 
@@ -101,7 +102,7 @@ function MobileReviewCarousel({ items }: { items: Testimonial[] }) {
       onPointerCancel={() => setPaused(false)}
       onPointerLeave={() => setPaused(false)}
       className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2"
-      aria-label="Customer reviews. Swipe to read more."
+      aria-label={t.home.reviewsLabel}
     >
       {[...items, ...items].map((testimonial, index) => (
         <div key={`${testimonial.id}-${index}`} className="snap-center">
@@ -119,6 +120,7 @@ export function Testimonials({
   content: ContentMap;
   testimonials: Testimonial[];
 }) {
+  const t = useT();
   if (testimonials.length === 0) return null;
 
   const mid = Math.ceil(testimonials.length / 2);
@@ -161,7 +163,7 @@ export function Testimonials({
                   <Stars rating={5} size="h-3.5 w-3.5" />
                 </div>
                 <p className="mt-1 text-[11px] font-medium text-muted">
-                  Based on {reviewCount}+ Google reviews
+                  {t.home.basedOnReviews(reviewCount)}
                 </p>
               </div>
             </div>

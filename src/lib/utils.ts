@@ -47,21 +47,28 @@ export function slugify(input: string) {
 export function formatPriceRange(
   from?: number | null,
   to?: number | null,
-  currency = "TZS"
+  currency = "TZS",
+  onRequest = "Price on request"
 ) {
-  if (from == null && to == null) return "Price on request";
+  if (from == null && to == null) return onRequest;
   if (from == null) return formatPrice(to!, currency);
   if (to == null || to <= from) return formatPrice(from, currency);
   return `${formatPrice(from, currency)} – ${Math.round(to).toLocaleString("en-US")}`;
 }
 
-/** The label shown on a service option card. */
-export function optionPriceLabel(option: {
-  price?: number | null;
-  price_max?: number | null;
-  price_label?: string | null;
-}) {
+/**
+ * The label shown on a service option card. `onRequest` is the translated
+ * "Price on request"; leave it out for messages sent to the salon.
+ */
+export function optionPriceLabel(
+  option: {
+    price?: number | null;
+    price_max?: number | null;
+    price_label?: string | null;
+  },
+  onRequest?: string
+) {
   return option.price_label?.trim()
     ? option.price_label
-    : formatPriceRange(option.price, option.price_max);
+    : formatPriceRange(option.price, option.price_max, "TZS", onRequest);
 }

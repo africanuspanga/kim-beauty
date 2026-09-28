@@ -3,27 +3,29 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 import type { ContentMap } from "@/lib/content";
 import { pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 const SERVICE_LINKS = [
-  { href: "/services/extensions", label: "Extensions" },
-  { href: "/services/braiding-hair", label: "Braiding Hair" },
-  { href: "/services/lashes", label: "Lashes" },
-  { href: "/services/make-up", label: "Make Up" },
-  { href: "/services/spa-packages", label: "Spa Packages" },
-  { href: "/services/manicure-pedicure", label: "Manicure & Pedicure" },
-];
+  { href: "/services/extensions", key: "extensions" },
+  { href: "/services/braiding-hair", key: "braiding" },
+  { href: "/services/lashes", key: "lashes" },
+  { href: "/services/make-up", key: "makeUp" },
+  { href: "/services/spa-packages", key: "spa" },
+  { href: "/services/manicure-pedicure", key: "nails" },
+] as const;
 
 const QUICK_LINKS = [
-  { href: "/about", label: "About Us" },
-  { href: "/services", label: "All Services" },
-  { href: "/shop", label: "Shop" },
-  { href: "/booking", label: "Book Appointment" },
-  { href: "/contact", label: "Contact" },
-];
+  { href: "/about", key: "about" },
+  { href: "/services", key: "services" },
+  { href: "/shop", key: "shop" },
+  { href: "/booking", key: "booking" },
+  { href: "/contact", key: "contact" },
+] as const;
 
-export function Footer({ content }: { content: ContentMap }) {
+export async function Footer({ content }: { content: ContentMap }) {
+  const t = await getT();
   const phone = pick(content, "contact", "phone");
   const email = pick(content, "contact", "email");
   const address = pick(content, "contact", "address");
@@ -82,7 +84,7 @@ export function Footer({ content }: { content: ContentMap }) {
 
           {/* quick links */}
           <div className="lg:col-span-2">
-            <h3 className="text-base font-semibold text-cream">Explore</h3>
+            <h3 className="text-base font-semibold text-cream">{t.footer.explore}</h3>
             <ul className="mt-5 space-y-3">
               {QUICK_LINKS.map((l) => (
                 <li key={l.href}>
@@ -90,7 +92,7 @@ export function Footer({ content }: { content: ContentMap }) {
                     href={l.href}
                     className="text-sm text-cream/60 transition hover:text-gold-300"
                   >
-                    {l.label}
+                    {t.footer.quickLinks[l.key]}
                   </Link>
                 </li>
               ))}
@@ -99,7 +101,7 @@ export function Footer({ content }: { content: ContentMap }) {
 
           {/* services */}
           <div className="lg:col-span-3">
-            <h3 className="text-base font-semibold text-cream">Services</h3>
+            <h3 className="text-base font-semibold text-cream">{t.footer.services}</h3>
             <ul className="mt-5 space-y-3">
               {SERVICE_LINKS.map((l) => (
                 <li key={l.href}>
@@ -107,7 +109,7 @@ export function Footer({ content }: { content: ContentMap }) {
                     href={l.href}
                     className="text-sm text-cream/60 transition hover:text-gold-300"
                   >
-                    {l.label}
+                    {t.footer.serviceLinks[l.key]}
                   </Link>
                 </li>
               ))}
@@ -116,7 +118,7 @@ export function Footer({ content }: { content: ContentMap }) {
 
           {/* contact */}
           <div className="lg:col-span-3">
-            <h3 className="text-base font-semibold text-cream">Visit Us</h3>
+            <h3 className="text-base font-semibold text-cream">{t.footer.visitUs}</h3>
             <ul className="mt-5 space-y-4 text-sm">
               <li className="flex gap-3">
                 <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-gold-400" aria-hidden="true" />
@@ -156,7 +158,7 @@ export function Footer({ content }: { content: ContentMap }) {
               rel="noopener noreferrer"
               className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold-400/40 px-5 py-2.5 text-sm font-medium text-gold-300 transition hover:bg-gold-500 hover:text-white"
             >
-              Chat on WhatsApp
+              {t.common.chatOnWhatsApp}
             </a>
           </div>
         </div>
@@ -165,7 +167,7 @@ export function Footer({ content }: { content: ContentMap }) {
           <div className="mt-14 flex flex-col gap-4 rounded-3xl border border-cream/10 bg-cream/[0.03] px-6 py-5 sm:flex-row sm:items-center sm:justify-between">
             <p className="flex items-center gap-2.5 text-sm text-cream/60">
               <ShieldCheck className="h-4 w-4 shrink-0 text-gold-400" aria-hidden="true" />
-              Secure online payments
+              {t.footer.securePayments}
             </p>
             <div className="flex flex-wrap items-center gap-2.5">
               {payments.map((p) => (
@@ -176,7 +178,7 @@ export function Footer({ content }: { content: ContentMap }) {
                   rel="noopener noreferrer"
                   className="rounded-full border border-cream/15 px-4 py-2 text-xs font-medium text-cream/70 transition hover:border-gold-400 hover:bg-gold-500 hover:text-white"
                 >
-                  Pay with {p.label}
+                  {t.footer.payWith(p.label)}
                 </a>
               ))}
             </div>
@@ -189,13 +191,13 @@ export function Footer({ content }: { content: ContentMap }) {
           </p>
           <div className="flex items-center gap-5 sm:pr-20">
             <Link href="/booking" className="transition hover:text-gold-300">
-              Book
+              {t.footer.book}
             </Link>
             <Link href="/shop" className="transition hover:text-gold-300">
-              Shop
+              {t.footer.shop}
             </Link>
             <Link href="/admin" className="transition hover:text-gold-300">
-              Admin
+              {t.footer.admin}
             </Link>
           </div>
         </div>

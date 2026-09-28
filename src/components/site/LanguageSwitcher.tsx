@@ -1,127 +1,116 @@
 "use client";
 
-import { Languages } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useId, useOptimistic, useTransition } from "react";
+import { useLocale, useT } from "@/components/i18n/I18nProvider";
+import { setLocale } from "@/lib/i18n/actions";
+import type { Locale } from "@/lib/i18n/config";
 import { cn } from "@/lib/utils";
 
-const LANGUAGES = [
-  { code: "en", label: "English", shortLabel: "EN" },
-  { code: "sw", label: "Kiswahili", shortLabel: "SW" },
-  { code: "zh-CN", label: "中文", shortLabel: "中文" },
-  { code: "hi", label: "हिन्दी", shortLabel: "HI" },
-  { code: "es", label: "Español", shortLabel: "ES" },
-  { code: "ar", label: "العربية", shortLabel: "AR" },
-  { code: "fr", label: "Français", shortLabel: "FR" },
-] as const;
-
-type LanguageCode = (typeof LANGUAGES)[number]["code"];
-
-declare global {
-  interface Window {
-    google?: {
-      translate?: {
-        TranslateElement: new (
-          options: { pageLanguage: string; includedLanguages: string; autoDisplay: boolean },
-          elementId: string
-        ) => unknown;
-      };
-    };
-    kimBeautyGoogleTranslateInit?: () => void;
-  }
-}
-
-function selectedLanguageFromCookie(): LanguageCode {
-  const value = document.cookie
-    .split("; ")
-    .find((cookie) => cookie.startsWith("googtrans="))
-    ?.split("=")[1];
-  const code = value ? decodeURIComponent(value).split("/").pop() : "en";
-
-  return LANGUAGES.some((language) => language.code === code)
-    ? (code as LanguageCode)
-    : "en";
-}
-
-function initialiseGoogleTranslate() {
-  if (!window.google?.translate?.TranslateElement) return;
-
-  new window.google.translate.TranslateElement(
-    {
-      pageLanguage: "en",
-      includedLanguages: LANGUAGES.map((language) => language.code).join(","),
-      autoDisplay: false,
-    },
-    "google_translate_element"
+/** Drawn inline: flag emoji render as bare letters on Windows. */
+function UkFlag() {
+  const id = useId();
+  return (
+    <svg viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+      <clipPath id={id}>
+        <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+      </clipPath>
+      <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+      <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+      <path
+        d="M0,0 L60,30 M60,0 L0,30"
+        clipPath={`url(#${id})`}
+        stroke="#C8102E"
+        strokeWidth="4"
+      />
+      <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+      <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+    </svg>
   );
 }
 
-function applyDocumentLanguage(language: LanguageCode) {
-  document.documentElement.lang = language;
-  document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+function TanzaniaFlag() {
+  return (
+    <svg viewBox="0 0 72 48" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+      <path d="M0,0 H72 L0,48 Z" fill="#1EB53A" />
+      <path d="M72,0 V48 H0 Z" fill="#00A3DD" />
+      <path d="M0,48 L72,0" stroke="#FCD116" strokeWidth="20" />
+      <path d="M0,48 L72,0" stroke="#000" strokeWidth="13" />
+    </svg>
+  );
 }
 
+function FranceFlag() {
+  return (
+    <svg viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+      <rect width="1" height="2" fill="#002654" />
+      <rect x="1" width="1" height="2" fill="#fff" />
+      <rect x="2" width="1" height="2" fill="#CE1126" />
+    </svg>
+  );
+}
+
+const LANGUAGES: { code: Locale; short: string; name: string; Flag: () => React.ReactElement }[] = [
+  { code: "en", short: "EN", name: "English", Flag: UkFlag },
+  { code: "sw", short: "SW", name: "Kiswahili", Flag: TanzaniaFlag },
+  { code: "fr", short: "FR", name: "Français", Flag: FranceFlag },
+];
+
 export function LanguageSwitcher({ compact = false }: { compact?: boolean }) {
-  const [language, setLanguage] = useState<LanguageCode>("en");
+  const t = useT();
+  const locale = useLocale();
+  const [active, setActive] = useOptimistic(locale);
+  const [pending, startTransition] = useTransition();
 
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      const selectedLanguage = selectedLanguageFromCookie();
-      setLanguage(selectedLanguage);
-      applyDocumentLanguage(selectedLanguage);
+  function choose(next: Locale) {
+    if (next === active) return;
+    startTransition(async () => {
+      setActive(next);
+      await setLocale(next);
     });
-
-    if (document.getElementById("google-translate-script")) {
-      return () => window.cancelAnimationFrame(frame);
-    }
-
-    window.kimBeautyGoogleTranslateInit = initialiseGoogleTranslate;
-    const script = document.createElement("script");
-    script.id = "google-translate-script";
-    script.src = "https://translate.google.com/translate_a/element.js?cb=kimBeautyGoogleTranslateInit";
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-
-  function changeLanguage(nextLanguage: LanguageCode) {
-    setLanguage(nextLanguage);
-    applyDocumentLanguage(nextLanguage);
-
-    if (nextLanguage === "en") {
-      document.cookie = "googtrans=; path=/; max-age=0; SameSite=Lax";
-    } else {
-      document.cookie = `googtrans=${encodeURIComponent(`/en/${nextLanguage}`)}; path=/; max-age=31536000; SameSite=Lax`;
-    }
-
-    window.location.reload();
   }
 
   return (
-    <div className={cn("notranslate relative", compact ? "w-[72px]" : "w-[142px]")}>
-      <Languages
-        className={cn(
-          "pointer-events-none absolute top-1/2 z-10 h-4 w-4 -translate-y-1/2 text-gold-600",
-          compact ? "left-2" : "left-3"
-        )}
-        aria-hidden="true"
-      />
-      <select
-        value={language}
-        onChange={(event) => changeLanguage(event.target.value as LanguageCode)}
-        aria-label="Choose language"
-        title="Choose language"
-        className={cn(
-          "h-10 w-full cursor-pointer appearance-none rounded-full border border-line bg-white/70 pr-2 text-xs font-semibold text-ink-soft backdrop-blur-sm transition hover:border-gold-300 focus:border-gold-400 focus:outline-none",
-          compact ? "pl-7" : "pl-9 pr-3 text-sm"
-        )}
-      >
-        {LANGUAGES.map((option) => (
-          <option key={option.code} value={option.code}>
-            {compact ? option.shortLabel : option.label}
-          </option>
-        ))}
-      </select>
+    <div
+      role="radiogroup"
+      aria-label={t.language.label}
+      className={cn(
+        "flex items-center gap-0.5 rounded-full border border-line bg-white/70 p-1 backdrop-blur-sm transition-opacity",
+        pending && "opacity-70"
+      )}
+    >
+      {LANGUAGES.map(({ code, short, name, Flag }) => {
+        const selected = active === code;
+        return (
+          <button
+            key={code}
+            type="button"
+            role="radio"
+            aria-checked={selected}
+            aria-label={name}
+            title={name}
+            lang={code}
+            onClick={() => choose(code)}
+            className={cn(
+              "flex h-8 items-center gap-1.5 rounded-full text-xs font-semibold transition",
+              compact ? "px-1" : "pl-1 pr-2.5",
+              selected
+                ? "bg-cream text-gold-700 shadow-[0_1px_6px_rgba(66,44,23,0.14)]"
+                : "text-muted hover:text-ink"
+            )}
+          >
+            <span
+              className={cn(
+                "block h-6 w-6 shrink-0 overflow-hidden rounded-full ring-1 ring-black/10 transition",
+                !selected && "opacity-60 grayscale-[35%]"
+              )}
+              aria-hidden="true"
+            >
+              <Flag />
+            </span>
+            {compact ? null : short}
+          </button>
+        );
+      })}
     </div>
   );
 }

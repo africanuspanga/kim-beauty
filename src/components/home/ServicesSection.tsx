@@ -7,9 +7,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ServiceIcon } from "@/components/ui/ServiceIcon";
 import type { ContentMap } from "@/lib/content";
 import { pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import type { Service } from "@/lib/types";
 
-export function ServicesSection({
+export async function ServicesSection({
   content,
   services,
 }: {
@@ -17,6 +18,7 @@ export function ServicesSection({
   services: Service[];
 }) {
   if (services.length === 0) return null;
+  const t = await getT();
 
   return (
     <section id="services" className="relative overflow-hidden bg-blush-50/60 py-20 md:py-28">
@@ -91,7 +93,7 @@ export function ServicesSection({
                   <div className="mt-4 flex items-center justify-between gap-3 border-t border-line pt-3 text-[12px] font-medium uppercase tracking-wider text-muted">
                     {service.service_options?.length ? (
                       <span className="text-gold-700">
-                        {service.service_options.length} styles
+                        {t.home.styles(service.service_options.length)}
                       </span>
                     ) : (
                       <span />
@@ -106,7 +108,7 @@ export function ServicesSection({
 
         <Reveal className="mt-12 flex justify-center">
           <ButtonLink href="/services" variant="outline" size="lg" className="group">
-            View All Services
+            {t.home.viewAllServices}
             <ArrowRight
               className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
               aria-hidden="true"

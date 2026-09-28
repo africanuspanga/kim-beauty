@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { AlertCircle, CheckCircle2, Loader2, Send } from "lucide-react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { Button } from "@/components/ui/Button";
 import { getSupabase } from "@/lib/supabase/client";
 import { buildBookingMessage, waLink } from "@/lib/whatsapp";
@@ -31,6 +32,9 @@ export function BookingForm({
   services: Service[];
   whatsapp?: string;
 }) {
+  const t = useT();
+  const f = t.bookingForm;
+  const onRequest = t.common.priceOnRequest;
   const searchParams = useSearchParams();
   const preselected = searchParams.get("service") ?? "";
   const preselectedOption = searchParams.get("option") ?? "";
@@ -75,12 +79,12 @@ export function BookingForm({
     setError(null);
 
     if (!fullName.trim() || !phone.trim() || !serviceName || !date || !time) {
-      setError("Please fill in your name, phone, service, date and time.");
+      setError(f.errorRequired);
       return;
     }
 
     if (options.length > 0 && !optionName) {
-      setError(`Please choose which ${serviceName.toLowerCase()} style you want.`);
+      setError(f.errorStyle(serviceName));
       return;
     }
 
@@ -137,10 +141,9 @@ export function BookingForm({
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
           <CheckCircle2 className="h-8 w-8 text-emerald-600" aria-hidden="true" />
         </span>
-        <h2 className="mt-6 text-2xl">Request Sent</h2>
+        <h2 className="mt-6 text-2xl">{f.sentTitle}</h2>
         <p className="mx-auto mt-3 max-w-sm text-[15px] leading-relaxed text-muted">
-          Your appointment details have been opened in WhatsApp. Send the message
-          and we will confirm your slot right away.
+          {f.sentBody}
         </p>
         <Button
           variant="outline"
@@ -158,7 +161,7 @@ export function BookingForm({
             setNotes("");
           }}
         >
-          Book Another Appointment
+          {f.bookAnother}
         </Button>
       </div>
     );
@@ -172,13 +175,13 @@ export function BookingForm({
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
           <label htmlFor="fullName" className={labelCls}>
-            Full Name <span className="text-gold-600">*</span>
+            {f.fullName} <span className="text-gold-600">*</span>
           </label>
           <input
             id="fullName"
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
-            placeholder="e.g. Amina Hassan"
+            placeholder={f.fullNamePlaceholder}
             required
             className={fieldCls}
           />
@@ -186,13 +189,13 @@ export function BookingForm({
 
         <div>
           <label htmlFor="phone" className={labelCls}>
-            Phone / WhatsApp <span className="text-gold-600">*</span>
+            {f.phone} <span className="text-gold-600">*</span>
           </label>
           <input
             id="phone"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
-            placeholder="e.g. 0766 400 961"
+            placeholder={f.phonePlaceholder}
             inputMode="tel"
             required
             className={fieldCls}
@@ -201,7 +204,7 @@ export function BookingForm({
 
         <div className="sm:col-span-2">
           <label htmlFor="email" className={labelCls}>
-            Email <span className="font-normal text-muted">(optional)</span>
+            {f.email} <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <input
             id="email"
@@ -215,7 +218,7 @@ export function BookingForm({
 
         <div className="sm:col-span-2">
           <label htmlFor="service" className={labelCls}>
-            Service <span className="text-gold-600">*</span>
+            {f.service} <span className="text-gold-600">*</span>
           </label>
           <select
             id="service"
@@ -224,7 +227,7 @@ export function BookingForm({
             required
             className={`${fieldCls} cursor-pointer`}
           >
-            <option value="">Choose a service…</option>
+            <option value="">{f.chooseService}</option>
             {services.map((s) => (
               <option key={s.id} value={s.title}>
                 {s.title}
@@ -239,7 +242,7 @@ export function BookingForm({
         {options.length > 0 ? (
           <div className="sm:col-span-2">
             <label htmlFor="serviceOption" className={labelCls}>
-              Style / Option <span className="text-gold-600">*</span>
+              {f.style} <span className="text-gold-600">*</span>
             </label>
             <select
               id="serviceOption"
@@ -248,20 +251,20 @@ export function BookingForm({
               required
               className={`${fieldCls} cursor-pointer`}
             >
-              <option value="">Choose a style…</option>
+              <option value="">{f.chooseStyle}</option>
               {optionGroups.map((group) =>
                 group.label ? (
                   <optgroup key={group.label} label={group.label}>
                     {group.items.map((o) => (
                       <option key={o.id} value={o.name}>
-                        {o.name} — {optionPriceLabel(o)}
+                        {o.name} — {optionPriceLabel(o, onRequest)}
                       </option>
                     ))}
                   </optgroup>
                 ) : (
                   group.items.map((o) => (
                     <option key={o.id} value={o.name}>
-                      {o.name} — {optionPriceLabel(o)}
+                      {o.name} — {optionPriceLabel(o, onRequest)}
                     </option>
                   ))
                 )
@@ -271,20 +274,19 @@ export function BookingForm({
               {selectedOption ? (
                 <>
                   <span className="font-semibold text-gold-700">
-                    {optionPriceLabel(selectedOption)}
+                    {optionPriceLabel(selectedOption, onRequest)}
                   </span>
-                  {selectedOption.duration ? ` · about ${selectedOption.duration}` : ""}
+                  {selectedOption.duration ? f.about(selectedOption.duration) : ""}
                   {selectedOption.description ? ` — ${selectedOption.description}` : ""}
                 </>
               ) : (
                 <>
-                  Not sure which one? Pick the closest and add a note below — we
-                  will advise on WhatsApp.{" "}
+                  {f.notSure}{" "}
                   <Link
                     href={`/services/${selectedService?.slug ?? ""}`}
                     className="font-semibold text-gold-700 underline underline-offset-2"
                   >
-                    See photos and prices
+                    {f.seePhotos}
                   </Link>
                 </>
               )}
@@ -294,7 +296,7 @@ export function BookingForm({
 
         <div>
           <label htmlFor="date" className={labelCls}>
-            Preferred Date <span className="text-gold-600">*</span>
+            {f.date} <span className="text-gold-600">*</span>
           </label>
           <input
             id="date"
@@ -309,7 +311,7 @@ export function BookingForm({
 
         <div>
           <label htmlFor="time" className={labelCls}>
-            Preferred Time <span className="text-gold-600">*</span>
+            {f.time} <span className="text-gold-600">*</span>
           </label>
           <select
             id="time"
@@ -318,7 +320,7 @@ export function BookingForm({
             required
             className={`${fieldCls} cursor-pointer`}
           >
-            <option value="">Choose a time…</option>
+            <option value="">{f.chooseTime}</option>
             {TIME_SLOTS.map((t) => (
               <option key={t} value={t}>
                 {t}
@@ -329,29 +331,29 @@ export function BookingForm({
 
         <div className="sm:col-span-2">
           <label htmlFor="stylist" className={labelCls}>
-            Preferred Stylist{" "}
-            <span className="font-normal text-muted">(optional)</span>
+            {f.stylist}{" "}
+            <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <input
             id="stylist"
             value={stylist}
             onChange={(e) => setStylist(e.target.value)}
-            placeholder="Anyone available"
+            placeholder={f.stylistPlaceholder}
             className={fieldCls}
           />
         </div>
 
         <div className="sm:col-span-2">
           <label htmlFor="notes" className={labelCls}>
-            Anything We Should Know?{" "}
-            <span className="font-normal text-muted">(optional)</span>
+            {f.notes}{" "}
+            <span className="font-normal text-muted">{t.common.optional}</span>
           </label>
           <textarea
             id="notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             rows={4}
-            placeholder="Style reference, hair length, allergies, occasion…"
+            placeholder={f.notesPlaceholder}
             className="w-full resize-y rounded-xl border border-line bg-cream px-4 py-3 text-[15px] text-ink outline-none transition placeholder:text-muted/70 focus:border-gold-400"
           />
         </div>
@@ -376,19 +378,18 @@ export function BookingForm({
         {status === "sending" ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            Sending…
+            {t.common.sending}
           </>
         ) : (
           <>
             <Send className="h-4 w-4" aria-hidden="true" />
-            Send Booking on WhatsApp
+            {f.submit}
           </>
         )}
       </Button>
 
       <p className="mt-4 text-center text-[12px] leading-relaxed text-muted">
-        Your request is saved and opened in WhatsApp so we can confirm your slot
-        straight away.
+        {f.savedHint}
       </p>
     </form>
   );
