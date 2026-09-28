@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s · Kim Beauty",
   },
   description:
-    "Kim Beauty is a modern beauty studio on Pangani Street, Arusha — knotless braids, extensions, lash extensions, bridal makeup, spa packages, nails and Kim Academy training. See every style and price, then book on WhatsApp.",
+    "Kim Beauty is a modern beauty salon on Pangani Street, Arusha — knotless braids, extensions, lash extensions, bridal makeup, spa packages, nails and Kim Academy training. See every style and price, then book on WhatsApp.",
   applicationName: "Kim Beauty",
   keywords: [
     "Kim Beauty",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
         url: absoluteUrl("/images/hero.jpg"),
         width: 2000,
         height: 1359,
-        alt: "Kim Beauty studio on Pangani Street, Arusha",
+        alt: "Kim Beauty salon on Pangani Street, Arusha",
       },
     ],
   },

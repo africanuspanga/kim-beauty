@@ -187,7 +187,7 @@ export function Footer({ content }: { content: ContentMap }) {
           <p>
             © {year} {pick(content, "footer", "copyright")}
           </p>
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 sm:pr-20">
             <Link href="/booking" className="transition hover:text-gold-300">
               Book
             </Link>

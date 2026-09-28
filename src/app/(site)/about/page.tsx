@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Kim Beauty is a modern beauty studio on Pangani Street, Arusha — master braiders, lash artists, makeup pros and spa therapists under one roof.",
+    "Kim Beauty is a modern beauty salon on Pangani Street, Arusha — master braiders, lash artists, makeup pros and spa therapists under one roof.",
   alternates: { canonical: absoluteUrl("/about") },
   openGraph: {
     title: "About Kim Beauty — Arusha",
@@ -153,7 +153,7 @@ export default async function AboutPage() {
               <SectionHeading
                 eyebrow="Our Work"
                 title="Straight From The Chair"
-                description="A look at what leaves our studio every week."
+                description="A look at what leaves our salon every week."
               />
             </Reveal>
 

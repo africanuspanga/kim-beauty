@@ -30,7 +30,14 @@ export default async function ContactPage() {
   const email = pick(content, "contact", "email");
   const address = pick(content, "contact", "address");
   const whatsapp = pick(content, "contact", "whatsapp");
-  const mapQuery = pick(content, "contact", "map_query", address);
+  const mapQueryValue = pick(content, "contact", "map_query", address);
+  const mapQuery = /^https?:\/\//i.test(mapQueryValue) ? address : mapQueryValue;
+  const mapUrl = pick(
+    content,
+    "contact",
+    "map_url",
+    `https://maps.google.com/?q=${encodeURIComponent(mapQuery)}`
+  );
 
   const socials = getSocialLinks(content);
   const payments = getPaymentLinks(content);
@@ -57,9 +64,9 @@ export default async function ContactPage() {
     },
     {
       Icon: MapPin,
-      title: "Visit The Studio",
+      title: "Visit The Salon",
       value: address,
-      href: `https://maps.google.com/?q=${encodeURIComponent(mapQuery)}`,
+      href: mapUrl,
       external: true,
     },
   ];
@@ -202,6 +209,15 @@ export default async function ContactPage() {
                   referrerPolicy="no-referrer-when-downgrade"
                   className="h-72 w-full border-0"
                 />
+                <a
+                  href={mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 border-t border-line bg-cream px-4 py-3 text-sm font-semibold text-gold-700 transition hover:bg-gold-50"
+                >
+                  <MapPin className="h-4 w-4" aria-hidden="true" />
+                  Open Kim Beauty in Google Maps
+                </a>
               </div>
             </Reveal>
           </div>

@@ -13,6 +13,9 @@ import {
   Toast,
 } from "./AdminUI";
 import { ImageField } from "./ImageField";
+import { ImageGalleryField } from "./ImageGalleryField";
+import { ColorOptionsField } from "./ColorOptionsField";
+import type { ProductColorOption } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
 import { getSupabase } from "@/lib/supabase/client";
 import { cn, slugify } from "@/lib/utils";
@@ -27,6 +30,8 @@ export type FieldDef = {
     | "checkbox"
     | "select"
     | "image"
+    | "images"
+    | "colors"
     | "list";
   placeholder?: string;
   options?: { value: string; label: string }[];
@@ -189,6 +194,23 @@ export function ResourceManager({
           ? Array.isArray(raw)
             ? raw.join("\n")
             : ""
+          : f.type === "images"
+            ? Array.isArray(raw)
+              ? raw.filter((item): item is string => typeof item === "string")
+              : []
+            : f.type === "colors"
+              ? Array.isArray(raw)
+                ? raw
+                    .filter(
+                      (item): item is ProductColorOption =>
+                        typeof item === "object" && item !== null && typeof item.name === "string"
+                    )
+                    .map((item) => ({
+                      name: item.name,
+                      image_index:
+                        typeof item.image_index === "number" ? item.image_index : 0,
+                    }))
+                : []
           : raw ?? defaults[f.name] ?? "";
     }
     next.id = row.id;
@@ -238,6 +260,27 @@ export function ResourceManager({
             .split("\n")
             .map((s) => s.trim())
             .filter(Boolean);
+          break;
+        case "images":
+          payload[f.name] = Array.isArray(raw)
+            ? raw.filter(
+                (item): item is string => typeof item === "string" && item.trim().length > 0
+              )
+            : [];
+          break;
+        case "colors":
+          payload[f.name] = Array.isArray(raw)
+            ? raw
+                .filter(
+                  (item): item is ProductColorOption =>
+                    typeof item === "object" && item !== null && typeof item.name === "string"
+                )
+                .map((item) => ({
+                  name: item.name.trim(),
+                  image_index: Math.max(0, Number(item.image_index) || 0),
+                }))
+                .filter((item) => item.name)
+            : [];
           break;
         case "select":
           payload[f.name] = raw === "" ? null : raw;
@@ -508,13 +551,30 @@ export function ResourceManager({
               return (
                 <div
                   key={f.name}
-                  className={f.full || f.type === "image" ? "sm:col-span-2" : ""}
+                  className={f.full || f.type === "image" || f.type === "images" || f.type === "colors" ? "sm:col-span-2" : ""}
                 >
                   {f.type === "image" ? (
                     <ImageField
                       label={f.label}
                       value={String(form[f.name] ?? "")}
                       onChange={(url) => setField(f.name, url)}
+                    />
+                  ) : f.type === "images" ? (
+                    <ImageGalleryField
+                      label={f.label}
+                      value={Array.isArray(form[f.name]) ? form[f.name] : []}
+                      onChange={(urls) => setField(f.name, urls)}
+                    />
+                  ) : f.type === "colors" ? (
+                    <ColorOptionsField
+                      value={Array.isArray(form[f.name]) ? form[f.name] : []}
+                      onChange={(options) => setField(f.name, options)}
+                      imageCount={
+                        [
+                          form.image_url,
+                          ...(Array.isArray(form.gallery) ? form.gallery : []),
+                        ].filter((image): image is string => typeof image === "string" && Boolean(image)).length
+                      }
                     />
                   ) : f.type === "checkbox" ? (
                     <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-cream px-4 py-3">
