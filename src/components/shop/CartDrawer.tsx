@@ -83,7 +83,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
         role="dialog"
         aria-modal="true"
         aria-label="Shopping cart"
-        className={`fixed right-0 top-0 z-[70] flex h-[100dvh] w-full max-w-md flex-col bg-cream shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`fixed right-0 top-0 z-[70] flex h-[100dvh] w-full max-w-md flex-col bg-cream shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] lg:max-w-4xl ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -122,11 +122,11 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
             </Link>
           </div>
         ) : (
-          <>
-            <div className="flex-1 overflow-y-auto px-5 py-4">
-              <ul className="space-y-4">
+          <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+            <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4 lg:px-7 lg:py-6">
+              <ul className="space-y-4 lg:grid lg:grid-cols-2 lg:gap-4 lg:space-y-0">
                 {items.map((item) => (
-                  <li key={item.id} className="flex gap-3.5">
+                  <li key={item.lineId ?? item.id} className="flex gap-3.5 lg:rounded-2xl lg:border lg:border-line lg:bg-white/60 lg:p-3.5">
                     <div className="relative h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-blush-100">
                       {item.image_url ? (
                         <Image
@@ -145,7 +145,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                           {item.name}
                         </p>
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeItem(item.lineId ?? item.id)}
                           aria-label={`Remove ${item.name}`}
                           className="shrink-0 rounded-md p-1 text-muted transition hover:text-red-500"
                         >
@@ -160,7 +160,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                       <div className="mt-auto flex items-center justify-between pt-2">
                         <div className="flex items-center rounded-full border border-line bg-white">
                           <button
-                            onClick={() => setQuantity(item.id, item.quantity - 1)}
+                            onClick={() => setQuantity(item.lineId ?? item.id, item.quantity - 1)}
                             aria-label="Decrease quantity"
                             className="p-1.5 text-ink-soft transition hover:text-gold-600"
                           >
@@ -170,7 +170,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                             {item.quantity}
                           </span>
                           <button
-                            onClick={() => setQuantity(item.id, item.quantity + 1)}
+                            onClick={() => setQuantity(item.lineId ?? item.id, item.quantity + 1)}
                             aria-label="Increase quantity"
                             className="p-1.5 text-ink-soft transition hover:text-gold-600"
                           >
@@ -187,7 +187,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
               </ul>
             </div>
 
-            <footer className="space-y-3 border-t border-line bg-white/70 px-5 py-4">
+            <footer className="space-y-3 border-t border-line bg-white/70 px-5 py-4 lg:w-[22rem] lg:shrink-0 lg:overflow-y-auto lg:border-l lg:border-t-0 lg:px-6 lg:py-6">
               <div className="grid grid-cols-2 gap-2.5">
                 <input
                   value={name}
@@ -260,7 +260,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                 </div>
               ) : null}
             </footer>
-          </>
+          </div>
         )}
       </aside>
     </>

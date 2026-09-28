@@ -93,6 +93,15 @@
   }
 }
 
+/* Keep Google Translate's service frame out of the customer experience. */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
 /* =============================================================
    Utilities
    ============================================================= */

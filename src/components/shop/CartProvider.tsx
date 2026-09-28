@@ -14,6 +14,8 @@ export type CartItem = {
   name: string;
   price: number;
   quantity: number;
+  /** Unique cart-row key. Product ID remains the real database ID for pricing. */
+  lineId?: string;
   image_url?: string | null;
   slug?: string;
 };
@@ -79,28 +81,29 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const addItem = useCallback(
     (item: Omit<CartItem, "quantity">, quantity = 1) => {
       setItems((prev) => {
-        const existing = prev.find((i) => i.id === item.id);
+        const lineId = item.lineId ?? item.id;
+        const existing = prev.find((i) => (i.lineId ?? i.id) === lineId);
         if (existing) {
           return prev.map((i) =>
-            i.id === item.id ? { ...i, quantity: i.quantity + quantity } : i
+            (i.lineId ?? i.id) === lineId ? { ...i, quantity: i.quantity + quantity } : i
           );
         }
-        return [...prev, { ...item, quantity }];
+        return [...prev, { ...item, lineId, quantity }];
       });
       setIsOpen(true);
     },
     []
   );
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  const removeItem = useCallback((lineId: string) => {
+    setItems((prev) => prev.filter((i) => (i.lineId ?? i.id) !== lineId));
   }, []);
 
-  const setQuantity = useCallback((id: string, quantity: number) => {
+  const setQuantity = useCallback((lineId: string, quantity: number) => {
     setItems((prev) =>
       quantity <= 0
-        ? prev.filter((i) => i.id !== id)
-        : prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+        ? prev.filter((i) => (i.lineId ?? i.id) !== lineId)
+        : prev.map((i) => ((i.lineId ?? i.id) === lineId ? { ...i, quantity } : i))
     );
   }, []);
 

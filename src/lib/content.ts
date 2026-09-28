@@ -14,7 +14,7 @@ import type {
  */
 export const CONTENT_DEFAULTS: Record<string, Json> = {
   hero: {
-    eyebrow: "Pangani Street · Arusha",
+    eyebrow: "Sokoine Road · Arusha",
     title: "Beauty, Perfectly Crafted",
     description:
       "Braids, lashes, spa and glam by Arusha's most loved beauty team.",
@@ -39,8 +39,9 @@ export const CONTENT_DEFAULTS: Record<string, Json> = {
     phone: "+255 766 400 961",
     whatsapp: "255766400961",
     email: "kimbeautysaloons@gmail.com",
-    address: "Pangani Street, Arusha, Tanzania",
-    map_query: "Pangani Street, Arusha, Tanzania",
+    address: "Sokoine Rd, Arusha 23102, Tanzania",
+    map_query: "Sokoine Rd, Arusha 23102, Tanzania",
+    map_url: "https://maps.app.goo.gl/Uo27eHDR2KzSVjxd7?g_st=ipc",
     hours_weekday: "Mon – Fri · 8:00 AM – 8:00 PM",
     hours_saturday: "Saturday · 8:00 AM – 9:00 PM",
     hours_sunday: "Sunday · 10:00 AM – 6:00 PM",
@@ -66,7 +67,7 @@ export const CONTENT_DEFAULTS: Record<string, Json> = {
   },
   footer: {
     tagline:
-      "A modern beauty studio on Pangani Street, Arusha — hair, lashes, nails, spa and the Kim Collection.",
+      "A modern beauty salon on Sokoine Road, Arusha, offering hair, lashes, nails, spa and the Kim Collection.",
     copyright: "Kim Beauty. All rights reserved.",
   },
 };

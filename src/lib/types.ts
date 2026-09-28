@@ -74,11 +74,17 @@ export type Product = {
   category_id: string | null;
   image_url: string | null;
   gallery: string[];
+  color_options: ProductColorOption[];
   in_stock: boolean;
   is_featured: boolean;
   is_active: boolean;
   sort_order: number;
   product_categories?: { name: string; slug: string } | null;
+};
+
+export type ProductColorOption = {
+  name: string;
+  image_index?: number;
 };
 
 export type Testimonial = {

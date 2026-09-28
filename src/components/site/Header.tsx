@@ -8,6 +8,7 @@ import { Menu, Phone, ShoppingBag, X } from "lucide-react";
 import { useCart } from "@/components/shop/CartProvider";
 import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -52,6 +53,7 @@ export function Header({
           : "border-b border-transparent bg-transparent"
       )}
     >
+      <div id="google_translate_element" className="hidden" aria-hidden="true" />
       <div className="container-kb flex h-18 items-center justify-between gap-4 py-3 md:h-20">
         <Link href="/" className="flex shrink-0 items-center" aria-label="Kim Beauty home">
           <Image
@@ -98,6 +100,14 @@ export function Header({
             <Phone className="h-4 w-4" aria-hidden="true" />
             {phone}
           </a>
+
+          <div className="hidden lg:block">
+            <LanguageSwitcher />
+          </div>
+
+          <div className="lg:hidden">
+            <LanguageSwitcher compact />
+          </div>
 
           <button
             onClick={openCart}

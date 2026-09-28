@@ -1,4 +1,7 @@
+"use client";
+
 import { Quote } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { GoogleG } from "@/components/ui/GoogleG";
 import { Stars } from "@/components/ui/Stars";
 import { Reveal } from "@/components/ui/Reveal";
@@ -70,6 +73,45 @@ function MarqueeRow({
   );
 }
 
+function MobileReviewCarousel({ items }: { items: Testimonial[] }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track || paused || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    let frame = 0;
+    const move = () => {
+      if (track.scrollLeft >= track.scrollWidth / 2) track.scrollLeft = 0;
+      else track.scrollLeft += 0.35;
+      frame = window.requestAnimationFrame(move);
+    };
+    frame = window.requestAnimationFrame(move);
+    return () => window.cancelAnimationFrame(frame);
+  }, [paused]);
+
+  return (
+    <div
+      ref={trackRef}
+      onPointerDown={() => setPaused(true)}
+      onPointerUp={() => setPaused(false)}
+      onPointerCancel={() => setPaused(false)}
+      onPointerLeave={() => setPaused(false)}
+      className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2"
+      aria-label="Customer reviews. Swipe to read more."
+    >
+      {[...items, ...items].map((testimonial, index) => (
+        <div key={`${testimonial.id}-${index}`} className="snap-center">
+          <ReviewCard t={testimonial} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Testimonials({
   content,
   testimonials,
@@ -126,7 +168,11 @@ export function Testimonials({
           </Reveal>
         </div>
 
-        <div className="mt-14 space-y-5">
+        <div className="mt-14 md:hidden">
+          <MobileReviewCarousel items={testimonials} />
+        </div>
+
+        <div className="mt-14 hidden space-y-5 md:block">
           <MarqueeRow items={rowA} />
           <MarqueeRow items={rowB} reverse />
         </div>

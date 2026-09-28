@@ -89,7 +89,7 @@ export function localBusinessSchema(content: ContentMap, services: Service[] = [
       content,
       "footer",
       "tagline",
-      "A modern beauty studio on Pangani Street, Arusha."
+      "A modern beauty salon on Pangani Street, Arusha."
     ),
     url: SITE_URL,
     telephone: pick(content, "contact", "phone"),
@@ -202,12 +202,16 @@ export function serviceSchema(service: Service, content: ContentMap) {
 }
 
 export function productSchema(product: Product) {
+  const images = Array.from(
+    new Set([product.image_url, ...(product.gallery ?? [])].filter((image): image is string => Boolean(image)))
+  ).map(absoluteUrl);
+
   return {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
     description: product.description ?? undefined,
-    image: product.image_url ? absoluteUrl(product.image_url) : undefined,
+    image: images.length ? images : undefined,
     brand: { "@type": "Brand", name: "Kim Beauty" },
     offers: {
       "@type": "Offer",

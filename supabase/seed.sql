@@ -5,7 +5,7 @@
 -- ---------- editable site copy ----------
 insert into public.site_content (key, label, value) values
 ('hero', 'Homepage Hero', jsonb_build_object(
-  'eyebrow', 'Pangani Street · Arusha',
+  'eyebrow', 'Sokoine Road · Arusha',
   'title', 'Beauty, Perfectly Crafted',
   'description', 'Braids, lashes, spa and glam by Arusha''s most loved beauty team.',
   'primary_cta_label', 'Book Appointment',
@@ -20,12 +20,12 @@ insert into public.site_content (key, label, value) values
 ('about', 'About Section', jsonb_build_object(
   'eyebrow', 'Our Story',
   'title', 'Where Arusha Comes To Glow',
-  'body', 'Kim Beauty began on Pangani Street with one simple belief — every woman deserves to leave a chair feeling like the best version of herself. Today our studio brings together master braiders, lash artists, makeup pros and spa therapists under one roof.',
+  'body', 'Kim Beauty began on Pangani Street with one simple belief — every woman deserves to leave a chair feeling like the best version of herself. Today our salon brings together master braiders, lash artists, makeup pros and spa therapists under one roof.',
   'body_2', 'From protective styles and precision extensions to signature spa rituals and the Kim Collection, everything we do is built on clean technique, premium product and genuine care.',
   'image_url', '/images/gallery-5.webp',
   'point_1', 'Certified, career stylists',
   'point_2', 'Premium products only',
-  'point_3', 'Spotless, relaxed studio',
+  'point_3', 'Spotless, relaxed salon',
   'point_4', 'Kim Academy training',
   'cta_label', 'More About Us',
   'cta_href', '/about'
@@ -63,8 +63,9 @@ insert into public.site_content (key, label, value) values
   'phone', '+255 766 400 961',
   'whatsapp', '255766400961',
   'email', 'kimbeautysaloons@gmail.com',
-  'address', 'Pangani Street, Arusha, Tanzania',
-  'map_query', 'Pangani Street, Arusha, Tanzania',
+  'address', 'Sokoine Rd, Arusha 23102, Tanzania',
+  'map_query', 'Sokoine Rd, Arusha 23102, Tanzania',
+  'map_url', 'https://maps.app.goo.gl/Uo27eHDR2KzSVjxd7?g_st=ipc',
   'hours_weekday', 'Mon – Fri · 8:00 AM – 8:00 PM',
   'hours_saturday', 'Saturday · 8:00 AM – 9:00 PM',
   'hours_sunday', 'Sunday · 10:00 AM – 6:00 PM',
@@ -89,10 +90,10 @@ insert into public.site_content (key, label, value) values
 ('about_page', 'About Page', jsonb_build_object(
   'eyebrow', 'About Kim Beauty',
   'title', 'Beauty With Intention',
-  'description', 'A modern beauty studio in the heart of Arusha.',
+  'description', 'A modern beauty salon in the heart of Arusha.',
   'hero_image', '/images/gallery-2.webp',
   'story_title', 'How It Started',
-  'story_body', 'Kim Beauty opened its doors on Pangani Street with a single braiding chair and a long list of loyal clients. Word travelled fast. What started as one stylist became a full studio — braiding, extensions, lashes, makeup, nails, spa and a product line of our own.',
+  'story_body', 'Kim Beauty opened its doors on Pangani Street with a single braiding chair and a long list of loyal clients. Word travelled fast. What started as one stylist became a full salon — braiding, extensions, lashes, makeup, nails, spa and a product line of our own.',
   'story_body_2', 'We train every stylist in-house through Kim Academy, so the technique you get on your first visit is the technique you get on your fiftieth.',
   'mission_title', 'Our Mission',
   'mission_body', 'To give every client a seat where she is listened to, cared for, and sent back out glowing.',
@@ -121,10 +122,10 @@ insert into public.site_content (key, label, value) values
 ('contact_page', 'Contact Page', jsonb_build_object(
   'eyebrow', 'Get In Touch',
   'title', 'We Would Love To Hear From You',
-  'description', 'Call, WhatsApp, email or stop by the studio on Pangani Street.'
+  'description', 'Call, WhatsApp, email or stop by the salon on Pangani Street.'
 )),
 ('footer', 'Footer', jsonb_build_object(
-  'tagline', 'A modern beauty studio on Pangani Street, Arusha — hair, lashes, nails, spa and the Kim Collection.',
+  'tagline', 'A modern beauty salon on Sokoine Road, Arusha, offering hair, lashes, nails, spa and the Kim Collection.',
   'copyright', 'Kim Beauty. All rights reserved.'
 )),
 ('branding', 'Branding', jsonb_build_object(
@@ -187,7 +188,7 @@ on conflict (slug) do nothing;
 
 -- ---------- testimonials ----------
 insert into public.testimonials (name, location, rating, quote, source, sort_order) values
-('Amina Hassan', 'Arusha', 5, 'Best knotless braids I have ever had. Three weeks in and my edges are still perfect. The studio is spotless and the team actually listens to what you want.', 'google', 1),
+('Amina Hassan', 'Arusha', 5, 'Best knotless braids I have ever had. Three weeks in and my edges are still perfect. The salon is spotless and the team actually listens to what you want.', 'google', 1),
 ('Grace Mollel', 'Njiro, Arusha', 5, 'I came in for a lash set before my sister''s wedding and left obsessed. They lasted the whole trip and still looked full when I got back.', 'google', 2),
 ('Neema Kileo', 'Arusha', 5, 'The spa package is worth every shilling. Massage, facial, steam — I walked out feeling like a completely different person.', 'google', 3),
 ('Fatma Said', 'Sakina, Arusha', 5, 'My bridal makeup was flawless from morning until the last dance. Photos came out incredible. Thank you Kim Beauty team.', 'google', 4),
