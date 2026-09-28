@@ -4,7 +4,7 @@ import type { Locale } from "./config";
  * Every fixed piece of site copy, in each language.
  *
  * Copy the admin can edit (hero, section headings, about text…) lives in
- * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` / `_ar` / `_hi` twins — see
+ * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` / `_ar` / `_hi` / `_es` twins — see
  * `getSiteContent`. Service and product names stay exactly as typed.
  */
 const en = {
@@ -1649,7 +1649,284 @@ const hi: Dictionary = {
   },
 };
 
-const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh, ar, hi };
+const es: Dictionary = {
+  language: {
+    label: "Elegir idioma",
+  },
+  common: {
+    optional: "(opcional)",
+    sending: "Enviando…",
+    chatOnWhatsApp: "Escríbanos por WhatsApp",
+    openingHours: "Horario",
+    talkToUs: "Hable con nosotros",
+    home: "Inicio",
+    priceOnRequest: "Precio a consultar",
+    addToCart: "Añadir al carrito",
+  },
+  nav: {
+    home: "Inicio",
+    about: "Nosotros",
+    services: "Servicios",
+    shop: "Tienda",
+    contact: "Contacto",
+    bookAppointment: "Reservar cita",
+    homeLabel: "Inicio de Kim Beauty",
+    openMenu: "Abrir menú",
+    closeMenu: "Cerrar menú",
+    openCart: (count: number) => `Abrir carrito, ${count} ${count === 1 ? "artículo" : "artículos"}`,
+  },
+  footer: {
+    explore: "Explorar",
+    services: "Servicios",
+    visitUs: "Visítenos",
+    securePayments: "Pagos en línea seguros",
+    payWith: (provider: string) => `Pagar con ${provider}`,
+    book: "Reservar",
+    shop: "Tienda",
+    admin: "Admin",
+    quickLinks: {
+      about: "Sobre nosotros",
+      services: "Todos los servicios",
+      shop: "Tienda",
+      booking: "Reservar cita",
+      contact: "Contacto",
+    },
+    serviceLinks: {
+      extensions: "Extensiones",
+      braiding: "Trenzas",
+      lashes: "Pestañas",
+      makeUp: "Maquillaje",
+      spa: "Paquetes de spa",
+      nails: "Manicura y pedicura",
+    },
+  },
+  payments: {
+    Pesapal: "Tarjeta, dinero móvil y transferencia bancaria",
+    "DPO Pay": "Pago seguro con tarjeta vía DirectPay",
+    PayPal: "Pague desde cualquier parte del mundo",
+  },
+  home: {
+    googleReviews: "Reseñas de Google",
+    openToday: "Abierto hoy",
+    styles: (count: number) => `${count} ${count === 1 ? "estilo" : "estilos"}`,
+    viewAllServices: "Ver todos los servicios",
+    basedOnReviews: (count: string) => `Basado en más de ${count} reseñas de Google`,
+    reviewsLabel: "Reseñas de clientes. Deslice para leer más.",
+  },
+  about: {
+    breadcrumb: "Nosotros",
+    valuesEyebrow: "Nuestros valores",
+    valuesTitle: "El sello Kim Beauty",
+    valuesDescription: "Cuatro cosas con las que cada clienta puede contar, en cada visita.",
+    galleryEyebrow: "Nuestro trabajo",
+    galleryTitle: "Recién salidas del sillón",
+    galleryDescription: "Un vistazo a lo que sale de nuestro salón cada semana.",
+  },
+  booking: {
+    breadcrumb: "Reservar cita",
+    howItWorks: "Cómo funciona",
+    steps: [
+      { title: "Elija su servicio", body: "Entre toda la carta de Kim Beauty." },
+      { title: "Elija fecha y hora", body: "Díganos cuándo le viene mejor." },
+      { title: "Confirme por WhatsApp", body: "Le respondemos para asegurar su hora." },
+    ],
+    preferToTalk: "¿Prefiere hablar?",
+    preferToTalkBody: "Llámenos o escríbanos por WhatsApp y le reservamos la cita.",
+  },
+  bookingForm: {
+    sentTitle: "Solicitud enviada",
+    sentBody:
+      "Los datos de su cita se han abierto en WhatsApp. Envíe el mensaje y confirmaremos su hora enseguida.",
+    bookAnother: "Reservar otra cita",
+    fullName: "Nombre completo",
+    fullNamePlaceholder: "p. ej. Amina Hassan",
+    phone: "Teléfono / WhatsApp",
+    phonePlaceholder: "p. ej. 0766 400 961",
+    email: "Correo electrónico",
+    service: "Servicio",
+    chooseService: "Elija un servicio…",
+    style: "Estilo / opción",
+    chooseStyle: "Elija un estilo…",
+    about: (duration: string) => ` · aprox. ${duration}`,
+    notSure:
+      "¿No está segura? Elija el más parecido y añada una nota abajo; le aconsejaremos por WhatsApp.",
+    seePhotos: "Ver fotos y precios",
+    date: "Fecha preferida",
+    time: "Hora preferida",
+    chooseTime: "Elija una hora…",
+    stylist: "Estilista preferida",
+    stylistPlaceholder: "Cualquiera disponible",
+    notes: "¿Algo que debamos saber?",
+    notesPlaceholder: "Foto de referencia, largo del cabello, alergias, ocasión…",
+    errorRequired: "Indique su nombre, teléfono, servicio, fecha y hora.",
+    errorStyle: (service: string) => `Elija qué estilo de ${service} desea.`,
+    submit: "Enviar reserva por WhatsApp",
+    savedHint:
+      "Su solicitud queda guardada y se abre en WhatsApp para que confirmemos su hora al momento.",
+  },
+  contact: {
+    breadcrumb: "Contacto",
+    callUs: "Llámenos",
+    whatsapp: "WhatsApp",
+    chatNow: "Escríbanos ahora",
+    emailUs: "Envíenos un correo",
+    visitSalon: "Visite el salón",
+    sendUsMessage: "Envíenos un mensaje",
+    sendUsMessageBody:
+      "Rellene el formulario y le responderemos, normalmente en menos de una hora dentro del horario.",
+    follow: "Siga a Kim Beauty",
+    followBody: "Vea nuestros trabajos más recientes en redes sociales.",
+    payNow: "Pagar ahora",
+    mapTitle: "Mapa de ubicación de Kim Beauty",
+    openInMaps: "Abrir Kim Beauty en Google Maps",
+  },
+  contactForm: {
+    sentTitle: "Mensaje enviado",
+    sentBody:
+      "Gracias por escribirnos: hemos recibido su mensaje y abierto WhatsApp para que también pueda contactarnos al instante.",
+    sendAnother: "Enviar otro mensaje",
+    name: "Su nombre",
+    namePlaceholder: "p. ej. Grace Mollel",
+    phone: "Teléfono",
+    phonePlaceholder: "p. ej. 0766 400 961",
+    email: "Correo electrónico",
+    subject: "Asunto",
+    subjectPlaceholder: "¿Sobre qué es?",
+    message: "Mensaje",
+    messagePlaceholder: "Cuéntenos cómo podemos ayudarle…",
+    error: "Indique su nombre y su mensaje.",
+    submit: "Enviar mensaje",
+  },
+  services: {
+    breadcrumb: "Servicios",
+    more: (count: number) => `+${count} más`,
+    viewOptions: (count: number) => `Ver ${count} ${count === 1 ? "opción" : "opciones"}`,
+    viewService: "Ver servicio",
+    empty: "Estamos actualizando los servicios. Vuelva pronto.",
+  },
+  serviceDetail: {
+    optionsToChoose: (count: number) =>
+      `${count} ${count === 1 ? "opción disponible" : "opciones disponibles"}`,
+    book: (service: string) => `Reservar ${service}`,
+    askQuestion: "Hacer una pregunta",
+    chooseStyle: "Elija su estilo",
+    chooseCourse: "Elija su curso",
+    chooseIntro:
+      "Cada opción tiene su propia foto, duración y precio. Elija la que desee y resérvela, o añádala al carrito para pagar en línea.",
+    noOptions: (service: string) =>
+      `Todavía estamos fotografiando y poniendo precio a cada opción de ${service}. Escríbanos por WhatsApp y le explicaremos todo lo disponible.`,
+    otherServices: "Otros servicios de Kim Beauty",
+    allServices: "Todos los servicios",
+    popular: "Popular",
+    bookThisStyle: "Reservar este estilo",
+  },
+  shop: {
+    breadcrumb: "Tienda",
+    perks: [
+      {
+        title: "Entrega en Arusha",
+        body: "Entrega el mismo día en Arusha y envíos a toda Tanzania bajo pedido.",
+      },
+      {
+        title: "Probado en el salón",
+        body: "Nuestras propias estilistas usan cada producto de esta página.",
+      },
+      {
+        title: "Pedidos por WhatsApp",
+        body: "Llene su carrito, envíenoslo y confirmamos el stock al instante.",
+      },
+    ],
+    sorts: {
+      featured: "Destacados",
+      "price-asc": "Precio: de menor a mayor",
+      "price-desc": "Precio: de mayor a menor",
+      name: "Nombre A–Z",
+    },
+    searchPlaceholder: "Buscar productos…",
+    searchLabel: "Buscar productos",
+    sortLabel: "Ordenar productos",
+    allProducts: "Todos los productos",
+    showing: (count: number) => `Mostrando ${count} ${count === 1 ? "producto" : "productos"}`,
+    noMatch: "Ningún producto coincide con la búsqueda",
+    noMatchHint: "Pruebe otra palabra o explore otra categoría.",
+  },
+  product: {
+    bestseller: "Más vendido",
+    soldOut: "Agotado",
+    colorOrNumber: "Color o número",
+    addToCartLabel: (name: string) => `Añadir ${name} al carrito`,
+    photos: (name: string) => `Fotos de ${name}`,
+    photoN: (name: string, n: number) => `${name}, foto ${n}`,
+    previousPhoto: "Foto anterior",
+    nextPhoto: "Foto siguiente",
+    showPhoto: (n: number) => `Ver foto ${n}`,
+  },
+  cart: {
+    dialogLabel: "Carrito de compra",
+    title: "Su carrito",
+    close: "Cerrar carrito",
+    empty: "Su carrito está vacío",
+    emptyHint: "Añada un producto de la tienda o un servicio de la página de servicios.",
+    goToShop: "Ir a la tienda",
+    remove: (name: string) => `Quitar ${name}`,
+    decrease: "Reducir cantidad",
+    increase: "Aumentar cantidad",
+    yourName: "Su nombre",
+    yourPhone: "Su teléfono",
+    deliveryNote: "Nota de entrega (opcional)",
+    deliveryNoteLabel: "Nota de entrega",
+    total: "Total",
+    sendOrder: "Enviar pedido por WhatsApp",
+    sendHint:
+      "Su pedido se abre en WhatsApp; allí confirmamos disponibilidad, plazos y entrega.",
+    payOnline: "O pague en línea ahora",
+    paidAlready:
+      "¿Ya pagó? Envíe el pedido por WhatsApp con su referencia de pago para que podamos cotejarlo.",
+  },
+  whatsappButton: {
+    label: "Hablar con Kim Beauty por WhatsApp",
+  },
+  meta: {
+    site: {
+      title: "Kim Beauty — Trenzas, pestañas, maquillaje y spa en Arusha, Tanzania",
+      description:
+        "Kim Beauty es un salón de belleza moderno en Sokoine Road, Arusha: trenzas sin nudos, extensiones, extensiones de pestañas, maquillaje de novia, paquetes de spa, uñas y formación en Kim Academy. Vea cada estilo y precio y reserve por WhatsApp.",
+    },
+    about: {
+      title: "Sobre nosotros",
+      description:
+        "Kim Beauty es un salón de belleza moderno en Sokoine Road, Arusha: trenzadoras expertas, artistas de pestañas, maquilladoras y terapeutas de spa bajo un mismo techo.",
+    },
+    booking: {
+      title: "Reservar cita",
+      description:
+        "Reserve su sillón en Kim Beauty, Sokoine Road, Arusha. Elija el servicio y el estilo exacto, la fecha y la hora; confirmamos por WhatsApp.",
+    },
+    contact: {
+      title: "Contacto",
+      description:
+        "Llame, escriba por WhatsApp o correo, o visite Kim Beauty en Sokoine Road, Arusha, Tanzania. Abierto de lunes a domingo.",
+    },
+    services: {
+      title: "Servicios y precios",
+      description:
+        "Trenzas, extensiones, pestañas, maquillaje, paquetes de spa, manicura y pedicura, tratamientos capilares y Kim Academy: cada estilo, duración y precio en Kim Beauty, Sokoine Road, Arusha.",
+    },
+    shop: {
+      title: "Tienda",
+      description:
+        "Compre productos capilares de Kim Beauty, pelucas de Kim Collection, pestañas, cuidado de uñas y más. Entrega en todo Arusha y pedidos directos por WhatsApp.",
+    },
+    service: {
+      title: (service: string) => `${service} en Arusha — Estilos y precios`,
+      notFound: "Servicio no encontrado",
+      options: (names: string) => `Opciones: ${names}.`,
+      bookAt: "Reserve en Kim Beauty, Sokoine Road, Arusha.",
+    },
+  },
+};
+
+const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh, ar, hi, es };
 
 export function getDictionary(locale: Locale): Dictionary {
   return DICTIONARIES[locale];

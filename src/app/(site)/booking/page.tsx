@@ -56,7 +56,8 @@ export default async function BookingPage() {
 
       <section className="pb-20 md:pb-28">
         <div className="container-kb">
-          <div className="grid gap-9 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
+          {/* minmax(0,…): a long service dropdown option must not widen the column past the screen. */}
+          <div className="grid grid-cols-[minmax(0,1fr)] gap-9 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-12">
             {/* form */}
             <Reveal>
               <Suspense fallback={<FormFallback />}>

@@ -1,4 +1,4 @@
-export const LOCALES = ["en", "sw", "fr", "zh", "ar", "hi"] as const;
+export const LOCALES = ["en", "sw", "fr", "zh", "ar", "hi", "es"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -19,6 +19,7 @@ export const HTML_LANG: Record<Locale, string> = {
   zh: "zh-Hans",
   ar: "ar",
   hi: "hi",
+  es: "es",
 };
 
 /** Value for <html dir>. Arabic reads right to left. */

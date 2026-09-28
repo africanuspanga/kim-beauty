@@ -116,7 +116,8 @@ export default async function ContactPage() {
       {/* form + hours + map */}
       <section className="py-12 md:py-16">
         <div className="container-kb">
-          <div className="grid gap-9 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
+          {/* minmax(0,…): long unbreakable content must not widen the column past the screen. */}
+          <div className="grid grid-cols-[minmax(0,1fr)] gap-9 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-12">
             <Reveal>
               <h2 className="text-[clamp(1.75rem,3.4vw,2.4rem)]">{t.contact.sendUsMessage}</h2>
               <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-muted">

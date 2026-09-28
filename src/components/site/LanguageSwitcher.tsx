@@ -113,6 +113,15 @@ function IndiaFlag() {
   );
 }
 
+function SpainFlag() {
+  return (
+    <svg viewBox="0 0 3 2" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+      <rect width="3" height="2" fill="#AA151B" />
+      <rect y="0.5" width="3" height="1" fill="#F1BF00" />
+    </svg>
+  );
+}
+
 type Language = {
   code: Locale;
   name: string;
@@ -126,6 +135,7 @@ const LANGUAGES: Language[] = [
   { code: "zh", name: "中文", Flag: ChinaFlag },
   { code: "ar", name: "العربية", Flag: UaeFlag },
   { code: "hi", name: "हिन्दी", Flag: IndiaFlag },
+  { code: "es", name: "Español", Flag: SpainFlag },
 ];
 
 function FlagDot({ Flag, dim = false }: { Flag: Language["Flag"]; dim?: boolean }) {
