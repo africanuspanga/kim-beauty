@@ -214,3 +214,8 @@
   .hero-in, .hero-scale { opacity: 1; animation: none; }
   .float-soft { animation: none; }
 }
+
+/* Browsers fake italics for Chinese by slanting the glyphs — keep them upright. */
+:lang(zh) .italic {
+  font-style: normal;
+}

@@ -4,7 +4,7 @@ import type { Locale } from "./config";
  * Every fixed piece of site copy, in each language.
  *
  * Copy the admin can edit (hero, section headings, about text…) lives in
- * `site_content` instead, with `<field>_sw` / `<field>_fr` twins — see
+ * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` twins — see
  * `getSiteContent`. Service and product names stay exactly as typed.
  */
 const en = {
@@ -841,7 +841,275 @@ const fr: Dictionary = {
   },
 };
 
-const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr };
+const zh: Dictionary = {
+  language: {
+    label: "选择语言",
+  },
+  common: {
+    optional: "（选填）",
+    sending: "发送中…",
+    chatOnWhatsApp: "WhatsApp 咨询",
+    openingHours: "营业时间",
+    talkToUs: "联系我们",
+    home: "首页",
+    priceOnRequest: "价格面议",
+    addToCart: "加入购物车",
+  },
+  nav: {
+    home: "首页",
+    about: "关于我们",
+    services: "服务",
+    shop: "商店",
+    contact: "联系",
+    bookAppointment: "预约",
+    homeLabel: "Kim Beauty 首页",
+    openMenu: "打开菜单",
+    closeMenu: "关闭菜单",
+    openCart: (count: number) => `打开购物车，共 ${count} 件`,
+  },
+  footer: {
+    explore: "浏览",
+    services: "服务",
+    visitUs: "到店地址",
+    securePayments: "安全在线支付",
+    payWith: (provider: string) => `使用 ${provider} 支付`,
+    book: "预约",
+    shop: "商店",
+    admin: "管理",
+    quickLinks: {
+      about: "关于我们",
+      services: "全部服务",
+      shop: "商店",
+      booking: "预约",
+      contact: "联系我们",
+    },
+    serviceLinks: {
+      extensions: "接发",
+      braiding: "编发",
+      lashes: "睫毛",
+      makeUp: "化妆",
+      spa: "水疗套餐",
+      nails: "美甲与足护",
+    },
+  },
+  payments: {
+    Pesapal: "银行卡、移动支付和银行转账",
+    "DPO Pay": "通过 DirectPay 安全刷卡支付",
+    PayPal: "全球任何地方均可支付",
+  },
+  home: {
+    googleReviews: "Google 评价",
+    openToday: "今日营业",
+    styles: (count: number) => `${count} 种款式`,
+    viewAllServices: "查看全部服务",
+    basedOnReviews: (count: string) => `基于 ${count}+ 条 Google 评价`,
+    reviewsLabel: "顾客评价，左右滑动查看更多。",
+  },
+  about: {
+    breadcrumb: "关于我们",
+    valuesEyebrow: "我们的坚持",
+    valuesTitle: "Kim Beauty 标准",
+    valuesDescription: "每一位顾客、每一次到店，都能信赖的四项承诺。",
+    galleryEyebrow: "作品展示",
+    galleryTitle: "新鲜出炉的造型",
+    galleryDescription: "看看我们沙龙每周完成的作品。",
+  },
+  booking: {
+    breadcrumb: "预约",
+    howItWorks: "预约流程",
+    steps: [
+      { title: "选择服务", body: "从 Kim Beauty 全部服务中挑选。" },
+      { title: "选择日期和时间", body: "告诉我们您方便的时间。" },
+      { title: "WhatsApp 确认", body: "我们会回复您，为您锁定时段。" },
+    ],
+    preferToTalk: "想直接沟通？",
+    preferToTalkBody: "致电或在 WhatsApp 上联系我们，我们为您安排预约。",
+  },
+  bookingForm: {
+    sentTitle: "预约请求已发送",
+    sentBody: "您的预约信息已在 WhatsApp 中打开。发送该消息后，我们会立即确认您的时段。",
+    bookAnother: "再次预约",
+    fullName: "姓名",
+    fullNamePlaceholder: "例如：Amina Hassan",
+    phone: "电话 / WhatsApp",
+    phonePlaceholder: "例如：0766 400 961",
+    email: "电子邮箱",
+    service: "服务",
+    chooseService: "请选择服务…",
+    style: "款式 / 选项",
+    chooseStyle: "请选择款式…",
+    about: (duration: string) => ` · 约 ${duration}`,
+    notSure: "不确定选哪个？请选择最接近的一项并在下方备注——我们会在 WhatsApp 上为您建议。",
+    seePhotos: "查看图片和价格",
+    date: "期望日期",
+    time: "期望时间",
+    chooseTime: "请选择时间…",
+    stylist: "指定造型师",
+    stylistPlaceholder: "不指定",
+    notes: "还有需要我们了解的吗？",
+    notesPlaceholder: "参考图、头发长度、过敏情况、场合…",
+    errorRequired: "请填写姓名、电话、服务、日期和时间。",
+    errorStyle: (service: string) => `请选择您想要的 ${service} 款式。`,
+    submit: "通过 WhatsApp 发送预约",
+    savedHint: "您的预约已保存并在 WhatsApp 中打开，方便我们立即确认时段。",
+  },
+  contact: {
+    breadcrumb: "联系我们",
+    callUs: "致电我们",
+    whatsapp: "WhatsApp",
+    chatNow: "立即咨询",
+    emailUs: "发送邮件",
+    visitSalon: "到店拜访",
+    sendUsMessage: "给我们留言",
+    sendUsMessageBody: "填写表单后我们会尽快回复——营业时间内通常一小时内回复。",
+    follow: "关注 Kim Beauty",
+    followBody: "在社交媒体上查看我们的最新作品。",
+    payNow: "立即支付",
+    mapTitle: "Kim Beauty 位置地图",
+    openInMaps: "在 Google 地图中打开 Kim Beauty",
+  },
+  contactForm: {
+    sentTitle: "留言已发送",
+    sentBody: "感谢您的联系——我们已收到您的留言，并为您打开了 WhatsApp，方便您随时找到我们。",
+    sendAnother: "再发一条留言",
+    name: "您的姓名",
+    namePlaceholder: "例如：Grace Mollel",
+    phone: "电话",
+    phonePlaceholder: "例如：0766 400 961",
+    email: "电子邮箱",
+    subject: "主题",
+    subjectPlaceholder: "关于什么事？",
+    message: "留言内容",
+    messagePlaceholder: "请告诉我们如何帮助您…",
+    error: "请填写您的姓名和留言内容。",
+    submit: "发送留言",
+  },
+  services: {
+    breadcrumb: "服务",
+    more: (count: number) => `+${count} 项`,
+    viewOptions: (count: number) => `查看 ${count} 个选项`,
+    viewService: "查看服务",
+    empty: "服务正在更新中，请稍后再来查看。",
+  },
+  serviceDetail: {
+    optionsToChoose: (count: number) => `共 ${count} 个选项可选`,
+    book: (service: string) => `预约${service}`,
+    askQuestion: "咨询问题",
+    chooseStyle: "选择您的款式",
+    chooseCourse: "选择您的课程",
+    chooseIntro: "以下每个选项都有独立的图片、时长和价格。选好后即可预约——或加入购物车在线支付。",
+    noOptions: (service: string) =>
+      `我们仍在为 ${service} 的各个选项拍照和定价。请在 WhatsApp 上给我们留言，我们会为您详细介绍所有可选项目。`,
+    otherServices: "Kim Beauty 其他服务",
+    allServices: "全部服务",
+    popular: "热门",
+    bookThisStyle: "预约此款式",
+  },
+  shop: {
+    breadcrumb: "商店",
+    perks: [
+      {
+        title: "阿鲁沙配送",
+        body: "阿鲁沙市内当日送达，如有需要可发往坦桑尼亚全国。",
+      },
+      {
+        title: "沙龙实测",
+        body: "本页每一件产品都由我们的造型师亲自使用。",
+      },
+      {
+        title: "WhatsApp 下单",
+        body: "选好商品发送给我们，我们会立即确认库存。",
+      },
+    ],
+    sorts: {
+      featured: "推荐",
+      "price-asc": "价格：从低到高",
+      "price-desc": "价格：从高到低",
+      name: "名称 A–Z",
+    },
+    searchPlaceholder: "搜索商品…",
+    searchLabel: "搜索商品",
+    sortLabel: "商品排序",
+    allProducts: "全部商品",
+    showing: (count: number) => `共显示 ${count} 件商品`,
+    noMatch: "没有找到匹配的商品",
+    noMatchHint: "试试其他关键词或浏览其他分类。",
+  },
+  product: {
+    bestseller: "畅销",
+    soldOut: "已售罄",
+    colorOrNumber: "颜色或色号",
+    addToCartLabel: (name: string) => `将 ${name} 加入购物车`,
+    photos: (name: string) => `${name} 商品图片`,
+    photoN: (name: string, n: number) => `${name}，第 ${n} 张图片`,
+    previousPhoto: "上一张图片",
+    nextPhoto: "下一张图片",
+    showPhoto: (n: number) => `查看第 ${n} 张图片`,
+  },
+  cart: {
+    dialogLabel: "购物车",
+    title: "您的购物车",
+    close: "关闭购物车",
+    empty: "购物车是空的",
+    emptyHint: "可从商店添加商品，或从服务页面添加服务。",
+    goToShop: "去商店逛逛",
+    remove: (name: string) => `移除 ${name}`,
+    decrease: "减少数量",
+    increase: "增加数量",
+    yourName: "您的姓名",
+    yourPhone: "您的电话",
+    deliveryNote: "配送备注（选填）",
+    deliveryNoteLabel: "配送备注",
+    total: "合计",
+    sendOrder: "通过 WhatsApp 发送订单",
+    sendHint: "订单将在 WhatsApp 中打开——我们会在那里确认库存、时间和配送。",
+    payOnline: "或立即在线支付",
+    paidAlready: "已经付款？请通过 WhatsApp 发送订单并附上付款参考号，方便我们核对。",
+  },
+  whatsappButton: {
+    label: "通过 WhatsApp 联系 Kim Beauty",
+  },
+  meta: {
+    site: {
+      title: "Kim Beauty — 坦桑尼亚阿鲁沙的编发、睫毛、化妆与水疗",
+      description:
+        "Kim Beauty 是位于阿鲁沙 Sokoine Road 的现代美容沙龙——无结编发、接发、睫毛嫁接、新娘妆、水疗套餐、美甲以及 Kim Academy 培训。查看每款造型和价格，然后通过 WhatsApp 预约。",
+    },
+    about: {
+      title: "关于我们",
+      description:
+        "Kim Beauty 是位于阿鲁沙 Sokoine Road 的现代美容沙龙——资深编发师、睫毛师、化妆师和水疗理疗师齐聚一堂。",
+    },
+    booking: {
+      title: "预约",
+      description:
+        "在阿鲁沙 Sokoine Road 的 Kim Beauty 预约您的座位。选择服务和具体款式、日期和时间——我们通过 WhatsApp 确认。",
+    },
+    contact: {
+      title: "联系我们",
+      description:
+        "致电、WhatsApp、发邮件，或到坦桑尼亚阿鲁沙 Sokoine Road 的 Kim Beauty 到店拜访。周一至周日营业。",
+    },
+    services: {
+      title: "服务与价格",
+      description:
+        "编发、接发、睫毛、化妆、水疗套餐、美甲与足护、头发护理及 Kim Academy——阿鲁沙 Sokoine Road Kim Beauty 的每款造型、时长和价格。",
+    },
+    shop: {
+      title: "商店",
+      description:
+        "选购 Kim Beauty 护发产品、Kim Collection 假发、睫毛、美甲用品等。阿鲁沙全城配送，直接通过 WhatsApp 下单。",
+    },
+    service: {
+      title: (service: string) => `阿鲁沙 ${service} — 款式与价格`,
+      notFound: "未找到该服务",
+      options: (names: string) => `可选：${names}。`,
+      bookAt: "欢迎到阿鲁沙 Sokoine Road 的 Kim Beauty 预约。",
+    },
+  },
+};
+
+const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh };
 
 export function getDictionary(locale: Locale): Dictionary {
   return DICTIONARIES[locale];

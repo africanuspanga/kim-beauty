@@ -1,4 +1,4 @@
-export const LOCALES = ["en", "sw", "fr"] as const;
+export const LOCALES = ["en", "sw", "fr", "zh"] as const;
 
 export type Locale = (typeof LOCALES)[number];
 
@@ -16,4 +16,5 @@ export const HTML_LANG: Record<Locale, string> = {
   en: "en-TZ",
   sw: "sw-TZ",
   fr: "fr",
+  zh: "zh-Hans",
 };
