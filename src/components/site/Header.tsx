@@ -102,11 +102,12 @@ export function Header({
             {phone}
           </a>
 
-          <div className="hidden lg:block">
+          {/* The full flag row needs xl width; below that it would push the header over. */}
+          <div className="hidden xl:block">
             <LanguageSwitcher />
           </div>
 
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <LanguageSwitcher compact />
           </div>
 

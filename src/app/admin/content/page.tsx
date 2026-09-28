@@ -68,8 +68,12 @@ const FIELD_LABELS: Record<string, string> = {
 };
 
 /** `title_sw` is the Kiswahili version of `title`, shown to visitors who pick SW. */
-const TRANSLATIONS: Record<string, string> = { _sw: "Kiswahili", _fr: "Français" };
-const TRANSLATION_SUFFIX = /_(sw|fr)$/;
+const TRANSLATIONS: Record<string, string> = {
+  _sw: "Kiswahili",
+  _fr: "Français",
+  _zh: "中文",
+};
+const TRANSLATION_SUFFIX = /_(sw|fr|zh)$/;
 
 function labelFor(key: string): string {
   const suffix = key.match(TRANSLATION_SUFFIX)?.[0];
@@ -81,7 +85,7 @@ function labelFor(key: string): string {
     .replace(/\bCta\b/g, "Button");
 }
 
-/** Puts each `<field>_sw` / `<field>_fr` directly under its English `<field>`. */
+/** Puts each translation (`<field>_sw`, `_fr`, `_zh`) directly under its English `<field>`. */
 function withTranslationsPaired(keys: string[]) {
   const english = keys.filter((k) => !TRANSLATION_SUFFIX.test(k));
   const paired = english.flatMap((k) => [
