@@ -11,18 +11,22 @@ import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Book an Appointment",
-  description:
-    "Reserve your chair at Kim Beauty, Pangani Street Arusha. Pick your service and the exact style you want, choose a date and time — we confirm on WhatsApp.",
-  alternates: { canonical: absoluteUrl("/booking") },
-  openGraph: {
-    title: "Book an Appointment — Kim Beauty Arusha",
-    description:
-      "Pick your service and style, choose a date and time. We confirm on WhatsApp.",
-    url: absoluteUrl("/booking"),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    title: t.meta.booking.title,
+    description: t.meta.booking.description,
+    alternates: { canonical: absoluteUrl("/booking") },
+    // Link previews are fetched without a language cookie, so they stay English.
+    openGraph: {
+      title: "Book an Appointment — Kim Beauty Arusha",
+      description:
+        "Pick your service and style, choose a date and time. We confirm on WhatsApp.",
+      url: absoluteUrl("/booking"),
+    },
+  };
+}
 
 function FormFallback() {
   return (

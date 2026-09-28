@@ -39,7 +39,7 @@ export const CONTENT_DEFAULTS: Record<string, Json> = {
     whatsapp: "255766400961",
     email: "kimbeautysaloons@gmail.com",
     address: "Sokoine Rd, Arusha 23102, Tanzania",
-    map_query: "Sokoine Rd, Arusha 23102, Tanzania",
+    map_query: "KIM BEAUTY SALONS, Sokoine Rd, Arusha",
     map_url: "https://maps.app.goo.gl/Uo27eHDR2KzSVjxd7?g_st=ipc",
     hours_weekday: "Mon – Fri · 8:00 AM – 8:00 PM",
     hours_saturday: "Saturday · 8:00 AM – 9:00 PM",

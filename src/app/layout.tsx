@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { HTML_LANG } from "@/lib/i18n/config";
-import { getLocale } from "@/lib/i18n/server";
+import { getLocale, getT } from "@/lib/i18n/server";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 import "./globals.css";
 
@@ -18,15 +18,19 @@ const inter = Inter({
   display: "swap",
 });
 
-export const metadata: Metadata = {
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    ...metadata,
+    title: { default: t.meta.site.title, template: "%s · Kim Beauty" },
+    description: t.meta.site.description,
+  };
+}
+
+/** Shared defaults; the title and description follow the visitor's language. */
+const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default:
-      "Kim Beauty — Braids, Lashes, Makeup & Spa in Arusha, Tanzania",
-    template: "%s · Kim Beauty",
-  },
-  description:
-    "Kim Beauty is a modern beauty salon on Pangani Street, Arusha — knotless braids, extensions, lash extensions, bridal makeup, spa packages, nails and Kim Academy training. See every style and price, then book on WhatsApp.",
   applicationName: "Kim Beauty",
   keywords: [
     "Kim Beauty",
@@ -65,7 +69,7 @@ export const metadata: Metadata = {
         url: absoluteUrl("/images/hero.jpg"),
         width: 2000,
         height: 1359,
-        alt: "Kim Beauty salon on Pangani Street, Arusha",
+        alt: "Kim Beauty salon on Sokoine Road, Arusha",
       },
     ],
   },

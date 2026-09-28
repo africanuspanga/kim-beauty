@@ -11,18 +11,22 @@ import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Contact Us",
-  description:
-    "Call, WhatsApp, email or visit Kim Beauty on Pangani Street, Arusha, Tanzania. Open Monday to Sunday.",
-  alternates: { canonical: absoluteUrl("/contact") },
-  openGraph: {
-    title: "Contact Kim Beauty — Pangani Street, Arusha",
-    description:
-      "Call, WhatsApp, email or visit us on Pangani Street, Arusha, Tanzania.",
-    url: absoluteUrl("/contact"),
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getT();
+
+  return {
+    title: t.meta.contact.title,
+    description: t.meta.contact.description,
+    alternates: { canonical: absoluteUrl("/contact") },
+    // Link previews are fetched without a language cookie, so they stay English.
+    openGraph: {
+      title: "Contact Kim Beauty — Sokoine Road, Arusha",
+      description:
+        "Call, WhatsApp, email or visit us on Sokoine Road, Arusha, Tanzania.",
+      url: absoluteUrl("/contact"),
+    },
+  };
+}
 
 export default async function ContactPage() {
   const [content, t] = await Promise.all([getSiteContent(), getT()]);

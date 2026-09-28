@@ -89,7 +89,7 @@ export function localBusinessSchema(content: ContentMap, services: Service[] = [
       content,
       "footer",
       "tagline",
-      "A modern beauty salon on Pangani Street, Arusha."
+      "A modern beauty salon on Sokoine Road, Arusha."
     ),
     url: SITE_URL,
     telephone: pick(content, "contact", "phone"),
@@ -105,7 +105,8 @@ export function localBusinessSchema(content: ContentMap, services: Service[] = [
       addressRegion: "Arusha",
       addressCountry: "TZ",
     },
-    geo: { "@type": "GeoCoordinates", latitude: -3.3869, longitude: 36.6829 },
+    // The pin on the salon's Google Business profile.
+    geo: { "@type": "GeoCoordinates", latitude: -3.3734029, longitude: 36.690324 },
     areaServed: [
       { "@type": "City", name: "Arusha" },
       { "@type": "Country", name: "Tanzania" },

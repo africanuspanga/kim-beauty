@@ -245,6 +245,45 @@ const en = {
   whatsappButton: {
     label: "Chat with Kim Beauty on WhatsApp",
   },
+  /** Browser-tab titles and search descriptions. */
+  meta: {
+    site: {
+      title: "Kim Beauty — Braids, Lashes, Makeup & Spa in Arusha, Tanzania",
+      description:
+        "Kim Beauty is a modern beauty salon on Sokoine Road, Arusha — knotless braids, extensions, lash extensions, bridal makeup, spa packages, nails and Kim Academy training. See every style and price, then book on WhatsApp.",
+    },
+    about: {
+      title: "About Us",
+      description:
+        "Kim Beauty is a modern beauty salon on Sokoine Road, Arusha — master braiders, lash artists, makeup pros and spa therapists under one roof.",
+    },
+    booking: {
+      title: "Book an Appointment",
+      description:
+        "Reserve your chair at Kim Beauty, Sokoine Road, Arusha. Pick your service and the exact style you want, choose a date and time — we confirm on WhatsApp.",
+    },
+    contact: {
+      title: "Contact Us",
+      description:
+        "Call, WhatsApp, email or visit Kim Beauty on Sokoine Road, Arusha, Tanzania. Open Monday to Sunday.",
+    },
+    services: {
+      title: "Our Services & Prices",
+      description:
+        "Braiding, extensions, lashes, makeup, spa packages, manicure & pedicure, hair treatments and Kim Academy — every style, duration and price at Kim Beauty, Sokoine Road, Arusha.",
+    },
+    shop: {
+      title: "Shop",
+      description:
+        "Shop Kim Beauty hair products, the Kim Collection of wigs, lashes, nail care and more. Delivery across Arusha, order straight to our WhatsApp.",
+    },
+    service: {
+      title: (service: string) => `${service} in Arusha — Styles & Prices`,
+      notFound: "Service Not Found",
+      options: (names: string) => `Options: ${names}.`,
+      bookAt: "Book at Kim Beauty, Sokoine Road, Arusha.",
+    },
+  },
 };
 
 export type Dictionary = typeof en;
@@ -485,6 +524,44 @@ const sw: Dictionary = {
   whatsappButton: {
     label: "Ongea na Kim Beauty kwa WhatsApp",
   },
+  meta: {
+    site: {
+      title: "Kim Beauty — Kusuka, Kope, Make Up na Spa Arusha, Tanzania",
+      description:
+        "Kim Beauty ni saluni ya kisasa ya urembo iliyopo Sokoine Road, Arusha — knotless braids, extensions, kope, make up ya harusi, spa, kucha na mafunzo ya Kim Academy. Tazama kila mtindo na bei, kisha weka miadi kwa WhatsApp.",
+    },
+    about: {
+      title: "Kuhusu Sisi",
+      description:
+        "Kim Beauty ni saluni ya kisasa ya urembo iliyopo Sokoine Road, Arusha — wasusi mahiri, wataalamu wa kope, make up na spa chini ya paa moja.",
+    },
+    booking: {
+      title: "Weka Miadi",
+      description:
+        "Hifadhi kiti chako Kim Beauty, Sokoine Road, Arusha. Chagua huduma na mtindo unaoutaka, chagua tarehe na saa — tunathibitisha kwa WhatsApp.",
+    },
+    contact: {
+      title: "Wasiliana Nasi",
+      description:
+        "Piga simu, WhatsApp, barua pepe au tembelea Kim Beauty, Sokoine Road, Arusha, Tanzania. Tuko wazi Jumatatu hadi Jumapili.",
+    },
+    services: {
+      title: "Huduma na Bei Zetu",
+      description:
+        "Kusuka, extensions, kope, make up, spa, manicure na pedicure, matibabu ya nywele na Kim Academy — kila mtindo, muda na bei Kim Beauty, Sokoine Road, Arusha.",
+    },
+    shop: {
+      title: "Duka",
+      description:
+        "Nunua bidhaa za nywele za Kim Beauty, wigi za Kim Collection, kope, vifaa vya kucha na zaidi. Tunaleta popote Arusha, agiza moja kwa moja WhatsApp.",
+    },
+    service: {
+      title: (service: string) => `${service} Arusha — Mitindo na Bei`,
+      notFound: "Huduma Haikupatikana",
+      options: (names: string) => `Chaguo: ${names}.`,
+      bookAt: "Weka miadi Kim Beauty, Sokoine Road, Arusha.",
+    },
+  },
 };
 
 const fr: Dictionary = {
@@ -723,6 +800,44 @@ const fr: Dictionary = {
   },
   whatsappButton: {
     label: "Discuter avec Kim Beauty sur WhatsApp",
+  },
+  meta: {
+    site: {
+      title: "Kim Beauty — Tresses, cils, maquillage et spa à Arusha, Tanzanie",
+      description:
+        "Kim Beauty est un salon de beauté moderne sur Sokoine Road, à Arusha — tresses sans nœuds, extensions, extensions de cils, maquillage de mariée, forfaits spa, ongles et formations Kim Academy. Découvrez chaque style et prix, puis réservez sur WhatsApp.",
+    },
+    about: {
+      title: "À propos",
+      description:
+        "Kim Beauty est un salon de beauté moderne sur Sokoine Road, à Arusha — maîtres tresseuses, expertes en cils, pros du maquillage et thérapeutes spa sous un même toit.",
+    },
+    booking: {
+      title: "Prendre rendez-vous",
+      description:
+        "Réservez votre fauteuil chez Kim Beauty, Sokoine Road, Arusha. Choisissez votre service et le style exact, la date et l'heure — nous confirmons sur WhatsApp.",
+    },
+    contact: {
+      title: "Contact",
+      description:
+        "Appelez, écrivez sur WhatsApp ou par e-mail, ou rendez visite à Kim Beauty sur Sokoine Road, Arusha, Tanzanie. Ouvert du lundi au dimanche.",
+    },
+    services: {
+      title: "Nos services et tarifs",
+      description:
+        "Tresses, extensions, cils, maquillage, forfaits spa, manucure et pédicure, soins capillaires et Kim Academy — chaque style, durée et prix chez Kim Beauty, Sokoine Road, Arusha.",
+    },
+    shop: {
+      title: "Boutique",
+      description:
+        "Produits capillaires Kim Beauty, perruques de la Kim Collection, cils, soins des ongles et plus. Livraison dans tout Arusha, commande directement sur WhatsApp.",
+    },
+    service: {
+      title: (service: string) => `${service} à Arusha — Styles et prix`,
+      notFound: "Service introuvable",
+      options: (names: string) => `Options : ${names}.`,
+      bookAt: "Réservez chez Kim Beauty, Sokoine Road, Arusha.",
+    },
   },
 };
 
