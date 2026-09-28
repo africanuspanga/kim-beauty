@@ -75,6 +75,18 @@ function ChinaFlag() {
   );
 }
 
+function UaeFlag() {
+  // Anchored left so the red hoist band stays in the round crop.
+  return (
+    <svg viewBox="0 0 12 6" preserveAspectRatio="xMinYMid slice" className="h-full w-full">
+      <rect width="12" height="2" fill="#00732F" />
+      <rect y="2" width="12" height="2" fill="#fff" />
+      <rect y="4" width="12" height="2" fill="#000" />
+      <rect width="3" height="6" fill="#FF0000" />
+    </svg>
+  );
+}
+
 type Language = {
   code: Locale;
   short: string;
@@ -87,6 +99,7 @@ const LANGUAGES: Language[] = [
   { code: "sw", short: "SW", name: "Kiswahili", Flag: TanzaniaFlag },
   { code: "fr", short: "FR", name: "Français", Flag: FranceFlag },
   { code: "zh", short: "中文", name: "中文", Flag: ChinaFlag },
+  { code: "ar", short: "عربي", name: "العربية", Flag: UaeFlag },
 ];
 
 function FlagDot({ Flag, dim = false }: { Flag: Language["Flag"]; dim?: boolean }) {
@@ -155,7 +168,7 @@ function LanguageRow() {
             lang={code}
             onClick={() => choose(code)}
             className={cn(
-              "flex h-8 items-center gap-1.5 rounded-full pl-1 pr-2.5 text-xs font-semibold transition",
+              "flex h-8 items-center gap-1.5 rounded-full ps-1 pe-2.5 text-xs font-semibold transition",
               selected
                 ? "bg-cream text-gold-700 shadow-[0_1px_6px_rgba(66,44,23,0.14)]"
                 : "text-muted hover:text-ink"
@@ -200,7 +213,7 @@ function LanguageMenu() {
         aria-expanded={open}
         aria-label={`${t.language.label}: ${current.name}`}
         className={cn(
-          "flex h-10 items-center gap-1 rounded-full border border-line bg-white/70 pl-1.5 pr-2 text-ink-soft backdrop-blur-sm transition hover:border-gold-300",
+          "flex h-10 items-center gap-1 rounded-full border border-line bg-white/70 ps-1.5 pe-2 text-ink-soft backdrop-blur-sm transition hover:border-gold-300",
           pending && "opacity-70"
         )}
       >
@@ -215,7 +228,7 @@ function LanguageMenu() {
         <div
           role="radiogroup"
           aria-label={t.language.label}
-          className="absolute right-0 top-full z-10 mt-2 w-44 rounded-2xl border border-line bg-cream p-1.5 shadow-lift"
+          className="absolute end-0 top-full z-10 mt-2 w-44 rounded-2xl border border-line bg-cream p-1.5 shadow-lift"
         >
           {LANGUAGES.map(({ code, name, Flag }) => {
             const selected = active === code;
@@ -231,7 +244,7 @@ function LanguageMenu() {
                   choose(code);
                 }}
                 className={cn(
-                  "flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-left text-sm font-medium transition",
+                  "flex w-full items-center gap-2.5 rounded-xl px-2.5 py-2 text-start text-sm font-medium transition",
                   selected ? "bg-gold-50 text-gold-700" : "text-ink-soft hover:bg-blush-50"
                 )}
               >

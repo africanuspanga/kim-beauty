@@ -72,7 +72,7 @@ export function ShopBrowser({
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
           <Search
-            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+            className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
             aria-hidden="true"
           />
           <input
@@ -80,20 +80,20 @@ export function ShopBrowser({
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t.shop.searchPlaceholder}
             aria-label={t.shop.searchLabel}
-            className="h-12 w-full rounded-full border border-line bg-cream pl-11 pr-4 text-sm outline-none transition focus:border-gold-400"
+            className="h-12 w-full rounded-full border border-line bg-cream ps-11 pe-4 text-sm outline-none transition focus:border-gold-400"
           />
         </div>
 
         <div className="relative">
           <SlidersHorizontal
-            className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
+            className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted"
             aria-hidden="true"
           />
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
             aria-label={t.shop.sortLabel}
-            className="h-12 w-full cursor-pointer appearance-none rounded-full border border-line bg-cream pl-11 pr-10 text-sm outline-none transition focus:border-gold-400 sm:w-56"
+            className="h-12 w-full cursor-pointer appearance-none rounded-full border border-line bg-cream ps-11 pe-10 text-sm outline-none transition focus:border-gold-400 sm:w-56"
           >
             {SORTS.map((s) => (
               <option key={s} value={s}>
@@ -116,7 +116,7 @@ export function ShopBrowser({
           )}
         >
           {t.shop.allProducts}
-          <span className="ml-1.5 opacity-60">{counts.all ?? 0}</span>
+          <span className="ms-1.5 opacity-60">{counts.all ?? 0}</span>
         </button>
 
         {categories.map((c) => (
@@ -131,7 +131,7 @@ export function ShopBrowser({
             )}
           >
             {c.name}
-            <span className="ml-1.5 opacity-60">{counts[c.slug] ?? 0}</span>
+            <span className="ms-1.5 opacity-60">{counts[c.slug] ?? 0}</span>
           </button>
         ))}
       </div>

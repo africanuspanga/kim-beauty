@@ -15,7 +15,7 @@ export function AboutSection({ content }: { content: ContentMap }) {
   ].filter(Boolean);
 
   return (
-    <section id="about" className="relative py-20 md:py-28">
+    <section id="about" className="relative overflow-x-clip py-20 md:py-28">
       <div className="container-kb">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* imagery */}

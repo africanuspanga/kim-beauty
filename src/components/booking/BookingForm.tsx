@@ -197,6 +197,7 @@ export function BookingForm({
             onChange={(e) => setPhone(e.target.value)}
             placeholder={f.phonePlaceholder}
             inputMode="tel"
+            dir="ltr"
             required
             className={fieldCls}
           />
@@ -209,6 +210,7 @@ export function BookingForm({
           <input
             id="email"
             type="email"
+            dir="ltr"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"

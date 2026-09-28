@@ -219,3 +219,20 @@
 :lang(zh) .italic {
   font-style: normal;
 }
+
+/* ---- Arabic (right-to-left) ---- */
+
+/* Letter-spacing pulls Arabic's joined letters apart. */
+:lang(ar) [class*="tracking-"] {
+  letter-spacing: normal;
+}
+
+:lang(ar) .italic {
+  font-style: normal;
+}
+
+/* Directional icons point the reading way; the hover nudge follows. */
+[dir="rtl"] :is(.lucide-arrow-right, .lucide-arrow-up-right, .lucide-arrow-left, .lucide-chevron-right) {
+  transform: scaleX(-1);
+  translate: calc(var(--tw-translate-x, 0px) * -1) var(--tw-translate-y, 0px);
+}

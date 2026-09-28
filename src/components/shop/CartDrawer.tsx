@@ -211,6 +211,7 @@ export function CartDrawer({
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder={c.yourPhone}
                   inputMode="tel"
+                  dir="ltr"
                   aria-label={c.yourPhone}
                   className="h-11 rounded-xl border border-line bg-cream px-3.5 text-sm outline-none transition focus:border-gold-400"
                 />

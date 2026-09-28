@@ -125,7 +125,8 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-cream transition-all duration-400 hover:-translate-y-1.5 hover:border-gold-200 hover:shadow-lift">
-      <div className="relative aspect-square overflow-hidden bg-blush-100">
+      {/* Photos only: kept LTR so the swipe maths (scrollLeft) holds in Arabic. */}
+      <div dir="ltr" className="relative aspect-square overflow-hidden bg-blush-100">
         <ProductImageCarousel
           images={images}
           name={product.name}

@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
-import { HTML_LANG } from "@/lib/i18n/config";
+import { HTML_LANG, htmlDir } from "@/lib/i18n/config";
 import { getLocale, getT } from "@/lib/i18n/server";
 import { SITE_URL, absoluteUrl } from "@/lib/seo";
 import "./globals.css";
@@ -108,7 +108,7 @@ export default async function RootLayout({
   const locale = await getLocale();
 
   return (
-    <html lang={HTML_LANG[locale]} className={`${cormorant.variable} ${inter.variable}`}>
+    <html lang={HTML_LANG[locale]} dir={htmlDir(locale)} className={`${cormorant.variable} ${inter.variable}`}>
       <body>{children}</body>
     </html>
   );

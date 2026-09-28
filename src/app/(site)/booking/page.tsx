@@ -115,7 +115,7 @@ export default async function BookingPage() {
                     className="flex items-center gap-3 rounded-xl border border-cream/15 px-4 py-3 text-sm transition hover:border-gold-400 hover:bg-cream/5"
                   >
                     <Phone className="h-4 w-4 text-gold-400" aria-hidden="true" />
-                    {phone}
+                    <span dir="ltr">{phone}</span>
                   </a>
                   <a
                     href={waLink(WHATSAPP_GREETING, whatsapp)}

@@ -130,7 +130,7 @@ export async function Footer({ content }: { content: ContentMap }) {
                   href={`tel:${phone.replace(/\s/g, "")}`}
                   className="text-cream/60 transition hover:text-gold-300"
                 >
-                  {phone}
+                  <span dir="ltr">{phone}</span>
                 </a>
               </li>
               <li className="flex gap-3">
@@ -185,11 +185,12 @@ export async function Footer({ content }: { content: ContentMap }) {
           </div>
         ) : null}
 
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 text-xs text-cream/45 sm:flex-row">
+        {/* Right padding clears the floating WhatsApp button, which stays bottom-right in every language. */}
+        <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-cream/10 pt-7 text-xs text-cream/45 sm:flex-row sm:pr-20">
           <p>
             © {year} {pick(content, "footer", "copyright")}
           </p>
-          <div className="flex items-center gap-5 sm:pr-20">
+          <div className="flex items-center gap-5">
             <Link href="/booking" className="transition hover:text-gold-300">
               {t.footer.book}
             </Link>

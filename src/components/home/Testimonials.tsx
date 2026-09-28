@@ -59,7 +59,8 @@ function MarqueeRow({
   const loop = [...items, ...items];
 
   return (
-    <div className="marquee-mask group relative overflow-hidden">
+    // Kept LTR in Arabic: the marquee and swipe maths assume a left-to-right track.
+    <div dir="ltr" className="marquee-mask group relative overflow-hidden">
       <div
         className={`flex w-max gap-5 ${
           reverse ? "animate-marquee-reverse" : "animate-marquee"
@@ -97,6 +98,7 @@ function MobileReviewCarousel({ items }: { items: Testimonial[] }) {
   return (
     <div
       ref={trackRef}
+      dir="ltr"
       onPointerDown={() => setPaused(true)}
       onPointerUp={() => setPaused(false)}
       onPointerCancel={() => setPaused(false)}
