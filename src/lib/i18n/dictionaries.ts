@@ -4,7 +4,7 @@ import type { Locale } from "./config";
  * Every fixed piece of site copy, in each language.
  *
  * Copy the admin can edit (hero, section headings, about text…) lives in
- * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` / `_ar` twins — see
+ * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` / `_ar` / `_hi` twins — see
  * `getSiteContent`. Service and product names stay exactly as typed.
  */
 const en = {
@@ -1380,7 +1380,276 @@ const ar: Dictionary = {
   },
 };
 
-const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh, ar };
+const hi: Dictionary = {
+  language: {
+    label: "भाषा चुनें",
+  },
+  common: {
+    optional: "(वैकल्पिक)",
+    sending: "भेजा जा रहा है…",
+    chatOnWhatsApp: "व्हाट्सऐप पर बात करें",
+    openingHours: "खुलने का समय",
+    talkToUs: "हमसे बात करें",
+    home: "होम",
+    priceOnRequest: "कीमत पूछें",
+    addToCart: "कार्ट में डालें",
+  },
+  nav: {
+    home: "होम",
+    about: "हमारे बारे में",
+    services: "सेवाएँ",
+    shop: "शॉप",
+    contact: "संपर्क",
+    bookAppointment: "अपॉइंटमेंट बुक करें",
+    homeLabel: "Kim Beauty होम",
+    openMenu: "मेन्यू खोलें",
+    closeMenu: "मेन्यू बंद करें",
+    openCart: (count: number) => `कार्ट खोलें, ${count} आइटम`,
+  },
+  footer: {
+    explore: "देखें",
+    services: "सेवाएँ",
+    visitUs: "हमसे मिलें",
+    securePayments: "सुरक्षित ऑनलाइन भुगतान",
+    payWith: (provider: string) => `${provider} से भुगतान करें`,
+    book: "बुक करें",
+    shop: "शॉप",
+    admin: "एडमिन",
+    quickLinks: {
+      about: "हमारे बारे में",
+      services: "सभी सेवाएँ",
+      shop: "शॉप",
+      booking: "अपॉइंटमेंट बुक करें",
+      contact: "संपर्क करें",
+    },
+    serviceLinks: {
+      extensions: "हेयर एक्सटेंशन",
+      braiding: "चोटी / ब्रेडिंग",
+      lashes: "पलकें (लैशेज़)",
+      makeUp: "मेकअप",
+      spa: "स्पा पैकेज",
+      nails: "मैनीक्योर और पेडीक्योर",
+    },
+  },
+  payments: {
+    Pesapal: "कार्ड, मोबाइल मनी और बैंक ट्रांसफ़र",
+    "DPO Pay": "DirectPay के ज़रिए सुरक्षित कार्ड भुगतान",
+    PayPal: "दुनिया में कहीं से भी भुगतान करें",
+  },
+  home: {
+    googleReviews: "Google रिव्यू",
+    openToday: "आज खुला है",
+    styles: (count: number) => `${count} स्टाइल`,
+    viewAllServices: "सभी सेवाएँ देखें",
+    basedOnReviews: (count: string) => `${count}+ Google रिव्यू के आधार पर`,
+    reviewsLabel: "ग्राहकों के रिव्यू। और पढ़ने के लिए स्वाइप करें।",
+  },
+  about: {
+    breadcrumb: "हमारे बारे में",
+    valuesEyebrow: "हमारे मूल्य",
+    valuesTitle: "Kim Beauty का मानक",
+    valuesDescription: "चार बातें जिन पर हर ग्राहक, हर बार भरोसा कर सकती है।",
+    galleryEyebrow: "हमारा काम",
+    galleryTitle: "सीधे सैलून की कुर्सी से",
+    galleryDescription: "हर हफ़्ते हमारे सैलून से निकलने वाले लुक्स की एक झलक।",
+  },
+  booking: {
+    breadcrumb: "अपॉइंटमेंट बुक करें",
+    howItWorks: "यह कैसे काम करता है",
+    steps: [
+      { title: "अपनी सेवा चुनें", body: "Kim Beauty की पूरी सूची में से चुनें।" },
+      { title: "तारीख और समय चुनें", body: "हमें बताएँ कि आपके लिए कब सही है।" },
+      { title: "व्हाट्सऐप पर पुष्टि", body: "हम जवाब देकर आपका स्लॉट पक्का करते हैं।" },
+    ],
+    preferToTalk: "सीधे बात करना चाहेंगी?",
+    preferToTalkBody: "हमें कॉल करें या व्हाट्सऐप पर चैट शुरू करें, हम आपकी बुकिंग कर देंगे।",
+  },
+  bookingForm: {
+    sentTitle: "अनुरोध भेज दिया गया",
+    sentBody: "आपकी अपॉइंटमेंट की जानकारी व्हाट्सऐप में खुल गई है। संदेश भेजें और हम तुरंत आपका स्लॉट पक्का करेंगे।",
+    bookAnother: "एक और अपॉइंटमेंट बुक करें",
+    fullName: "पूरा नाम",
+    fullNamePlaceholder: "जैसे Amina Hassan",
+    phone: "फ़ोन / व्हाट्सऐप",
+    phonePlaceholder: "जैसे 0766 400 961",
+    email: "ईमेल",
+    service: "सेवा",
+    chooseService: "सेवा चुनें…",
+    style: "स्टाइल / विकल्प",
+    chooseStyle: "स्टाइल चुनें…",
+    about: (duration: string) => ` · लगभग ${duration}`,
+    notSure: "पक्का नहीं है? सबसे करीब वाला चुनें और नीचे नोट लिखें — हम व्हाट्सऐप पर सलाह देंगे।",
+    seePhotos: "फ़ोटो और कीमतें देखें",
+    date: "पसंदीदा तारीख",
+    time: "पसंदीदा समय",
+    chooseTime: "समय चुनें…",
+    stylist: "पसंदीदा स्टाइलिस्ट",
+    stylistPlaceholder: "जो भी उपलब्ध हो",
+    notes: "कुछ और जो हमें पता होना चाहिए?",
+    notesPlaceholder: "रेफ़रेंस फ़ोटो, बालों की लंबाई, एलर्जी, मौका…",
+    errorRequired: "कृपया अपना नाम, फ़ोन, सेवा, तारीख और समय भरें।",
+    errorStyle: (service: string) => `कृपया चुनें कि आपको कौन-सा ${service} स्टाइल चाहिए।`,
+    submit: "व्हाट्सऐप पर बुकिंग भेजें",
+    savedHint: "आपका अनुरोध सेव हो गया है और व्हाट्सऐप में खुल जाता है, ताकि हम तुरंत आपका स्लॉट पक्का कर सकें।",
+  },
+  contact: {
+    breadcrumb: "संपर्क करें",
+    callUs: "हमें कॉल करें",
+    whatsapp: "व्हाट्सऐप",
+    chatNow: "अभी चैट करें",
+    emailUs: "हमें ईमेल करें",
+    visitSalon: "सैलून आएँ",
+    sendUsMessage: "हमें संदेश भेजें",
+    sendUsMessageBody: "फ़ॉर्म भरें और हम आपसे संपर्क करेंगे — खुलने के समय में आमतौर पर एक घंटे के अंदर।",
+    follow: "Kim Beauty को फ़ॉलो करें",
+    followBody: "सोशल मीडिया पर हमारा नया काम देखें।",
+    payNow: "अभी भुगतान करें",
+    mapTitle: "Kim Beauty की लोकेशन का नक्शा",
+    openInMaps: "Google Maps में Kim Beauty खोलें",
+  },
+  contactForm: {
+    sentTitle: "संदेश भेज दिया गया",
+    sentBody: "संपर्क करने के लिए धन्यवाद — हमें आपका संदेश मिल गया है और हमने व्हाट्सऐप खोल दिया है ताकि आप हमसे तुरंत भी बात कर सकें।",
+    sendAnother: "एक और संदेश भेजें",
+    name: "आपका नाम",
+    namePlaceholder: "जैसे Grace Mollel",
+    phone: "फ़ोन",
+    phonePlaceholder: "जैसे 0766 400 961",
+    email: "ईमेल",
+    subject: "विषय",
+    subjectPlaceholder: "किस बारे में है?",
+    message: "संदेश",
+    messagePlaceholder: "बताएँ हम आपकी कैसे मदद कर सकते हैं…",
+    error: "कृपया अपना नाम और संदेश लिखें।",
+    submit: "संदेश भेजें",
+  },
+  services: {
+    breadcrumb: "सेवाएँ",
+    more: (count: number) => `+${count} और`,
+    viewOptions: (count: number) => `${count} विकल्प देखें`,
+    viewService: "सेवा देखें",
+    empty: "सेवाएँ अपडेट हो रही हैं। कृपया थोड़ी देर बाद देखें।",
+  },
+  serviceDetail: {
+    optionsToChoose: (count: number) => `चुनने के लिए ${count} विकल्प`,
+    book: (service: string) => `${service} बुक करें`,
+    askQuestion: "सवाल पूछें",
+    chooseStyle: "अपना स्टाइल चुनें",
+    chooseCourse: "अपना कोर्स चुनें",
+    chooseIntro:
+      "नीचे हर विकल्प की अपनी फ़ोटो, समय और कीमत है। जो पसंद हो उसे बुक करें — या ऑनलाइन भुगतान के लिए कार्ट में डालें।",
+    noOptions: (service: string) =>
+      `हम अभी ${service} के अलग-अलग विकल्पों की फ़ोटो और कीमतें तैयार कर रहे हैं। व्हाट्सऐप पर संदेश भेजें, हम आपको सब कुछ बताएँगे।`,
+    otherServices: "Kim Beauty की अन्य सेवाएँ",
+    allServices: "सभी सेवाएँ",
+    popular: "लोकप्रिय",
+    bookThisStyle: "यह स्टाइल बुक करें",
+  },
+  shop: {
+    breadcrumb: "शॉप",
+    perks: [
+      {
+        title: "अरूशा में डिलीवरी",
+        body: "अरूशा में उसी दिन डिलीवरी, और माँगने पर पूरे तंज़ानिया में शिपिंग।",
+      },
+      {
+        title: "सैलून में परखे हुए",
+        body: "इस पेज का हर प्रोडक्ट हमारे अपने स्टाइलिस्ट इस्तेमाल करते हैं।",
+      },
+      {
+        title: "व्हाट्सऐप पर ऑर्डर",
+        body: "कार्ट भरें, हमें भेजें, और हम तुरंत स्टॉक की पुष्टि करेंगे।",
+      },
+    ],
+    sorts: {
+      featured: "फ़ीचर्ड",
+      "price-asc": "कीमत: कम से ज़्यादा",
+      "price-desc": "कीमत: ज़्यादा से कम",
+      name: "नाम A–Z",
+    },
+    searchPlaceholder: "प्रोडक्ट खोजें…",
+    searchLabel: "प्रोडक्ट खोजें",
+    sortLabel: "प्रोडक्ट क्रम से लगाएँ",
+    allProducts: "सभी प्रोडक्ट",
+    showing: (count: number) => `${count} प्रोडक्ट दिख रहे हैं`,
+    noMatch: "इस खोज से कोई प्रोडक्ट नहीं मिला",
+    noMatchHint: "कोई दूसरा शब्द आज़माएँ या दूसरी कैटेगरी देखें।",
+  },
+  product: {
+    bestseller: "बेस्टसेलर",
+    soldOut: "स्टॉक खत्म",
+    colorOrNumber: "रंग या नंबर",
+    addToCartLabel: (name: string) => `${name} को कार्ट में डालें`,
+    photos: (name: string) => `${name} की फ़ोटो`,
+    photoN: (name: string, n: number) => `${name}, फ़ोटो ${n}`,
+    previousPhoto: "पिछली फ़ोटो",
+    nextPhoto: "अगली फ़ोटो",
+    showPhoto: (n: number) => `फ़ोटो ${n} दिखाएँ`,
+  },
+  cart: {
+    dialogLabel: "शॉपिंग कार्ट",
+    title: "आपका कार्ट",
+    close: "कार्ट बंद करें",
+    empty: "आपका कार्ट खाली है",
+    emptyHint: "शॉप से कोई प्रोडक्ट या सेवाओं वाले पेज से कोई सेवा जोड़ें।",
+    goToShop: "शॉप पर जाएँ",
+    remove: (name: string) => `${name} हटाएँ`,
+    decrease: "मात्रा घटाएँ",
+    increase: "मात्रा बढ़ाएँ",
+    yourName: "आपका नाम",
+    yourPhone: "आपका फ़ोन",
+    deliveryNote: "डिलीवरी नोट (वैकल्पिक)",
+    deliveryNoteLabel: "डिलीवरी नोट",
+    total: "कुल",
+    sendOrder: "व्हाट्सऐप पर ऑर्डर भेजें",
+    sendHint: "आपका ऑर्डर व्हाट्सऐप में खुलता है — वहीं हम स्टॉक, समय और डिलीवरी की पुष्टि करते हैं।",
+    payOnline: "या अभी ऑनलाइन भुगतान करें",
+    paidAlready: "भुगतान कर दिया? ऑर्डर को अपने भुगतान रेफ़रेंस के साथ व्हाट्सऐप पर भेजें ताकि हम मिलान कर सकें।",
+  },
+  whatsappButton: {
+    label: "व्हाट्सऐप पर Kim Beauty से बात करें",
+  },
+  meta: {
+    site: {
+      title: "Kim Beauty — अरूशा, तंज़ानिया में ब्रेडिंग, लैशेज़, मेकअप और स्पा",
+      description:
+        "Kim Beauty अरूशा की सोकोइन रोड पर एक मॉडर्न ब्यूटी सैलून है — नॉटलेस ब्रेड्स, हेयर एक्सटेंशन, लैश एक्सटेंशन, ब्राइडल मेकअप, स्पा पैकेज, नेल्स और Kim Academy ट्रेनिंग। हर स्टाइल और कीमत देखें, फिर व्हाट्सऐप पर बुक करें।",
+    },
+    about: {
+      title: "हमारे बारे में",
+      description:
+        "Kim Beauty अरूशा की सोकोइन रोड पर एक मॉडर्न ब्यूटी सैलून है — माहिर ब्रेडर, लैश आर्टिस्ट, मेकअप प्रोफ़ेशनल और स्पा थेरेपिस्ट, सब एक ही छत के नीचे।",
+    },
+    booking: {
+      title: "अपॉइंटमेंट बुक करें",
+      description:
+        "सोकोइन रोड, अरूशा में Kim Beauty पर अपनी सीट बुक करें। सेवा और स्टाइल, तारीख और समय चुनें — हम व्हाट्सऐप पर पुष्टि करते हैं।",
+    },
+    contact: {
+      title: "संपर्क करें",
+      description:
+        "कॉल करें, व्हाट्सऐप या ईमेल करें, या सोकोइन रोड, अरूशा, तंज़ानिया में Kim Beauty आएँ। सोमवार से रविवार खुला।",
+    },
+    services: {
+      title: "हमारी सेवाएँ और कीमतें",
+      description:
+        "ब्रेडिंग, एक्सटेंशन, लैशेज़, मेकअप, स्पा पैकेज, मैनीक्योर और पेडीक्योर, हेयर ट्रीटमेंट और Kim Academy — सोकोइन रोड, अरूशा के Kim Beauty में हर स्टाइल, समय और कीमत।",
+    },
+    shop: {
+      title: "शॉप",
+      description:
+        "Kim Beauty के हेयर प्रोडक्ट, Kim Collection विग, लैशेज़, नेल केयर और बहुत कुछ ख़रीदें। पूरे अरूशा में डिलीवरी, सीधे व्हाट्सऐप पर ऑर्डर करें।",
+    },
+    service: {
+      title: (service: string) => `अरूशा में ${service} — स्टाइल और कीमतें`,
+      notFound: "सेवा नहीं मिली",
+      options: (names: string) => `विकल्प: ${names}।`,
+      bookAt: "सोकोइन रोड, अरूशा के Kim Beauty में बुक करें।",
+    },
+  },
+};
+
+const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh, ar, hi };
 
 export function getDictionary(locale: Locale): Dictionary {
   return DICTIONARIES[locale];

@@ -87,19 +87,45 @@ function UaeFlag() {
   );
 }
 
+function IndiaFlag() {
+  return (
+    <svg viewBox="0 0 27 18" preserveAspectRatio="xMidYMid slice" className="h-full w-full">
+      <rect width="27" height="6" fill="#FF9933" />
+      <rect y="6" width="27" height="6" fill="#fff" />
+      <rect y="12" width="27" height="6" fill="#138808" />
+      {/* Ashoka Chakra: rim, hub and 24 spokes */}
+      <g stroke="#000080" fill="none">
+        <circle cx="13.5" cy="9" r="2.4" strokeWidth="0.4" />
+        {Array.from({ length: 12 }, (_, i) => (
+          <line
+            key={i}
+            x1="11.1"
+            y1="9"
+            x2="15.9"
+            y2="9"
+            strokeWidth="0.15"
+            transform={`rotate(${i * 15} 13.5 9)`}
+          />
+        ))}
+      </g>
+      <circle cx="13.5" cy="9" r="0.45" fill="#000080" />
+    </svg>
+  );
+}
+
 type Language = {
   code: Locale;
-  short: string;
   name: string;
   Flag: () => React.ReactElement;
 };
 
 const LANGUAGES: Language[] = [
-  { code: "en", short: "EN", name: "English", Flag: UkFlag },
-  { code: "sw", short: "SW", name: "Kiswahili", Flag: TanzaniaFlag },
-  { code: "fr", short: "FR", name: "Français", Flag: FranceFlag },
-  { code: "zh", short: "中文", name: "中文", Flag: ChinaFlag },
-  { code: "ar", short: "عربي", name: "العربية", Flag: UaeFlag },
+  { code: "en", name: "English", Flag: UkFlag },
+  { code: "sw", name: "Kiswahili", Flag: TanzaniaFlag },
+  { code: "fr", name: "Français", Flag: FranceFlag },
+  { code: "zh", name: "中文", Flag: ChinaFlag },
+  { code: "ar", name: "العربية", Flag: UaeFlag },
+  { code: "hi", name: "हिन्दी", Flag: IndiaFlag },
 ];
 
 function FlagDot({ Flag, dim = false }: { Flag: Language["Flag"]; dim?: boolean }) {
@@ -134,7 +160,8 @@ function useLanguageChoice() {
 }
 
 /**
- * Desktop: every flag in a row, one tap to switch.
+ * Desktop: every flag in a row, one tap to switch (name on hover). Flags
+ * only — with text codes, six languages pushed the header past 1440px.
  * Compact (phones): the current flag opens a small menu — four flags in a
  * row would crowd the cart and menu buttons off a narrow screen.
  */
@@ -155,7 +182,7 @@ function LanguageRow() {
         pending && "opacity-70"
       )}
     >
-      {LANGUAGES.map(({ code, short, name, Flag }) => {
+      {LANGUAGES.map(({ code, name, Flag }) => {
         const selected = active === code;
         return (
           <button
@@ -168,14 +195,13 @@ function LanguageRow() {
             lang={code}
             onClick={() => choose(code)}
             className={cn(
-              "flex h-8 items-center gap-1.5 rounded-full ps-1 pe-2.5 text-xs font-semibold transition",
+              "flex h-8 w-8 items-center justify-center rounded-full transition",
               selected
                 ? "bg-cream text-gold-700 shadow-[0_1px_6px_rgba(66,44,23,0.14)]"
                 : "text-muted hover:text-ink"
             )}
           >
             <FlagDot Flag={Flag} dim={!selected} />
-            {short}
           </button>
         );
       })}

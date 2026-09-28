@@ -73,8 +73,9 @@ const TRANSLATIONS: Record<string, string> = {
   _fr: "Français",
   _zh: "中文",
   _ar: "العربية",
+  _hi: "हिन्दी",
 };
-const TRANSLATION_SUFFIX = /_(sw|fr|zh|ar)$/;
+const TRANSLATION_SUFFIX = /_(sw|fr|zh|ar|hi)$/;
 
 function labelFor(key: string): string {
   const suffix = key.match(TRANSLATION_SUFFIX)?.[0];
@@ -86,7 +87,7 @@ function labelFor(key: string): string {
     .replace(/\bCta\b/g, "Button");
 }
 
-/** Puts each translation (`<field>_sw`, `_fr`, `_zh`, `_ar`) directly under its English `<field>`. */
+/** Puts each translation (`<field>_sw`, `_fr`, `_zh`, `_ar`, `_hi`) directly under its English `<field>`. */
 function withTranslationsPaired(keys: string[]) {
   const english = keys.filter((k) => !TRANSLATION_SUFFIX.test(k));
   const paired = english.flatMap((k) => [

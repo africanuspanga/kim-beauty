@@ -222,12 +222,13 @@
 
 /* ---- Arabic (right-to-left) ---- */
 
-/* Letter-spacing pulls Arabic's joined letters apart. */
-:lang(ar) [class*="tracking-"] {
+/* Letter-spacing pulls Arabic's joined letters apart, and breaks the
+   headline stroke that joins Devanagari (Hindi) letters. */
+:is(:lang(ar), :lang(hi)) [class*="tracking-"] {
   letter-spacing: normal;
 }
 
-:lang(ar) .italic {
+:is(:lang(ar), :lang(hi)) .italic {
   font-style: normal;
 }
 
