@@ -7,6 +7,7 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { Reveal } from "@/components/ui/Reveal";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getGallery, getSiteContent, getTestimonials, pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -27,10 +28,11 @@ export const metadata: Metadata = {
 const VALUE_ICONS = [Sparkles, Award, Heart, Target];
 
 export default async function AboutPage() {
-  const [content, testimonials, gallery] = await Promise.all([
+  const [content, testimonials, gallery, t] = await Promise.all([
     getSiteContent(),
     getTestimonials(),
     getGallery(),
+    getT(),
   ]);
 
   const values = [1, 2, 3, 4]
@@ -50,7 +52,7 @@ export default async function AboutPage() {
   return (
     <>
       <PageHero
-        breadcrumb="About"
+        breadcrumb={t.about.breadcrumb}
         eyebrow={pick(content, "about_page", "eyebrow", "About Kim Beauty")}
         title={pick(content, "about_page", "title", "Beauty With Intention")}
         description={pick(content, "about_page", "description")}
@@ -120,9 +122,9 @@ export default async function AboutPage() {
           <div className="container-kb">
             <Reveal>
               <SectionHeading
-                eyebrow="What We Stand For"
-                title="The Kim Beauty Standard"
-                description="Four things every client can count on, every single visit."
+                eyebrow={t.about.valuesEyebrow}
+                title={t.about.valuesTitle}
+                description={t.about.valuesDescription}
               />
             </Reveal>
 
@@ -151,9 +153,9 @@ export default async function AboutPage() {
           <div className="container-kb">
             <Reveal>
               <SectionHeading
-                eyebrow="Our Work"
-                title="Straight From The Chair"
-                description="A look at what leaves our salon every week."
+                eyebrow={t.about.galleryEyebrow}
+                title={t.about.galleryTitle}
+                description={t.about.galleryDescription}
               />
             </Reveal>
 

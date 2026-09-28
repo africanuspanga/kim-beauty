@@ -3,17 +3,13 @@
 import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { ProductCard } from "./ProductCard";
+import { useT } from "@/components/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 import type { Product, ProductCategory } from "@/lib/types";
 
 type Sort = "featured" | "price-asc" | "price-desc" | "name";
 
-const SORTS: { value: Sort; label: string }[] = [
-  { value: "featured", label: "Featured" },
-  { value: "price-asc", label: "Price: Low to High" },
-  { value: "price-desc", label: "Price: High to Low" },
-  { value: "name", label: "Name A–Z" },
-];
+const SORTS: Sort[] = ["featured", "price-asc", "price-desc", "name"];
 
 export function ShopBrowser({
   products,
@@ -22,6 +18,7 @@ export function ShopBrowser({
   products: Product[];
   categories: ProductCategory[];
 }) {
+  const t = useT();
   const [category, setCategory] = useState<string>("all");
   const [query, setQuery] = useState("");
   const [sort, setSort] = useState<Sort>("featured");
@@ -81,8 +78,8 @@ export function ShopBrowser({
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search products…"
-            aria-label="Search products"
+            placeholder={t.shop.searchPlaceholder}
+            aria-label={t.shop.searchLabel}
             className="h-12 w-full rounded-full border border-line bg-cream pl-11 pr-4 text-sm outline-none transition focus:border-gold-400"
           />
         </div>
@@ -95,12 +92,12 @@ export function ShopBrowser({
           <select
             value={sort}
             onChange={(e) => setSort(e.target.value as Sort)}
-            aria-label="Sort products"
+            aria-label={t.shop.sortLabel}
             className="h-12 w-full cursor-pointer appearance-none rounded-full border border-line bg-cream pl-11 pr-10 text-sm outline-none transition focus:border-gold-400 sm:w-56"
           >
             {SORTS.map((s) => (
-              <option key={s.value} value={s.value}>
-                {s.label}
+              <option key={s} value={s}>
+                {t.shop.sorts[s]}
               </option>
             ))}
           </select>
@@ -118,7 +115,7 @@ export function ShopBrowser({
               : "border-line bg-cream text-ink-soft hover:border-gold-300 hover:text-gold-700"
           )}
         >
-          All Products
+          {t.shop.allProducts}
           <span className="ml-1.5 opacity-60">{counts.all ?? 0}</span>
         </button>
 
@@ -140,15 +137,14 @@ export function ShopBrowser({
       </div>
 
       <p className="mt-6 text-sm text-muted">
-        Showing <span className="font-semibold text-ink">{visible.length}</span>{" "}
-        {visible.length === 1 ? "product" : "products"}
+        {t.shop.showing(visible.length)}
       </p>
 
       {visible.length === 0 ? (
         <div className="mt-10 rounded-3xl border border-dashed border-line py-20 text-center">
-          <p className="text-lg text-ink">No products match that search</p>
+          <p className="text-lg text-ink">{t.shop.noMatch}</p>
           <p className="mt-2 text-sm text-muted">
-            Try a different keyword or browse another category.
+            {t.shop.noMatchHint}
           </p>
         </div>
       ) : (

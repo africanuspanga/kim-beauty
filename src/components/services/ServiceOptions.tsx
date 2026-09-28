@@ -3,6 +3,8 @@ import { AddOptionToCart } from "./AddOptionToCart";
 import { ServiceOptionMedia } from "./ServiceOptionMedia";
 import { ButtonLink } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { getT } from "@/lib/i18n/server";
 import type { Service, ServiceOption } from "@/lib/types";
 import { optionPriceLabel } from "@/lib/utils";
 
@@ -30,13 +32,15 @@ function OptionCard({
   option,
   service,
   delay,
+  t,
 }: {
   option: ServiceOption;
   service: Service;
   delay: number;
+  t: Dictionary;
 }) {
   const image = option.image_url || service.image_url;
-  const price = optionPriceLabel(option);
+  const price = optionPriceLabel(option, t.common.priceOnRequest);
 
   return (
     <Reveal
@@ -56,7 +60,7 @@ function OptionCard({
           <h3 className="text-[1.35rem] leading-snug">{option.name}</h3>
           {option.is_featured ? (
             <span className="mt-1 shrink-0 rounded-full bg-gold-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-700">
-              Popular
+              {t.serviceDetail.popular}
             </span>
           ) : null}
         </div>
@@ -97,7 +101,7 @@ function OptionCard({
               className="w-full sm:w-auto"
             >
               <CalendarCheck className="h-4 w-4" aria-hidden="true" />
-              Book This Style
+              {t.serviceDetail.bookThisStyle}
             </ButtonLink>
 
             {option.price != null ? (
@@ -106,6 +110,7 @@ function OptionCard({
                 name={`${service.title} — ${option.name}`}
                 price={option.price}
                 imageUrl={image}
+                label={t.common.addToCart}
               />
             ) : null}
           </div>
@@ -120,10 +125,11 @@ function OptionCard({
  * This is what turns "Braiding Hair — 40,000" into a menu a client can
  * actually choose from.
  */
-export function ServiceOptions({ service }: { service: Service }) {
+export async function ServiceOptions({ service }: { service: Service }) {
   const options = service.service_options ?? [];
   if (options.length === 0) return null;
 
+  const t = await getT();
   const groups = groupOptions(options);
 
   return (
@@ -146,6 +152,7 @@ export function ServiceOptions({ service }: { service: Service }) {
                 option={option}
                 service={service}
                 delay={i * 60}
+                t={t}
               />
             ))}
           </div>

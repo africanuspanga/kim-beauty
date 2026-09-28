@@ -67,12 +67,31 @@ const FIELD_LABELS: Record<string, string> = {
   vision_body: "Vision Text",
 };
 
-function labelFor(key: string) {
+/** `title_sw` is the Kiswahili version of `title`, shown to visitors who pick SW. */
+const TRANSLATIONS: Record<string, string> = { _sw: "Kiswahili", _fr: "Français" };
+const TRANSLATION_SUFFIX = /_(sw|fr)$/;
+
+function labelFor(key: string): string {
+  const suffix = key.match(TRANSLATION_SUFFIX)?.[0];
+  if (suffix) return `${labelFor(key.slice(0, -suffix.length))} (${TRANSLATIONS[suffix]})`;
   if (FIELD_LABELS[key]) return FIELD_LABELS[key];
   return key
     .replace(/_/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase())
     .replace(/\bCta\b/g, "Button");
+}
+
+/** Puts each `<field>_sw` / `<field>_fr` directly under its English `<field>`. */
+function withTranslationsPaired(keys: string[]) {
+  const english = keys.filter((k) => !TRANSLATION_SUFFIX.test(k));
+  const paired = english.flatMap((k) => [
+    k,
+    ...Object.keys(TRANSLATIONS)
+      .map((suffix) => k + suffix)
+      .filter((t) => keys.includes(t)),
+  ]);
+  const orphans = keys.filter((k) => !paired.includes(k));
+  return [...paired, ...orphans];
 }
 
 const LONG_FIELDS = /^(description|body|body_2|story_body|story_body_2|mission_body|vision_body|quote|tagline)/;
@@ -182,7 +201,7 @@ export default function AdminContentPage() {
         {sections.map((section) => {
           const isOpen = openKey === section.key;
           const draft = drafts[section.key] ?? {};
-          const fieldKeys = Object.keys(section.value);
+          const fieldKeys = withTranslationsPaired(Object.keys(section.value));
 
           return (
             <Card key={section.key} className="p-0 overflow-hidden">

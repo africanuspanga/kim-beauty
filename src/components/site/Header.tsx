@@ -5,18 +5,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, Phone, ShoppingBag, X } from "lucide-react";
+import { useT } from "@/components/i18n/I18nProvider";
 import { useCart } from "@/components/shop/CartProvider";
 import { ButtonLink } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const NAV = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/shop", label: "Shop" },
-  { href: "/contact", label: "Contact" },
-];
+  { href: "/", key: "home" },
+  { href: "/about", key: "about" },
+  { href: "/services", key: "services" },
+  { href: "/shop", key: "shop" },
+  { href: "/contact", key: "contact" },
+] as const;
 
 export function Header({
   logoUrl = "/images/logo.png",
@@ -25,6 +26,7 @@ export function Header({
   logoUrl?: string;
   phone?: string;
 }) {
+  const t = useT();
   const pathname = usePathname();
   const { count, openCart, hydrated } = useCart();
   const [scrolled, setScrolled] = useState(false);
@@ -53,9 +55,8 @@ export function Header({
           : "border-b border-transparent bg-transparent"
       )}
     >
-      <div id="google_translate_element" className="hidden" aria-hidden="true" />
       <div className="container-kb flex h-18 items-center justify-between gap-4 py-3 md:h-20">
-        <Link href="/" className="flex shrink-0 items-center" aria-label="Kim Beauty home">
+        <Link href="/" className="flex shrink-0 items-center" aria-label={t.nav.homeLabel}>
           <Image
             src={logoUrl}
             alt="Kim Beauty"
@@ -83,7 +84,7 @@ export function Header({
                     : "text-ink-soft hover:text-gold-600"
                 )}
               >
-                {item.label}
+                {t.nav[item.key]}
                 {active ? (
                   <span className="absolute inset-x-4 -bottom-0.5 h-px bg-gold-500" />
                 ) : null}
@@ -111,7 +112,7 @@ export function Header({
 
           <button
             onClick={openCart}
-            aria-label={`Open cart, ${count} items`}
+            aria-label={t.nav.openCart(count)}
             className="relative rounded-full border border-line bg-white/70 p-2.5 text-ink-soft backdrop-blur-sm transition hover:border-gold-300 hover:text-gold-600"
           >
             <ShoppingBag className="h-[18px] w-[18px]" aria-hidden="true" />
@@ -123,12 +124,12 @@ export function Header({
           </button>
 
           <ButtonLink href="/booking" size="sm" className="hidden sm:inline-flex">
-            Book Appointment
+            {t.nav.bookAppointment}
           </ButtonLink>
 
           <button
             onClick={() => setMenuOpen((v) => !v)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
             aria-expanded={menuOpen}
             className="rounded-full border border-line bg-white/70 p-2.5 text-ink-soft backdrop-blur-sm transition hover:border-gold-300 hover:text-gold-600 lg:hidden"
           >
@@ -166,13 +167,13 @@ export function Header({
                     : "text-ink-soft hover:bg-blush-50 hover:text-gold-600"
                 )}
               >
-                {item.label}
+                {t.nav[item.key]}
               </Link>
             );
           })}
           <div onClick={() => setMenuOpen(false)} className="sm:hidden">
             <ButtonLink href="/booking" size="md" className="mt-2 w-full">
-              Book Appointment
+              {t.nav.bookAppointment}
             </ButtonLink>
           </div>
         </nav>

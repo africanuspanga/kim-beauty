@@ -4,6 +4,7 @@ import { CtaSection } from "@/components/home/CtaSection";
 import { ShopBrowser } from "@/components/shop/ShopBrowser";
 import { Reveal } from "@/components/ui/Reveal";
 import { getCategories, getProducts, getSiteContent, pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import { JsonLd, absoluteUrl, productSchema } from "@/lib/seo";
 import { MessageCircle, ShieldCheck, Truck } from "lucide-react";
 
@@ -22,30 +23,17 @@ export const metadata: Metadata = {
   },
 };
 
-const PERKS = [
-  {
-    Icon: Truck,
-    title: "Arusha Delivery",
-    body: "Same-day delivery across Arusha, nationwide shipping on request.",
-  },
-  {
-    Icon: ShieldCheck,
-    title: "Salon Tested",
-    body: "Every product on this page is used by our own stylists.",
-  },
-  {
-    Icon: MessageCircle,
-    title: "Order on WhatsApp",
-    body: "Build your cart, send it over, and we confirm stock instantly.",
-  },
-];
+const PERK_ICONS = [Truck, ShieldCheck, MessageCircle];
 
 export default async function ShopPage() {
-  const [content, products, categories] = await Promise.all([
+  const [content, products, categories, t] = await Promise.all([
     getSiteContent(),
     getProducts(),
     getCategories(),
+    getT(),
   ]);
+
+  const perks = t.shop.perks.map((perk, i) => ({ ...perk, Icon: PERK_ICONS[i] }));
 
   return (
     <>
@@ -65,7 +53,7 @@ export default async function ShopPage() {
       />
 
       <PageHero
-        breadcrumb="Shop"
+        breadcrumb={t.shop.breadcrumb}
         eyebrow={pick(content, "shop_page", "eyebrow", "Kim Shop")}
         title={pick(content, "shop_page", "title", "Salon-Grade Beauty Essentials")}
         description={pick(content, "shop_page", "description")}
@@ -74,7 +62,7 @@ export default async function ShopPage() {
       <section className="pb-6">
         <div className="container-kb">
           <Reveal className="grid gap-4 sm:grid-cols-3">
-            {PERKS.map((p) => (
+            {perks.map((p) => (
               <div
                 key={p.title}
                 className="flex items-start gap-3.5 rounded-2xl border border-line bg-blush-50/60 p-5"

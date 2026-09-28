@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Minus, Plus, ShieldCheck, ShoppingBag, Trash2, X } from "lucide-react";
 import { useCart } from "./CartProvider";
+import { useT } from "@/components/i18n/I18nProvider";
 import { Button } from "@/components/ui/Button";
 import type { PaymentLink } from "@/lib/social";
 import { formatPrice } from "@/lib/utils";
@@ -12,6 +13,8 @@ import { buildOrderMessage, waLink } from "@/lib/whatsapp";
 import { getSupabase } from "@/lib/supabase/client";
 
 export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
+  const t = useT();
+  const c = t.cart;
   const { items, total, isOpen, closeCart, setQuantity, removeItem, clear } =
     useCart();
   const [name, setName] = useState("");
@@ -82,7 +85,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
       <aside
         role="dialog"
         aria-modal="true"
-        aria-label="Shopping cart"
+        aria-label={c.dialogLabel}
         className={`fixed right-0 top-0 z-[70] flex h-[100dvh] w-full max-w-md flex-col bg-cream shadow-2xl transition-transform duration-400 ease-[cubic-bezier(0.22,1,0.36,1)] lg:max-w-4xl ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
@@ -90,14 +93,14 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
         <header className="flex items-center justify-between border-b border-line px-5 py-4">
           <div className="flex items-center gap-2.5">
             <ShoppingBag className="h-5 w-5 text-gold-600" aria-hidden="true" />
-            <h2 className="text-xl">Your Cart</h2>
+            <h2 className="text-xl">{c.title}</h2>
             <span className="rounded-full bg-gold-100 px-2 py-0.5 text-xs font-semibold text-gold-700">
               {items.length}
             </span>
           </div>
           <button
             onClick={closeCart}
-            aria-label="Close cart"
+            aria-label={c.close}
             className="rounded-full p-2 text-muted transition hover:bg-blush-100 hover:text-ink"
           >
             <X className="h-5 w-5" />
@@ -109,16 +112,16 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blush-100">
               <ShoppingBag className="h-8 w-8 text-gold-400" aria-hidden="true" />
             </div>
-            <p className="text-lg text-ink">Your cart is empty</p>
+            <p className="text-lg text-ink">{c.empty}</p>
             <p className="text-sm text-muted">
-              Add a product from the shop, or a service from the services page.
+              {c.emptyHint}
             </p>
             <Link
               href="/shop"
               onClick={closeCart}
               className="mt-2 text-sm font-semibold text-gold-600 underline underline-offset-4 hover:text-gold-700"
             >
-              Go to the shop
+              {c.goToShop}
             </Link>
           </div>
         ) : (
@@ -146,7 +149,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                         </p>
                         <button
                           onClick={() => removeItem(item.lineId ?? item.id)}
-                          aria-label={`Remove ${item.name}`}
+                          aria-label={c.remove(item.name)}
                           className="shrink-0 rounded-md p-1 text-muted transition hover:text-red-500"
                         >
                           <Trash2 className="h-4 w-4" />
@@ -161,7 +164,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                         <div className="flex items-center rounded-full border border-line bg-white">
                           <button
                             onClick={() => setQuantity(item.lineId ?? item.id, item.quantity - 1)}
-                            aria-label="Decrease quantity"
+                            aria-label={c.decrease}
                             className="p-1.5 text-ink-soft transition hover:text-gold-600"
                           >
                             <Minus className="h-3.5 w-3.5" />
@@ -171,7 +174,7 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                           </span>
                           <button
                             onClick={() => setQuantity(item.lineId ?? item.id, item.quantity + 1)}
-                            aria-label="Increase quantity"
+                            aria-label={c.increase}
                             className="p-1.5 text-ink-soft transition hover:text-gold-600"
                           >
                             <Plus className="h-3.5 w-3.5" />
@@ -192,29 +195,29 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                 <input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name"
-                  aria-label="Your name"
+                  placeholder={c.yourName}
+                  aria-label={c.yourName}
                   className="h-11 rounded-xl border border-line bg-cream px-3.5 text-sm outline-none transition focus:border-gold-400"
                 />
                 <input
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Your phone"
+                  placeholder={c.yourPhone}
                   inputMode="tel"
-                  aria-label="Your phone"
+                  aria-label={c.yourPhone}
                   className="h-11 rounded-xl border border-line bg-cream px-3.5 text-sm outline-none transition focus:border-gold-400"
                 />
               </div>
               <input
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
-                placeholder="Delivery note (optional)"
-                aria-label="Delivery note"
+                placeholder={c.deliveryNote}
+                aria-label={c.deliveryNoteLabel}
                 className="h-11 w-full rounded-xl border border-line bg-cream px-3.5 text-sm outline-none transition focus:border-gold-400"
               />
 
               <div className="flex items-center justify-between pt-1">
-                <span className="text-sm text-muted">Total</span>
+                <span className="text-sm text-muted">{c.total}</span>
                 <span className="text-xl font-semibold text-ink tabular-nums">
                   {formatPrice(total)}
                 </span>
@@ -226,18 +229,17 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                 size="lg"
                 className="w-full"
               >
-                {sending ? "Sending…" : "Send Order on WhatsApp"}
+                {sending ? t.common.sending : c.sendOrder}
               </Button>
               <p className="text-center text-[11px] leading-relaxed text-muted">
-                Your order opens in WhatsApp — we confirm availability, timing
-                and delivery there.
+                {c.sendHint}
               </p>
 
               {payments.length > 0 ? (
                 <div className="border-t border-line pt-3">
                   <p className="flex items-center justify-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted">
                     <ShieldCheck className="h-3.5 w-3.5 text-gold-600" aria-hidden="true" />
-                    Or pay online now
+                    {c.payOnline}
                   </p>
                   <div className="mt-2.5 grid gap-2">
                     {payments.map((p) => (
@@ -246,16 +248,15 @@ export function CartDrawer({ payments = [] }: { payments?: PaymentLink[] }) {
                         href={p.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        title={p.description}
+                        title={t.payments[p.label] ?? p.description}
                         className="flex h-11 items-center justify-center rounded-xl border border-line bg-white text-sm font-medium text-ink transition hover:border-gold-300 hover:text-gold-700"
                       >
-                        Pay with {p.label}
+                        {t.footer.payWith(p.label)}
                       </a>
                     ))}
                   </div>
                   <p className="mt-2 text-center text-[11px] leading-relaxed text-muted">
-                    Paid already? Send the order on WhatsApp with your payment
-                    reference so we can match it.
+                    {c.paidAlready}
                   </p>
                 </div>
               ) : null}

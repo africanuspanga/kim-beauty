@@ -4,6 +4,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { ContactForm } from "@/components/site/ContactForm";
 import { Reveal } from "@/components/ui/Reveal";
 import { getSiteContent, pick } from "@/lib/content";
+import { getT } from "@/lib/i18n/server";
 import { absoluteUrl } from "@/lib/seo";
 import { getPaymentLinks, getSocialLinks } from "@/lib/social";
 import { waLink, WHATSAPP_GREETING } from "@/lib/whatsapp";
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function ContactPage() {
-  const content = await getSiteContent();
+  const [content, t] = await Promise.all([getSiteContent(), getT()]);
 
   const phone = pick(content, "contact", "phone");
   const email = pick(content, "contact", "email");
@@ -45,26 +46,26 @@ export default async function ContactPage() {
   const cards = [
     {
       Icon: Phone,
-      title: "Call Us",
+      title: t.contact.callUs,
       value: phone,
       href: `tel:${phone.replace(/\s/g, "")}`,
     },
     {
       Icon: MessageCircle,
-      title: "WhatsApp",
-      value: "Chat with us now",
+      title: t.contact.whatsapp,
+      value: t.contact.chatNow,
       href: waLink(WHATSAPP_GREETING, whatsapp),
       external: true,
     },
     {
       Icon: Mail,
-      title: "Email Us",
+      title: t.contact.emailUs,
       value: email,
       href: `mailto:${email}`,
     },
     {
       Icon: MapPin,
-      title: "Visit The Salon",
+      title: t.contact.visitSalon,
       value: address,
       href: mapUrl,
       external: true,
@@ -74,7 +75,7 @@ export default async function ContactPage() {
   return (
     <>
       <PageHero
-        breadcrumb="Contact"
+        breadcrumb={t.contact.breadcrumb}
         eyebrow={pick(content, "contact_page", "eyebrow", "Get In Touch")}
         title={pick(content, "contact_page", "title", "We Would Love To Hear From You")}
         description={pick(content, "contact_page", "description")}
@@ -111,10 +112,9 @@ export default async function ContactPage() {
         <div className="container-kb">
           <div className="grid gap-9 lg:grid-cols-[1.4fr_1fr] lg:gap-12">
             <Reveal>
-              <h2 className="text-[clamp(1.75rem,3.4vw,2.4rem)]">Send Us A Message</h2>
+              <h2 className="text-[clamp(1.75rem,3.4vw,2.4rem)]">{t.contact.sendUsMessage}</h2>
               <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-muted">
-                Fill in the form and we will get back to you — usually within the
-                hour during opening times.
+                {t.contact.sendUsMessageBody}
               </p>
               <div className="mt-7">
                 <ContactForm whatsapp={whatsapp} />
@@ -125,7 +125,7 @@ export default async function ContactPage() {
               <div className="rounded-3xl border border-line bg-blush-50/70 p-7">
                 <h2 className="flex items-center gap-2.5 text-xl">
                   <Clock className="h-5 w-5 text-gold-600" aria-hidden="true" />
-                  Opening Hours
+                  {t.common.openingHours}
                 </h2>
                 <ul className="mt-5 space-y-3 text-[14px] text-ink-soft">
                   <li className="flex items-center justify-between gap-4 border-b border-line pb-3">
@@ -140,9 +140,9 @@ export default async function ContactPage() {
 
               {socials.length > 0 ? (
                 <div className="rounded-3xl border border-line bg-cream p-7">
-                  <h2 className="text-xl">Follow Kim Beauty</h2>
+                  <h2 className="text-xl">{t.contact.follow}</h2>
                   <p className="mt-2 text-[14px] text-muted">
-                    See our latest work on social.
+                    {t.contact.followBody}
                   </p>
                   <div className="mt-5 flex flex-wrap gap-2.5">
                     {socials.map(({ href, Icon, label }) => (
@@ -185,11 +185,11 @@ export default async function ContactPage() {
                               {p.label}
                             </span>
                             <span className="block text-[12px] text-muted">
-                              {p.description}
+                              {t.payments[p.label] ?? p.description}
                             </span>
                           </span>
                           <span className="shrink-0 text-[13px] font-semibold text-gold-600">
-                            Pay now
+                            {t.contact.payNow}
                           </span>
                         </a>
                       </li>
@@ -201,7 +201,7 @@ export default async function ContactPage() {
               {/* map */}
               <div className="overflow-hidden rounded-3xl border border-line">
                 <iframe
-                  title="Kim Beauty location map"
+                  title={t.contact.mapTitle}
                   src={`https://maps.google.com/maps?q=${encodeURIComponent(
                     mapQuery
                   )}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
@@ -216,7 +216,7 @@ export default async function ContactPage() {
                   className="flex items-center justify-center gap-2 border-t border-line bg-cream px-4 py-3 text-sm font-semibold text-gold-700 transition hover:bg-gold-50"
                 >
                   <MapPin className="h-4 w-4" aria-hidden="true" />
-                  Open Kim Beauty in Google Maps
+                  {t.contact.openInMaps}
                 </a>
               </div>
             </Reveal>
