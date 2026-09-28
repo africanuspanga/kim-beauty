@@ -120,6 +120,7 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
             onChange={(e) => setPhone(e.target.value)}
             placeholder={f.phonePlaceholder}
             inputMode="tel"
+            dir="ltr"
             className={fieldCls}
           />
         </div>
@@ -131,6 +132,7 @@ export function ContactForm({ whatsapp }: { whatsapp?: string }) {
           <input
             id="c-email"
             type="email"
+            dir="ltr"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"

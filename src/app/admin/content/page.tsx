@@ -72,8 +72,9 @@ const TRANSLATIONS: Record<string, string> = {
   _sw: "Kiswahili",
   _fr: "Français",
   _zh: "中文",
+  _ar: "العربية",
 };
-const TRANSLATION_SUFFIX = /_(sw|fr|zh)$/;
+const TRANSLATION_SUFFIX = /_(sw|fr|zh|ar)$/;
 
 function labelFor(key: string): string {
   const suffix = key.match(TRANSLATION_SUFFIX)?.[0];
@@ -85,7 +86,7 @@ function labelFor(key: string): string {
     .replace(/\bCta\b/g, "Button");
 }
 
-/** Puts each translation (`<field>_sw`, `_fr`, `_zh`) directly under its English `<field>`. */
+/** Puts each translation (`<field>_sw`, `_fr`, `_zh`, `_ar`) directly under its English `<field>`. */
 function withTranslationsPaired(keys: string[]) {
   const english = keys.filter((k) => !TRANSLATION_SUFFIX.test(k));
   const paired = english.flatMap((k) => [
@@ -267,6 +268,7 @@ export default function AdminContentPage() {
                           {isLong ? (
                             <textarea
                               id={`${section.key}-${field}`}
+                              dir={field.endsWith("_ar") ? "rtl" : undefined}
                               rows={3}
                               value={value}
                               onChange={(e) =>
@@ -277,6 +279,7 @@ export default function AdminContentPage() {
                           ) : (
                             <input
                               id={`${section.key}-${field}`}
+                              dir={field.endsWith("_ar") ? "rtl" : undefined}
                               value={value}
                               onChange={(e) =>
                                 setField(section.key, field, e.target.value)

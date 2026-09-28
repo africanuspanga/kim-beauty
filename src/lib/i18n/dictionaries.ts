@@ -4,7 +4,7 @@ import type { Locale } from "./config";
  * Every fixed piece of site copy, in each language.
  *
  * Copy the admin can edit (hero, section headings, about text…) lives in
- * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` twins — see
+ * `site_content` instead, with `<field>_sw` / `_fr` / `_zh` / `_ar` twins — see
  * `getSiteContent`. Service and product names stay exactly as typed.
  */
 const en = {
@@ -1109,7 +1109,278 @@ const zh: Dictionary = {
   },
 };
 
-const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh };
+// Counts use neutral phrasing ("عدد …: N") so they read correctly for every
+// number — Arabic plurals change form for 1, 2, 3–10 and 11+.
+const ar: Dictionary = {
+  language: {
+    label: "اختر اللغة",
+  },
+  common: {
+    optional: "(اختياري)",
+    sending: "جارٍ الإرسال…",
+    chatOnWhatsApp: "تواصل عبر واتساب",
+    openingHours: "ساعات العمل",
+    talkToUs: "تحدث إلينا",
+    home: "الرئيسية",
+    priceOnRequest: "السعر عند الطلب",
+    addToCart: "أضف إلى السلة",
+  },
+  nav: {
+    home: "الرئيسية",
+    about: "من نحن",
+    services: "الخدمات",
+    shop: "المتجر",
+    contact: "اتصل بنا",
+    bookAppointment: "احجز موعدًا",
+    homeLabel: "الصفحة الرئيسية لـ Kim Beauty",
+    openMenu: "فتح القائمة",
+    closeMenu: "إغلاق القائمة",
+    openCart: (count: number) => `فتح السلة، عدد المنتجات: ${count}`,
+  },
+  footer: {
+    explore: "استكشف",
+    services: "الخدمات",
+    visitUs: "زورونا",
+    securePayments: "دفع إلكتروني آمن",
+    payWith: (provider: string) => `ادفع عبر ${provider}`,
+    book: "احجز",
+    shop: "المتجر",
+    admin: "الإدارة",
+    quickLinks: {
+      about: "من نحن",
+      services: "جميع الخدمات",
+      shop: "المتجر",
+      booking: "احجز موعدًا",
+      contact: "اتصل بنا",
+    },
+    serviceLinks: {
+      extensions: "وصلات الشعر",
+      braiding: "تضفير الشعر",
+      lashes: "الرموش",
+      makeUp: "المكياج",
+      spa: "باقات السبا",
+      nails: "مانيكير وباديكير",
+    },
+  },
+  payments: {
+    Pesapal: "بطاقة، محفظة جوال وتحويل بنكي",
+    "DPO Pay": "دفع آمن بالبطاقة عبر DirectPay",
+    PayPal: "ادفع من أي مكان في العالم",
+  },
+  home: {
+    googleReviews: "تقييمات Google",
+    openToday: "مفتوح اليوم",
+    styles: (count: number) => `عدد الأنماط: ${count}`,
+    viewAllServices: "عرض جميع الخدمات",
+    basedOnReviews: (count: string) => `استنادًا إلى أكثر من ${count} تقييمًا على Google`,
+    reviewsLabel: "آراء العملاء. اسحب لقراءة المزيد.",
+  },
+  about: {
+    breadcrumb: "من نحن",
+    valuesEyebrow: "مبادئنا",
+    valuesTitle: "معيار Kim Beauty",
+    valuesDescription: "أربعة أمور يمكن لكل عميلة الاعتماد عليها في كل زيارة.",
+    galleryEyebrow: "أعمالنا",
+    galleryTitle: "مباشرة من كرسي الصالون",
+    galleryDescription: "لمحة عمّا يخرج من صالوننا كل أسبوع.",
+  },
+  booking: {
+    breadcrumb: "احجز موعدًا",
+    howItWorks: "كيف يتم الحجز",
+    steps: [
+      { title: "اختر خدمتك", body: "من قائمة خدمات Kim Beauty الكاملة." },
+      { title: "اختر التاريخ والوقت", body: "أخبرنا بالوقت الأنسب لك." },
+      { title: "التأكيد عبر واتساب", body: "نرد عليك لتثبيت موعدك." },
+    ],
+    preferToTalk: "تفضّل التحدث معنا؟",
+    preferToTalkBody: "اتصل بنا أو ابدأ محادثة على واتساب وسنحجز لك موعدك.",
+  },
+  bookingForm: {
+    sentTitle: "تم إرسال الطلب",
+    sentBody: "تم فتح تفاصيل موعدك في واتساب. أرسل الرسالة وسنؤكد موعدك فورًا.",
+    bookAnother: "احجز موعدًا آخر",
+    fullName: "الاسم الكامل",
+    fullNamePlaceholder: "مثال: Amina Hassan",
+    phone: "الهاتف / واتساب",
+    phonePlaceholder: "0766 400 961",
+    email: "البريد الإلكتروني",
+    service: "الخدمة",
+    chooseService: "اختر خدمة…",
+    style: "النمط / الخيار",
+    chooseStyle: "اختر نمطًا…",
+    about: (duration: string) => ` · حوالي ${duration}`,
+    notSure: "لست متأكدًا؟ اختر الأقرب وأضف ملاحظة أدناه — وسننصحك عبر واتساب.",
+    seePhotos: "شاهد الصور والأسعار",
+    date: "التاريخ المفضل",
+    time: "الوقت المفضل",
+    chooseTime: "اختر وقتًا…",
+    stylist: "المصففة المفضلة",
+    stylistPlaceholder: "أي مصففة متاحة",
+    notes: "هل هناك ما يجب أن نعرفه؟",
+    notesPlaceholder: "صورة مرجعية، طول الشعر، حساسية، مناسبة…",
+    errorRequired: "يرجى إدخال الاسم والهاتف والخدمة والتاريخ والوقت.",
+    errorStyle: (service: string) => `يرجى اختيار نمط ${service} الذي تريده.`,
+    submit: "أرسل الحجز عبر واتساب",
+    savedHint: "يتم حفظ طلبك وفتحه في واتساب لنؤكد موعدك مباشرة.",
+  },
+  contact: {
+    breadcrumb: "اتصل بنا",
+    callUs: "اتصل بنا",
+    whatsapp: "واتساب",
+    chatNow: "تحدث معنا الآن",
+    emailUs: "راسلنا بالبريد",
+    visitSalon: "زر الصالون",
+    sendUsMessage: "أرسل لنا رسالة",
+    sendUsMessageBody: "املأ النموذج وسنرد عليك — عادةً خلال ساعة أثناء ساعات العمل.",
+    follow: "تابع Kim Beauty",
+    followBody: "شاهد أحدث أعمالنا على وسائل التواصل.",
+    payNow: "ادفع الآن",
+    mapTitle: "خريطة موقع Kim Beauty",
+    openInMaps: "افتح Kim Beauty في خرائط Google",
+  },
+  contactForm: {
+    sentTitle: "تم إرسال الرسالة",
+    sentBody: "شكرًا لتواصلك — استلمنا رسالتك وفتحنا واتساب لتتمكن من التواصل معنا فورًا أيضًا.",
+    sendAnother: "أرسل رسالة أخرى",
+    name: "اسمك",
+    namePlaceholder: "مثال: Grace Mollel",
+    phone: "الهاتف",
+    phonePlaceholder: "0766 400 961",
+    email: "البريد الإلكتروني",
+    subject: "الموضوع",
+    subjectPlaceholder: "بخصوص ماذا؟",
+    message: "الرسالة",
+    messagePlaceholder: "أخبرنا كيف يمكننا مساعدتك…",
+    error: "يرجى كتابة اسمك ورسالتك.",
+    submit: "أرسل الرسالة",
+  },
+  services: {
+    breadcrumb: "الخدمات",
+    more: (count: number) => `+${count} أخرى`,
+    viewOptions: (count: number) => `عرض الخيارات (${count})`,
+    viewService: "عرض الخدمة",
+    empty: "يتم تحديث الخدمات حاليًا. يرجى العودة قريبًا.",
+  },
+  serviceDetail: {
+    optionsToChoose: (count: number) => `عدد الخيارات المتاحة: ${count}`,
+    book: (service: string) => `احجز ${service}`,
+    askQuestion: "اطرح سؤالًا",
+    chooseStyle: "اختر نمطك",
+    chooseCourse: "اختر دورتك",
+    chooseIntro:
+      "لكل خيار أدناه صورته ومدته وسعره. اختر ما يعجبك واحجزه — أو أضفه إلى السلة للدفع إلكترونيًا.",
+    noOptions: (service: string) =>
+      `ما زلنا نصوّر ونسعّر خيارات ${service}. راسلنا على واتساب وسنعرّفك بكل ما هو متاح.`,
+    otherServices: "خدمات أخرى من Kim Beauty",
+    allServices: "جميع الخدمات",
+    popular: "الأكثر طلبًا",
+    bookThisStyle: "احجز هذا النمط",
+  },
+  shop: {
+    breadcrumb: "المتجر",
+    perks: [
+      {
+        title: "توصيل داخل أروشا",
+        body: "توصيل في نفس اليوم داخل أروشا، وشحن إلى جميع أنحاء تنزانيا عند الطلب.",
+      },
+      {
+        title: "مجرّبة في الصالون",
+        body: "كل منتج في هذه الصفحة تستخدمه مصففاتنا بأنفسهن.",
+      },
+      {
+        title: "اطلب عبر واتساب",
+        body: "املأ سلتك وأرسلها، وسنؤكد توفر المنتجات فورًا.",
+      },
+    ],
+    sorts: {
+      featured: "المميزة",
+      "price-asc": "السعر: من الأقل إلى الأعلى",
+      "price-desc": "السعر: من الأعلى إلى الأقل",
+      name: "الاسم A–Z",
+    },
+    searchPlaceholder: "ابحث عن منتج…",
+    searchLabel: "ابحث عن منتج",
+    sortLabel: "ترتيب المنتجات",
+    allProducts: "جميع المنتجات",
+    showing: (count: number) => `عدد المنتجات المعروضة: ${count}`,
+    noMatch: "لا توجد منتجات تطابق بحثك",
+    noMatchHint: "جرّب كلمة أخرى أو تصفّح فئة أخرى.",
+  },
+  product: {
+    bestseller: "الأكثر مبيعًا",
+    soldOut: "نفدت الكمية",
+    colorOrNumber: "اللون أو الرقم",
+    addToCartLabel: (name: string) => `أضف ${name} إلى السلة`,
+    photos: (name: string) => `صور المنتج ${name}`,
+    photoN: (name: string, n: number) => `${name}، الصورة ${n}`,
+    previousPhoto: "الصورة السابقة",
+    nextPhoto: "الصورة التالية",
+    showPhoto: (n: number) => `عرض الصورة ${n}`,
+  },
+  cart: {
+    dialogLabel: "سلة التسوق",
+    title: "سلتك",
+    close: "إغلاق السلة",
+    empty: "سلتك فارغة",
+    emptyHint: "أضف منتجًا من المتجر، أو خدمة من صفحة الخدمات.",
+    goToShop: "اذهب إلى المتجر",
+    remove: (name: string) => `إزالة ${name}`,
+    decrease: "تقليل الكمية",
+    increase: "زيادة الكمية",
+    yourName: "اسمك",
+    yourPhone: "رقم هاتفك",
+    deliveryNote: "ملاحظة التوصيل (اختياري)",
+    deliveryNoteLabel: "ملاحظة التوصيل",
+    total: "المجموع",
+    sendOrder: "أرسل الطلب عبر واتساب",
+    sendHint: "يُفتح طلبك في واتساب — وهناك نؤكد التوفر والموعد والتوصيل.",
+    payOnline: "أو ادفع إلكترونيًا الآن",
+    paidAlready: "دفعت بالفعل؟ أرسل الطلب عبر واتساب مع رقم مرجع الدفع لنطابقه.",
+  },
+  whatsappButton: {
+    label: "تواصل مع Kim Beauty عبر واتساب",
+  },
+  meta: {
+    site: {
+      title: "Kim Beauty — تضفير ورموش ومكياج وسبا في أروشا، تنزانيا",
+      description:
+        "Kim Beauty صالون تجميل عصري في شارع سوكوين، أروشا — ضفائر بدون عقد، وصلات شعر، رموش، مكياج عرائس، باقات سبا، أظافر ودورات Kim Academy. شاهد كل نمط وسعره ثم احجز عبر واتساب.",
+    },
+    about: {
+      title: "من نحن",
+      description:
+        "Kim Beauty صالون تجميل عصري في شارع سوكوين، أروشا — خبيرات تضفير ورموش ومكياج ومعالجات سبا تحت سقف واحد.",
+    },
+    booking: {
+      title: "احجز موعدًا",
+      description:
+        "احجز مقعدك في Kim Beauty، شارع سوكوين، أروشا. اختر الخدمة والنمط والتاريخ والوقت — ونؤكد عبر واتساب.",
+    },
+    contact: {
+      title: "اتصل بنا",
+      description:
+        "اتصل أو راسلنا عبر واتساب أو البريد، أو زر Kim Beauty في شارع سوكوين، أروشا، تنزانيا. مفتوح من الاثنين إلى الأحد.",
+    },
+    services: {
+      title: "خدماتنا وأسعارنا",
+      description:
+        "تضفير، وصلات شعر، رموش، مكياج، باقات سبا، مانيكير وباديكير، علاجات الشعر وKim Academy — كل نمط ومدته وسعره في Kim Beauty، شارع سوكوين، أروشا.",
+    },
+    shop: {
+      title: "المتجر",
+      description:
+        "تسوّق منتجات Kim Beauty للشعر، وباروكات Kim Collection، والرموش، ومستلزمات الأظافر والمزيد. توصيل داخل أروشا والطلب مباشرة عبر واتساب.",
+    },
+    service: {
+      title: (service: string) => `${service} في أروشا — الأنماط والأسعار`,
+      notFound: "الخدمة غير موجودة",
+      options: (names: string) => `الخيارات: ${names}.`,
+      bookAt: "احجز في Kim Beauty، شارع سوكوين، أروشا.",
+    },
+  },
+};
+
+const DICTIONARIES: Record<Locale, Dictionary> = { en, sw, fr, zh, ar };
 
 export function getDictionary(locale: Locale): Dictionary {
   return DICTIONARIES[locale];

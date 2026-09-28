@@ -52,6 +52,7 @@ export default async function ContactPage() {
       Icon: Phone,
       title: t.contact.callUs,
       value: phone,
+      ltr: true,
       href: `tel:${phone.replace(/\s/g, "")}`,
     },
     {
@@ -65,6 +66,7 @@ export default async function ContactPage() {
       Icon: Mail,
       title: t.contact.emailUs,
       value: email,
+      ltr: true,
       href: `mailto:${email}`,
     },
     {
@@ -102,7 +104,7 @@ export default async function ContactPage() {
                   </span>
                   <h2 className="mt-5 text-lg">{c.title}</h2>
                   <p className="mt-1.5 break-words text-[14px] leading-relaxed text-muted">
-                    {c.value}
+                    <span dir={c.ltr ? "ltr" : undefined}>{c.value}</span>
                   </p>
                 </a>
               </Reveal>

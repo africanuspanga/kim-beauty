@@ -99,7 +99,7 @@ export function Header({
             className="hidden items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-ink-soft transition hover:text-gold-600 xl:inline-flex"
           >
             <Phone className="h-4 w-4" aria-hidden="true" />
-            {phone}
+            <span dir="ltr">{phone}</span>
           </a>
 
           {/* The full flag row needs xl width; below that it would push the header over. */}
