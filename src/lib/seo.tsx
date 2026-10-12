@@ -95,7 +95,7 @@ export function localBusinessSchema(content: ContentMap, services: Service[] = [
     telephone: pick(content, "contact", "phone"),
     email: pick(content, "contact", "email"),
     image: absoluteUrl("/images/hero.jpg"),
-    logo: absoluteUrl("/images/logo.png"),
+    logo: absoluteUrl("/images/kim-beauty-logo.png"),
     priceRange: "TZS",
     currenciesAccepted: "TZS",
     address: {
@@ -173,7 +173,7 @@ export function serviceSchema(service: Service, content: ContentMap) {
               "@type": "Offer",
               name: option.name,
               description: option.description ?? undefined,
-              url: absoluteUrl(`/services/${service.slug}#${option.slug}`),
+              url: absoluteUrl(`/services/${service.slug}/${option.slug}`),
               availability: "https://schema.org/InStock",
               ...(option.price != null
                 ? option.price_max != null && option.price_max > option.price
@@ -211,6 +211,7 @@ export function productSchema(product: Product) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
+    url: absoluteUrl(`/shop/${product.slug}`),
     description: product.description ?? undefined,
     image: images.length ? images : undefined,
     brand: { "@type": "Brand", name: "Kim Beauty" },
@@ -221,7 +222,7 @@ export function productSchema(product: Product) {
       availability: product.in_stock
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
-      url: absoluteUrl("/shop"),
+      url: absoluteUrl(`/shop/${product.slug}`),
       seller: { "@id": absoluteUrl("/#business") },
     },
   };

@@ -166,10 +166,10 @@ export default function AdminLoginPage() {
         <div className="rounded-[2rem] border border-line bg-cream p-8 shadow-lift sm:p-10">
           <div className="flex justify-center">
             <Image
-              src="/images/logo.png"
+              src="/images/kim-beauty-logo.png"
               alt="Kim Beauty"
-              width={718}
-              height={490}
+              width={1208}
+              height={731}
               priority
               className="h-20 w-auto"
             />

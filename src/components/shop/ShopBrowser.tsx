@@ -7,6 +7,12 @@ import { useT } from "@/components/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 import type { Product, ProductCategory } from "@/lib/types";
 
+/** Every category a product is filed under, main one included. */
+function categoryIdsOf(product: Product): string[] {
+  if (product.category_ids?.length) return product.category_ids;
+  return product.category_id ? [product.category_id] : [];
+}
+
 type Sort = "featured" | "price-asc" | "price-desc" | "name";
 
 const SORTS: Sort[] = ["featured", "price-asc", "price-desc", "name"];
@@ -25,10 +31,12 @@ export function ShopBrowser({
 
   const visible = useMemo(() => {
     const q = query.trim().toLowerCase();
+    const categoryId = categories.find((c) => c.slug === category)?.id;
 
     const filtered = products.filter((p) => {
       const inCategory =
-        category === "all" || p.product_categories?.slug === category;
+        category === "all" ||
+        (categoryId != null && categoryIdsOf(p).includes(categoryId));
       const matches =
         !q ||
         p.name.toLowerCase().includes(q) ||
@@ -55,16 +63,19 @@ export function ShopBrowser({
         );
     }
     return sorted;
-  }, [products, category, query, sort]);
+  }, [products, categories, category, query, sort]);
 
   const counts = useMemo(() => {
+    const slugById = new Map(categories.map((c) => [c.id, c.slug]));
     const map: Record<string, number> = { all: products.length };
     for (const p of products) {
-      const slug = p.product_categories?.slug;
-      if (slug) map[slug] = (map[slug] ?? 0) + 1;
+      for (const id of categoryIdsOf(p)) {
+        const slug = slugById.get(id);
+        if (slug) map[slug] = (map[slug] ?? 0) + 1;
+      }
     }
     return map;
-  }, [products]);
+  }, [products, categories]);
 
   return (
     <div>

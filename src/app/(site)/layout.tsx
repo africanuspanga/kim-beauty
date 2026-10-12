@@ -17,7 +17,7 @@ export default async function SiteLayout({
 }) {
   const [content, locale] = await Promise.all([getSiteContent(), getLocale()]);
 
-  const logoUrl = pick(content, "branding", "logo_url", "/images/logo.png");
+  const logoUrl = pick(content, "branding", "logo_url", "/images/kim-beauty-logo.png");
   const phone = pick(content, "contact", "phone");
   const whatsapp = pick(content, "contact", "whatsapp");
   const prefill = pick(

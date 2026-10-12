@@ -8,6 +8,7 @@ import type {
   Product,
   ProductCategory,
   Service,
+  ServiceOption,
   Testimonial,
 } from "@/lib/types";
 
@@ -87,6 +88,16 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
   return (data as Service | null) ?? null;
 }
 
+/** One style inside a service, with its parent, for /services/[slug]/[option]. */
+export async function getServiceOption(
+  serviceSlug: string,
+  optionSlug: string
+): Promise<{ service: Service; option: ServiceOption } | null> {
+  const service = await getServiceBySlug(serviceSlug);
+  const option = service?.service_options?.find((o) => o.slug === optionSlug);
+  return service && option ? { service, option } : null;
+}
+
 export async function getProducts(onlyFeatured = false): Promise<Product[]> {
   const supabase = createServerClient();
   let query = supabase
@@ -99,6 +110,19 @@ export async function getProducts(onlyFeatured = false): Promise<Product[]> {
 
   const { data } = await query;
   return (data ?? []) as Product[];
+}
+
+/** One product, for /shop/[slug]. */
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const supabase = createServerClient();
+  const { data } = await supabase
+    .from("products")
+    .select("*, product_categories(name, slug)")
+    .eq("slug", slug)
+    .eq("is_active", true)
+    .maybeSingle();
+
+  return (data as Product | null) ?? null;
 }
 
 export async function getCategories(): Promise<ProductCategory[]> {

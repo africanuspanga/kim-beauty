@@ -31,7 +31,7 @@ export const CONTENT_DEFAULTS: Record<string, Json> = {
   },
   branding: {
     site_name: "Kim Beauty",
-    logo_url: "/images/logo.png",
+    logo_url: "/images/kim-beauty-logo.png",
     whatsapp_prefill: "I am coming from Kim Beauty website",
   },
   contact: {

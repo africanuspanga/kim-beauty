@@ -20,7 +20,7 @@ const NAV = [
 ] as const;
 
 export function Header({
-  logoUrl = "/images/logo.png",
+  logoUrl = "/images/kim-beauty-logo.png",
   phone = "+255 766 400 961",
 }: {
   logoUrl?: string;
@@ -60,10 +60,10 @@ export function Header({
           <Image
             src={logoUrl}
             alt="Kim Beauty"
-            width={718}
-            height={490}
+            width={1208}
+            height={731}
             priority
-            className="h-11 w-auto md:h-13"
+            className="h-12 w-auto md:h-14"
           />
         </Link>
 

@@ -71,7 +71,10 @@ export type Product = {
   price: number;
   compare_at_price: number | null;
   currency: string;
+  /** Main category — the one named on the product card. */
   category_id: string | null;
+  /** Every category the product is listed under. */
+  category_ids?: string[] | null;
   image_url: string | null;
   gallery: string[];
   color_options: ProductColorOption[];

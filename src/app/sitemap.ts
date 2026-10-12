@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { getServices } from "@/lib/content";
+import { getProducts, getServices } from "@/lib/content";
 import { absoluteUrl } from "@/lib/seo";
 
 // Services are edited in the admin, so the sitemap is built per request
@@ -19,16 +19,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   let services: MetadataRoute.Sitemap = [];
+  let products: MetadataRoute.Sitemap = [];
   try {
-    services = (await getServices()).map((service) => ({
-      url: absoluteUrl(`/services/${service.slug}`),
+    const [allServices, allProducts] = await Promise.all([getServices(), getProducts()]);
+
+    services = allServices.flatMap((service) => [
+      {
+        url: absoluteUrl(`/services/${service.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.85,
+      },
+      ...(service.service_options ?? []).map((option) => ({
+        url: absoluteUrl(`/services/${service.slug}/${option.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: 0.7,
+      })),
+    ]);
+
+    products = allProducts.map((product) => ({
+      url: absoluteUrl(`/shop/${product.slug}`),
       lastModified: now,
       changeFrequency: "weekly" as const,
-      priority: 0.85,
+      priority: 0.7,
     }));
   } catch {
     /* database unreachable — still publish the static routes */
   }
 
-  return [...staticPages, ...services];
+  return [...staticPages, ...services, ...products];
 }

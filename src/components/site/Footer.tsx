@@ -30,7 +30,7 @@ export async function Footer({ content }: { content: ContentMap }) {
   const email = pick(content, "contact", "email");
   const address = pick(content, "contact", "address");
   const whatsapp = pick(content, "contact", "whatsapp");
-  const logoUrl = pick(content, "branding", "logo_url", "/images/logo.png");
+  const logoUrl = pick(content, "branding", "logo_url", "/images/kim-beauty-logo.png");
   const year = new Date().getFullYear();
 
   const socials = getSocialLinks(content);
@@ -55,9 +55,9 @@ export async function Footer({ content }: { content: ContentMap }) {
               <Image
                 src={logoUrl}
                 alt="Kim Beauty"
-                width={718}
-                height={490}
-                className="h-12 w-auto"
+                width={1208}
+                height={731}
+                className="h-14 w-auto"
               />
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-cream/60">

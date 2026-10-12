@@ -1,12 +1,19 @@
+import Link from "next/link";
 import { CalendarCheck, Check, Clock } from "lucide-react";
 import { AddOptionToCart } from "./AddOptionToCart";
 import { ServiceOptionMedia } from "./ServiceOptionMedia";
 import { ButtonLink } from "@/components/ui/Button";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { Reveal } from "@/components/ui/Reveal";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { getT } from "@/lib/i18n/server";
 import type { Service, ServiceOption } from "@/lib/types";
 import { optionPriceLabel } from "@/lib/utils";
+
+/** The style's own shareable page. */
+export function optionHref(service: Pick<Service, "slug">, option: Pick<ServiceOption, "slug">) {
+  return `/services/${service.slug}/${option.slug}`;
+}
 
 export function bookingHref(serviceTitle: string, optionName?: string) {
   const params = new URLSearchParams({ service: serviceTitle });
@@ -28,7 +35,7 @@ export function groupOptions(options: ServiceOption[]) {
   return groups;
 }
 
-function OptionCard({
+export function OptionCard({
   option,
   service,
   delay,
@@ -41,6 +48,7 @@ function OptionCard({
 }) {
   const image = option.image_url || service.image_url;
   const price = optionPriceLabel(option, t.common.priceOnRequest);
+  const href = optionHref(service, option);
 
   return (
     <Reveal
@@ -49,15 +57,36 @@ function OptionCard({
       delay={delay}
       className="group flex h-full scroll-mt-28 flex-col overflow-hidden rounded-3xl border border-line bg-cream transition-all duration-400 hover:-translate-y-1.5 hover:border-gold-200 hover:shadow-lift"
     >
-      <ServiceOptionMedia
-        imageUrl={image}
-        videoUrl={option.video_url}
-        alt={`${option.name} — ${service.title} at Kim Beauty Arusha`}
-      />
+      <div className="relative">
+        {option.video_url ? (
+          <ServiceOptionMedia
+            imageUrl={image}
+            videoUrl={option.video_url}
+            alt={`${option.name} — ${service.title} at Kim Beauty Arusha`}
+          />
+        ) : (
+          <Link href={href} aria-label={t.detail.viewProduct(option.name)} className="block">
+            <ServiceOptionMedia
+              imageUrl={image}
+              alt={`${option.name} — ${service.title} at Kim Beauty Arusha`}
+            />
+          </Link>
+        )}
+        <ShareButton
+          path={href}
+          title={`${service.title} — ${option.name}`}
+          text={`${option.name} (${service.title}) — Kim Beauty Arusha`}
+          className="absolute right-3 top-3 z-10"
+        />
+      </div>
 
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-[1.35rem] leading-snug">{option.name}</h3>
+          <h3 className="text-[1.35rem] leading-snug">
+            <Link href={href} className="transition hover:text-gold-700">
+              {option.name}
+            </Link>
+          </h3>
           {option.is_featured ? (
             <span className="mt-1 shrink-0 rounded-full bg-gold-100 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-gold-700">
               {t.serviceDetail.popular}

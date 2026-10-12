@@ -29,6 +29,7 @@ export type FieldDef = {
     | "number"
     | "checkbox"
     | "select"
+    | "multiselect"
     | "image"
     | "images"
     | "colors"
@@ -40,6 +41,8 @@ export type FieldDef = {
   required?: boolean;
   full?: boolean;
   help?: string;
+  /** multiselect: also save the first pick into this single-value column. */
+  primaryField?: string;
   /** Auto-fill this slug field from another field while creating. */
   slugFrom?: string;
   rows?: number;
@@ -141,7 +144,10 @@ export function ResourceManager({
     Promise.all(
       needed.map(async (f) => {
         const { table: t, valueKey, labelKey } = f.optionsFrom!;
-        const { data } = await supabase.from(t).select(`${valueKey}, ${labelKey}`);
+        const { data } = await supabase
+          .from(t)
+          .select(`${valueKey}, ${labelKey}`)
+          .order(labelKey, { ascending: true });
         return [
           f.name,
           ((data as unknown as Row[]) ?? []).map((r) => ({
@@ -194,6 +200,12 @@ export function ResourceManager({
           ? Array.isArray(raw)
             ? raw.join("\n")
             : ""
+          : f.type === "multiselect"
+            ? Array.isArray(raw) && raw.length
+              ? raw.map(String)
+              : f.primaryField && row[f.primaryField]
+                ? [String(row[f.primaryField])]
+                : []
           : f.type === "images"
             ? Array.isArray(raw)
               ? raw.filter((item): item is string => typeof item === "string")
@@ -285,6 +297,12 @@ export function ResourceManager({
         case "select":
           payload[f.name] = raw === "" ? null : raw;
           break;
+        case "multiselect": {
+          const picked = Array.isArray(raw) ? raw.map(String).filter(Boolean) : [];
+          payload[f.name] = picked;
+          if (f.primaryField) payload[f.primaryField] = picked[0] ?? null;
+          break;
+        }
         default:
           payload[f.name] = raw === "" ? null : raw;
       }
@@ -551,7 +569,15 @@ export function ResourceManager({
               return (
                 <div
                   key={f.name}
-                  className={f.full || f.type === "image" || f.type === "images" || f.type === "colors" ? "sm:col-span-2" : ""}
+                  className={
+                    f.full ||
+                    f.type === "image" ||
+                    f.type === "images" ||
+                    f.type === "colors" ||
+                    f.type === "multiselect"
+                      ? "sm:col-span-2"
+                      : ""
+                  }
                 >
                   {f.type === "image" ? (
                     <ImageField
@@ -576,6 +602,50 @@ export function ResourceManager({
                         ].filter((image): image is string => typeof image === "string" && Boolean(image)).length
                       }
                     />
+                  ) : f.type === "multiselect" ? (
+                    <fieldset>
+                      <legend className="mb-2 block text-[13px] font-semibold text-ink">
+                        {f.label}
+                      </legend>
+                      {options.length === 0 ? (
+                        <p className="text-[13px] text-muted">Nothing to choose from yet.</p>
+                      ) : (
+                        <div className="flex flex-wrap gap-2">
+                          {options.map((o) => {
+                            const picked: string[] = Array.isArray(form[f.name])
+                              ? form[f.name]
+                              : [];
+                            const on = picked.includes(o.value);
+                            return (
+                              <button
+                                key={o.value}
+                                type="button"
+                                aria-pressed={on}
+                                onClick={() =>
+                                  setField(
+                                    f.name,
+                                    on
+                                      ? picked.filter((v) => v !== o.value)
+                                      : [...picked, o.value]
+                                  )
+                                }
+                                className={cn(
+                                  "rounded-full border px-3.5 py-2 text-[13px] font-medium transition",
+                                  on
+                                    ? "border-transparent bg-gold-gradient text-white"
+                                    : "border-line bg-cream text-ink-soft hover:border-gold-300 hover:text-gold-700"
+                                )}
+                              >
+                                {o.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                      {f.help ? (
+                        <p className="mt-1.5 text-[12px] text-muted">{f.help}</p>
+                      ) : null}
+                    </fieldset>
                   ) : f.type === "checkbox" ? (
                     <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-line bg-cream px-4 py-3">
                       <input

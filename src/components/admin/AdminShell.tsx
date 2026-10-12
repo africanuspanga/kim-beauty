@@ -85,10 +85,10 @@ export function AdminShell({
         <div className="flex h-20 items-center px-6">
           <Link href="/admin" className="flex items-center">
             <Image
-              src="/images/logo.png"
+              src="/images/kim-beauty-logo.png"
               alt="Kim Beauty"
-              width={718}
-              height={490}
+              width={1208}
+              height={731}
               className="h-11 w-auto"
             />
           </Link>
@@ -141,10 +141,10 @@ export function AdminShell({
       >
         <div className="flex h-20 items-center justify-between px-5">
           <Image
-            src="/images/logo.png"
+            src="/images/kim-beauty-logo.png"
             alt="Kim Beauty"
-            width={718}
-            height={490}
+            width={1208}
+            height={731}
             className="h-10 w-auto"
           />
           <button
@@ -186,10 +186,10 @@ export function AdminShell({
             <Menu className="h-5 w-5" />
           </button>
           <Image
-            src="/images/logo.png"
+            src="/images/kim-beauty-logo.png"
             alt="Kim Beauty"
-            width={718}
-            height={490}
+            width={1208}
+            height={731}
             className="h-8 w-auto"
           />
         </header>

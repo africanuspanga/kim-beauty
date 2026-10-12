@@ -246,6 +246,19 @@ const en = {
     label: "Chat with Kim Beauty on WhatsApp",
   },
   /** Browser-tab titles and search descriptions. */
+  share: {
+    button: "Share",
+    label: (name: string) => `Share ${name}`,
+    copied: "Link copied",
+  },
+  detail: {
+    viewProduct: (name: string) => `View ${name}`,
+    backToShop: "Back to shop",
+    moreProducts: "You may also like",
+    moreStyles: (service: string) => `More ${service} styles`,
+    backToService: (service: string) => `All ${service} styles`,
+    notFound: "Not found",
+  },
   meta: {
     site: {
       title: "Kim Beauty — Braids, Lashes, Makeup & Spa in Arusha, Tanzania",
@@ -524,6 +537,19 @@ const sw: Dictionary = {
   whatsappButton: {
     label: "Ongea na Kim Beauty kwa WhatsApp",
   },
+  share: {
+    button: "Shiriki",
+    label: (name: string) => `Shiriki ${name}`,
+    copied: "Kiungo kimenakiliwa",
+  },
+  detail: {
+    viewProduct: (name: string) => `Tazama ${name}`,
+    backToShop: "Rudi dukani",
+    moreProducts: "Unaweza pia kupenda",
+    moreStyles: (service: string) => `Mitindo mingine ya ${service}`,
+    backToService: (service: string) => `Mitindo yote ya ${service}`,
+    notFound: "Haikupatikana",
+  },
   meta: {
     site: {
       title: "Kim Beauty — Kusuka, Kope, Make Up na Spa Arusha, Tanzania",
@@ -801,6 +827,19 @@ const fr: Dictionary = {
   whatsappButton: {
     label: "Discuter avec Kim Beauty sur WhatsApp",
   },
+  share: {
+    button: "Partager",
+    label: (name: string) => `Partager ${name}`,
+    copied: "Lien copié",
+  },
+  detail: {
+    viewProduct: (name: string) => `Voir ${name}`,
+    backToShop: "Retour à la boutique",
+    moreProducts: "Vous aimerez aussi",
+    moreStyles: (service: string) => `Autres styles — ${service}`,
+    backToService: (service: string) => `Tous les styles — ${service}`,
+    notFound: "Introuvable",
+  },
   meta: {
     site: {
       title: "Kim Beauty — Tresses, cils, maquillage et spa à Arusha, Tanzanie",
@@ -1068,6 +1107,19 @@ const zh: Dictionary = {
   },
   whatsappButton: {
     label: "通过 WhatsApp 联系 Kim Beauty",
+  },
+  share: {
+    button: "分享",
+    label: (name: string) => `分享 ${name}`,
+    copied: "链接已复制",
+  },
+  detail: {
+    viewProduct: (name: string) => `查看 ${name}`,
+    backToShop: "返回商店",
+    moreProducts: "你可能还喜欢",
+    moreStyles: (service: string) => `更多${service}款式`,
+    backToService: (service: string) => `全部${service}款式`,
+    notFound: "未找到",
   },
   meta: {
     site: {
@@ -1340,6 +1392,19 @@ const ar: Dictionary = {
   whatsappButton: {
     label: "تواصل مع Kim Beauty عبر واتساب",
   },
+  share: {
+    button: "مشاركة",
+    label: (name: string) => `مشاركة ${name}`,
+    copied: "تم نسخ الرابط",
+  },
+  detail: {
+    viewProduct: (name: string) => `عرض ${name}`,
+    backToShop: "العودة إلى المتجر",
+    moreProducts: "قد يعجبك أيضًا",
+    moreStyles: (service: string) => `المزيد من أنماط ${service}`,
+    backToService: (service: string) => `كل أنماط ${service}`,
+    notFound: "غير موجود",
+  },
   meta: {
     site: {
       title: "Kim Beauty — تضفير ورموش ومكياج وسبا في أروشا، تنزانيا",
@@ -1608,6 +1673,19 @@ const hi: Dictionary = {
   },
   whatsappButton: {
     label: "व्हाट्सऐप पर Kim Beauty से बात करें",
+  },
+  share: {
+    button: "शेयर करें",
+    label: (name: string) => `${name} शेयर करें`,
+    copied: "लिंक कॉपी हो गया",
+  },
+  detail: {
+    viewProduct: (name: string) => `${name} देखें`,
+    backToShop: "दुकान पर वापस",
+    moreProducts: "आपको यह भी पसंद आ सकता है",
+    moreStyles: (service: string) => `${service} की और स्टाइल`,
+    backToService: (service: string) => `${service} की सभी स्टाइल`,
+    notFound: "नहीं मिला",
   },
   meta: {
     site: {
@@ -1885,6 +1963,19 @@ const es: Dictionary = {
   },
   whatsappButton: {
     label: "Hablar con Kim Beauty por WhatsApp",
+  },
+  share: {
+    button: "Compartir",
+    label: (name: string) => `Compartir ${name}`,
+    copied: "Enlace copiado",
+  },
+  detail: {
+    viewProduct: (name: string) => `Ver ${name}`,
+    backToShop: "Volver a la tienda",
+    moreProducts: "También te puede gustar",
+    moreStyles: (service: string) => `Más estilos de ${service}`,
+    backToService: (service: string) => `Todos los estilos de ${service}`,
+    notFound: "No encontrado",
   },
   meta: {
     site: {

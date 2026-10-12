@@ -2,34 +2,57 @@
 
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Plus, ShoppingBag } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCart } from "./CartProvider";
 import { useT } from "@/components/i18n/I18nProvider";
+import { ShareButton } from "@/components/ui/ShareButton";
 import { formatPrice } from "@/lib/utils";
 import type { Product, ProductColorOption } from "@/lib/types";
 
-function ProductImageCarousel({
+export function ProductImageCarousel({
   images,
   name,
   activeIndex,
   onActiveIndexChange,
+  href,
+  sizes = "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw",
+  priority = false,
 }: {
   images: string[];
   name: string;
   activeIndex: number;
   onActiveIndexChange: (index: number) => void;
+  /** Makes each photo a link, e.g. to the product's own page. */
+  href?: string;
+  sizes?: string;
+  priority?: boolean;
 }) {
   const t = useT();
   const trackRef = useRef<HTMLDivElement>(null);
 
+  // Which slide the track is actually showing right now.
+  const shownIndex = useCallback(() => {
+    const track = trackRef.current;
+    if (!track || !track.clientWidth) return 0;
+    return Math.round(track.scrollLeft / track.clientWidth);
+  }, []);
+
+  // Follow index changes that did not come from the track itself (arrows,
+  // dots, picking a colour). While a smooth scroll is in flight the scroll
+  // handler reports the slides it passes; those already match the track,
+  // so they are skipped instead of yanking the track back mid-glide.
   useEffect(() => {
     const track = trackRef.current;
-    if (!track) return;
+    if (!track || shownIndex() === activeIndex) return;
     track.scrollTo({ left: track.clientWidth * activeIndex, behavior: "smooth" });
-  }, [activeIndex]);
+  }, [activeIndex, shownIndex]);
 
   function goTo(index: number) {
-    onActiveIndexChange((index + images.length) % images.length);
+    const next = (index + images.length) % images.length;
+    const track = trackRef.current;
+    if (track) track.scrollTo({ left: track.clientWidth * next, behavior: "smooth" });
+    onActiveIndexChange(next);
   }
 
   if (images.length === 0) return null;
@@ -38,25 +61,44 @@ function ProductImageCarousel({
     <>
       <div
         ref={trackRef}
-        onScroll={(event) => {
-          const width = event.currentTarget.clientWidth;
-          if (width) onActiveIndexChange(Math.round(event.currentTarget.scrollLeft / width));
+        onScroll={() => {
+          const index = shownIndex();
+          if (index !== activeIndex) onActiveIndexChange(index);
         }}
-        className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto scroll-smooth"
+        className="no-scrollbar flex h-full snap-x snap-mandatory overflow-x-auto overscroll-x-contain"
         aria-label={t.product.photos(name)}
       >
-        {images.map((image, index) => (
-          <div key={`${image}-${index}`} className="relative h-full min-w-full snap-center">
+        {images.map((image, index) => {
+          const photo = (
             <Image
               src={image}
               alt={index === 0 ? name : t.product.photoN(name, index + 1)}
               fill
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes={sizes}
+              priority={priority && index === 0}
               className="object-cover"
               unoptimized={!image.startsWith("/")}
+              draggable={false}
             />
-          </div>
-        ))}
+          );
+
+          return (
+            <div key={`${image}-${index}`} className="relative h-full min-w-full snap-center">
+              {href ? (
+                <Link
+                  href={href}
+                  tabIndex={index === 0 ? undefined : -1}
+                  aria-label={t.detail.viewProduct(name)}
+                  className="absolute inset-0"
+                >
+                  {photo}
+                </Link>
+              ) : (
+                photo
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {images.length > 1 ? (
@@ -97,7 +139,18 @@ function ProductImageCarousel({
   );
 }
 
-function colorOptions(product: Product): ProductColorOption[] {
+/** Main photo first, then the gallery, without repeats. */
+export function productImages(product: Product): string[] {
+  return Array.from(
+    new Set(
+      [product.image_url, ...(product.gallery ?? [])].filter((image): image is string =>
+        Boolean(image)
+      )
+    )
+  );
+}
+
+export function colorOptions(product: Product): ProductColorOption[] {
   return (product.color_options ?? []).filter(
     (option): option is ProductColorOption =>
       typeof option?.name === "string" && option.name.trim().length > 0
@@ -107,9 +160,8 @@ function colorOptions(product: Product): ProductColorOption[] {
 export function ProductCard({ product }: { product: Product }) {
   const t = useT();
   const { addItem } = useCart();
-  const images = Array.from(
-    new Set([product.image_url, ...(product.gallery ?? [])].filter((image): image is string => Boolean(image)))
-  );
+  const images = productImages(product);
+  const href = `/shop/${product.slug}`;
   const colors = colorOptions(product);
   const [selectedColor, setSelectedColor] = useState<string | null>(colors[0]?.name ?? null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -132,9 +184,17 @@ export function ProductCard({ product }: { product: Product }) {
           name={product.name}
           activeIndex={activeImageIndex}
           onActiveIndexChange={setActiveImageIndex}
+          href={href}
         />
 
-        <div className="absolute left-3 top-3 flex flex-col gap-1.5">
+        <ShareButton
+          path={href}
+          title={product.name}
+          text={`${product.name} — Kim Beauty`}
+          className="absolute right-3 top-3 z-10"
+        />
+
+        <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1.5">
           {onSale ? (
             <span className="rounded-full bg-gold-gradient px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-white">
               -{discount}%
@@ -148,7 +208,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
 
         {!product.in_stock ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-cream/75 backdrop-blur-[2px]">
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-cream/75 backdrop-blur-[2px]">
             <span className="rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-wider text-cream">
               {t.product.soldOut}
             </span>
@@ -174,7 +234,7 @@ export function ProductCard({ product }: { product: Product }) {
           }
           disabled={!product.in_stock}
           aria-label={t.product.addToCartLabel(product.name)}
-          className="absolute bottom-3 right-3 hidden h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-white opacity-0 shadow-lg transition-all duration-300 hover:scale-110 group-hover:opacity-100 disabled:pointer-events-none sm:flex"
+          className="absolute bottom-3 right-3 z-10 hidden h-11 w-11 items-center justify-center rounded-full bg-gold-gradient text-white opacity-0 shadow-lg transition-all duration-300 hover:scale-110 group-hover:opacity-100 disabled:pointer-events-none sm:flex"
         >
           <Plus className="h-5 w-5" aria-hidden="true" />
         </button>
@@ -188,7 +248,9 @@ export function ProductCard({ product }: { product: Product }) {
         ) : null}
 
         <h3 className="mt-1.5 line-clamp-2 font-sans text-[15px] font-medium leading-snug text-ink">
-          {product.name}
+          <Link href={href} className="transition hover:text-gold-700">
+            {product.name}
+          </Link>
         </h3>
 
         {product.description ? (
