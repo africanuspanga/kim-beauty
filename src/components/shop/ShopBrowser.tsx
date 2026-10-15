@@ -130,7 +130,7 @@ export function ShopBrowser({
           <span className="ms-1.5 opacity-60">{counts.all ?? 0}</span>
         </button>
 
-        {categories.map((c) => (
+        {categories.filter((c) => counts[c.slug] || category === c.slug).map((c) => (
           <button
             key={c.id}
             onClick={() => setCategory(c.slug)}
